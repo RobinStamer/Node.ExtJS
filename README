@@ -16,3 +16,27 @@ Examples
    mc.add({id:'y',foo:'baz'})
    
    mc.get(1) == mc.get('y'); // true
+
+XTemplate
+====
+
+    var Ext = require('Ext')('Ext.XTemplate')
+    
+    var x = new Ext.XTemplate([
+    	'{name}\n',
+    	'<tpl for="array">',
+    		'{#} {name}\n',
+    	'</tpl>'
+    ]), o = {
+    	array: [{name: 'Joe'}, {name: 'Bob'}],
+    	name: 'Demo'
+    }
+    
+    console.log(x.apply(o))
+
+Output:
+
+    Demo
+    1 Joe
+    2 Bob
+    
