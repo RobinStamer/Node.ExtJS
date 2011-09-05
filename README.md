@@ -6,19 +6,18 @@ There are extensions to the original layout, a rough outline as follows:
 * Ext.game: a collection of modules that add classes and functions to deal with the mechanics of games
 * Ext.ux.mongo: Children of Ext.data classes to handle access to MongoDB, requires the `mongo` module.
 
-Examples
-===
+##Examples
 
-   var Ext = require('Ext')('Ext.util.MixedCollection');
+    var Ext = require('Ext')('Ext.util.MixedCollection');
    
-   var mc = new Ext.util.MixedCollection;
-   mc.add({id:'x',foo:'bar'})
-   mc.add({id:'y',foo:'baz'})
+    var mc = new Ext.util.MixedCollection;
+    mc.add({id:'x',foo:'bar'})
+    mc.add({id:'y',foo:'baz'})
    
-   mc.get(1) == mc.get('y'); // true
+    mc.get(1) == mc.get('y'); // true
 
-XTemplate
-====
+###XTemplate
+
 
     var Ext = require('Ext')('Ext.XTemplate')
     
