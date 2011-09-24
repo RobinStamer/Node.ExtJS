@@ -12,6 +12,8 @@ function _load(o, module) {
 
 	if (isExtRegex.test(source)) {
 		source = source.replace(/\./g, '/')
+		require(source)
+		return
 	}
 
 	o[dest] = require(source)
