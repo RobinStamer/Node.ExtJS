@@ -4,10 +4,50 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-// for old browsers
 
-var window = global, Ext = exports;
-window.Ext = Ext;
+//
+// Start new code for node.js
+//
+
+function Ext() {
+	var	i	= 1,
+		o	= (!Ext.isString(arguments[0]) && Ext.isObject(arguments[0])) ? arguments[0] : (i = 0, {});
+	for (; i < arguments.length; ++i) {
+		_load(o || {}, arguments[i])
+	}
+	return Ext
+}
+
+var window = global;
+module.exports = window.Ext = Ext;
+
+var	isExtRegex	= /^Ext/;
+
+function _load(o, module) {
+	var source, dest;
+
+	if (Ext.isString(module)) {
+		source = dest = module
+	} else {
+		source = module.module
+		dest = module.alias || module.module
+	}
+
+	if (isExtRegex.test(source)) {
+		source = source.replace(/\./g, '/')
+		require(source)
+		return
+	}
+
+	o[dest] = require(source)
+}
+
+//FIXME
+Ext.load = Ext
+
+//
+// End new code for node.js
+//
 
 /**
  * Copies all the properties of config to obj.
@@ -1042,4 +1082,3 @@ Ext.applyIf(Array.prototype, {
     }
 });
 
-require('./ux/genoce').load(Ext)

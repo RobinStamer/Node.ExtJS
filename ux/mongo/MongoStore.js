@@ -1,6 +1,4 @@
-var Ext = require('../../').load('Ext.data.Store', 'Ext.ux.mongo.MongoReader', 'Ext.ux.mongo.MongoWriter', 'Ext.ux.mongo.MongoProxy');
-
-Ext.ns('Ext.ux.mongo')
+Ext('Ext.data.Store', 'Ext.ux.mongo.MongoReader', 'Ext.ux.mongo.MongoWriter', 'Ext.ux.mongo.MongoProxy').ns('Ext.ux.mongo')
 
 Ext.ux.mongo.MongoStore = Ext.extend(Ext.data.Store, {
 	constructor: function(config, collection) {

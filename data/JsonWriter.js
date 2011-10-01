@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.data.DataWriter');
+Ext('Ext.data.DataWriter');
 
 /**
  * @class Ext.data.JsonWriter

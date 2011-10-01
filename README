@@ -2,13 +2,14 @@ This port will handle the porting of Ext.data and Ext.util classes, as well as a
 
 There are extensions to the original layout, a rough outline as follows:
 
-* Ext.load: function that will load more modules, returns Ext
+* Ext: is now a function that will load more modules, returns Ext
+* Ext.game: a collection of modules that add classes and functions to deal with the mechanics of games
 * Ext.ux.mongo: Children of Ext.data classes to handle access to MongoDB, requires the `mongo` module.
 
 Examples
 ===
 
-   var Ext = require('Ext').load('Ext.util.MixedCollection');
+   var Ext = require('Ext')('Ext.util.MixedCollection');
    
    var mc = new Ext.util.MixedCollection;
    mc.add({id:'x',foo:'bar'})

@@ -5,8 +5,6 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext');
-
 /**
  * @class Ext.data.DataWriter
  * <p>Ext.data.DataWriter facilitates create, update, and destroy actions between

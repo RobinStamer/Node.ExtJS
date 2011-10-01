@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.util.Observable');
+Ext('Ext.util.Observable');
 
 /**
  * @class Ext.util.Observable

@@ -5,8 +5,6 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext');
-
 /**
  * @class Ext.data.SortTypes
  * @singleton

@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.data.SortTypes');
+Ext('Ext.data.SortTypes');
 
 /**
  * @class Ext.data.Types

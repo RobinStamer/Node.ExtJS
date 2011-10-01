@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.util.MixedCollection');
+var Ext = require('Ext')('Ext.util.MixedCollection');
 
 /**
  * @class Ext.ComponentMgr

@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-Ext = require('../').load('Ext.util.Observable')
+Ext('Ext.util.Observable')
 
 /**
  * @class Ext.util.MixedCollection

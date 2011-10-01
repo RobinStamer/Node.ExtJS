@@ -1,6 +1,4 @@
-var Ext = require('../../').load('Ext.data.DataProxy');
-
-Ext.ns('Ext.ux.mongo')
+Ext('Ext.data.DataProxy').ns('Ext.ux.mongo')
 
 Ext.ux.mongo.MongoProxy = Ext.extend(Ext.data.DataProxy, {
 	constructor: function(config, collection) {

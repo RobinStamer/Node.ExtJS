@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.data.Types');
+Ext('Ext.data.Types');
 
 /**
  * @class Ext.data.Field

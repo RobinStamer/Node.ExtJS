@@ -1,4 +1,4 @@
-require('Ext').load('Ext.net.JsonRpc');
+var Ext = require('Ext')('Ext.net.JsonRpc');
 
 new Ext.net.JsonRpc({
 	servers: {

@@ -4,7 +4,6 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-var Ext = require('../');
 
 (function(){
 

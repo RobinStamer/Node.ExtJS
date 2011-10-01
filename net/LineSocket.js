@@ -1,4 +1,4 @@
-var net = require('net'); Ext.load({}, 'Ext.util.Observable').ns('Ext.net')
+var net = require('net'); Ext({}, 'Ext.util.Observable').ns('Ext.net')
 
 function onBind(self) {
 	function onData(d) {

@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext').load('Ext.data.Record');
+Ext('Ext.data.Record');
 
 /**
  * @class Ext.data.DataReader

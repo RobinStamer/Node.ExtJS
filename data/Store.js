@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-var Ext = require('../').load('Ext.util.MixedCollection', 'Ext.Error', 'Ext.ComponentMgr', 'Ext.Ext-more', 'Ext.data.Api', 'Ext.util.Observable-more');
+Ext('Ext.util.MixedCollection', 'Ext.Error', 'Ext.ComponentMgr', 'Ext.Ext-more', 'Ext.data.Api', 'Ext.util.Observable-more');
 
 /**
  * @class Ext.data.Store

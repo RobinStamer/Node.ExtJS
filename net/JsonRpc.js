@@ -1,4 +1,4 @@
-Ext.load('Ext.net.LineSocket')
+Ext('Ext.net.LineSocket')
 
 function setupServer(server) {
 	var self = this, ret;
@@ -23,11 +23,13 @@ Ext.net.JsonRpc = function(config) {
 		for (var i = 0; i < this.servers.length; ++i) {
 			this.servers[i] = setupServer.call(this, this.servers[i])
 		}
-	} else {
+	} else if (this.servers) {
 		this.servers = setupServer.call(this, this.servers)
 	}
 
 	this.Handle = function(json, callback) {
+		this.parent = self
+
 		this.success = function(response) {
 			callback(JSON.stringify({
 				id: json.id,
