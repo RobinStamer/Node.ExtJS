@@ -12,10 +12,12 @@ Ext.data.Cache = Ext.extend(Ext.util.Observable, {
 		Ext.data.Cache.superclass.constructor.call(this)
 	},
 	add: function(obj) {
-		this.fireEvent('new', this._store.push({
+		var o = {
 			obj: obj,
 			date: new Date
-		}))
+		}
+		this.fireEvent('new', o)
+		this._store.push(o)
 		this.clean()
 	},
 	clean: function() {
