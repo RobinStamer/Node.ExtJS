@@ -38,4 +38,39 @@ Output:
     Demo
     1 Joe
     2 Bob
-    
+
+##Wierd things ExtJS does that I don't want to change because I haven't a clue why it does them
+
+###Ext.create() (Ext.ComponentMgr)
+
+    var Ext = require('Ext')('Ext.XTemplate', 'Ext.ComponentMgr')
+
+    var demo = function(conf) {
+        console.log('DEMO')
+        this.baz = 42
+
+        Ext.apply(this, conf)
+    }
+
+    Ext.reg('demo', demo)
+
+    console.log(Ext.create({
+        xtype: 'demo',
+        foo: 1337
+    }))
+
+    console.log(Ext.create({
+        xtype: 'demo',
+        foo: 1337,
+        render: {
+            foo: 1
+        }
+    }))
+
+That produces the following output:
+
+    DEMO
+    { baz: 42, xtype: 'demo', foo: 1337 }
+    { xtype: 'demo', foo: 1337, render: { foo: 1 } }
+
+On the first one the constructor `demo` gets called, but the second just returns the argument of Ext.create() because it has a member named `render`.  I'm guessing this gets set normally from constructors but I can't confirm this at the moment.
