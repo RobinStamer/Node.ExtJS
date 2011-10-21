@@ -15,7 +15,7 @@ Ext.game.exalted.TickManager.prototype.join = function(character) {
 		throw new Error('Did not get a Character with a joinBattle stat')
 	}
 	var	roll	= Ext.game.doRoll(character.joinBattle, 10, false, 'S', 7),
-		name	= character.name || Ext.id(null, 'character-')
+		name	= character.name || Ext.id(null, 'character')
 
 	return this.state[name] = Ext.apply(character, {
 		roll: roll,

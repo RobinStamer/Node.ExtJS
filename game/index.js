@@ -23,10 +23,13 @@ var doRoll = function(un1, count, sides, explodes, un2, func, arg) {
 		o.num = Ext.game.roll(count, sides)
 	} else {
 		for (var i = 0; i < count; ++i) {
-			o.rolls.push(num = Ext.game.roll(sides))
+			num = Ext.game.roll(sides)
+			o.min = Math.min(num, o.min) || num
+			o.max = Math.max(num, o.max) || num
+			o.rolls.push(num)
 			switch (func) {
 				case 'S':
-					if (num == count) {
+					if (num == sides) {
 						++o.num
 					}
 				case 's':
@@ -39,7 +42,7 @@ var doRoll = function(un1, count, sides, explodes, un2, func, arg) {
 				--i;
 			}
 		}
-		o.rolls = o.rolls.sort(function(a, b) { if (a > b) return -1; else if (b > a) return 1; return 0; })
+		//o.rolls = o.rolls.sort(function(a, b) { if (a > b) return -1; else if (b > a) return 1; return 0; })
 	}
 
 	return o;

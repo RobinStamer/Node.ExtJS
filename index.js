@@ -42,9 +42,6 @@ function _load(o, module) {
 	o[dest] = require(source)
 }
 
-//FIXME
-Ext.load = Ext
-
 //
 // End new code for node.js
 //
