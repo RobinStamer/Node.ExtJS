@@ -2,7 +2,7 @@ Ext.ns('Ext.game.exalted')
 
 Ext.apply(Ext.game.exalted, {
 	attribute:	'Strength,Dexterity,Stamina,Charisma,Manipulation,Appearance,Perception,Intelligence,Wits'.split(','),
-	ability:	[],
+	ability:	['Archery Athletics Awareness Bureaucracy Craft Dodge Integrity Investigation Larceny Linguistics Lore MartialArts Medicine Melee Occult Performance Presence Resistance Ride Sail Socialize Stealth Survival Thrown War'.split(' ')],
 	background:	['Wispers'],
 	virtue:		'Compassion,Conviction,Temperance,Valor'.split(','),
 	limit:		'Limit,Resonance,Paradox,Clarity,Dissonance,Torment,Bedlam'.split(','),
