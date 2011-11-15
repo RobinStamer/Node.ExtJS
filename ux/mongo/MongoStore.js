@@ -9,6 +9,11 @@ Ext.ux.mongo.MongoStore = Ext.extend(Ext.data.Store, {
 			fields: config.fields,
 			idProperty: config.idProperty
 		})
+		config.writer = config.writer || new Ext.ux.mongo.MongoWriter({
+			fields: config.fields,
+			encode: false,
+			idProperty: config.idProperty
+		})
 		config.proxy = config.proxy || new Ext.ux.mongo.MongoProxy({
 			api: config.api
 		}, collection)
