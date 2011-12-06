@@ -17,6 +17,8 @@ function onBind(self) {
 		self.fireEvent('client', client)
 		client.on('data', onData)
 	})
+
+	self.fireEvent('connect')
 }
 
 Ext.net.LineSocket = Ext.extend(Ext.util.Observable, {
@@ -45,5 +47,11 @@ Ext.net.LineSocket = Ext.extend(Ext.util.Observable, {
 		)
 
 		Ext.net.LineSocket.superclass.constructor.call(this)
+	},
+	ready: function() {
+		return 'open' == this._socket.readyState
+	},
+	send: function(d) {
+		this._socket.write(d);
 	}
 })

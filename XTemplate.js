@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-Ext('Ext.Template', 'Ext.Format')
+Ext('Ext.Template', 'Ext.util.Format')
 
 /**
  * @class Ext.XTemplate
