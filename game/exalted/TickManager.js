@@ -1,4 +1,4 @@
-Ext('Ext.game').ns('Ext.game.exalted')
+Ext('Ext.game').ns('Ext.game.exalted', 'Ext.UserError')
 
 Ext.game.exalted.TickManager = function(config) {
 	Ext.apply(this, config)
@@ -12,7 +12,7 @@ Ext.game.exalted.TickManager.prototype.clear = function() {
 
 Ext.game.exalted.TickManager.prototype.join = function(character) {
 	if (!character.joinBattle) {
-		throw new Error('Did not get a Character with a joinBattle stat')
+		throw new Ext.UserError('Did not get a Character with a joinBattle stat')
 	}
 	var	roll	= Ext.game.doRoll(character.joinBattle, 10, false, 'S', 7),
 		name	= character.name || Ext.id(null, 'character')
@@ -78,11 +78,11 @@ Ext.game.exalted.TickManager.prototype.act = function(character, speed, DV) {
 
 Ext.game.exalted.TickManager.prototype.lookup = function(character) {
 	if (!character.name) {
-		throw new Error('Did not get a Character with a name')
+		throw new Ext.UserError('Did not get a Character with a name')
 	}
 
 	if (!this.state.hasOwnProperty(character.name)) {
-		throw new Error('No such mob: ' + character.name)
+		throw new Ext.UserError('No such mob: ' + character.name)
 	}
 	return this.state[character.name]
 }
