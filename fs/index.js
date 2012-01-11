@@ -22,3 +22,11 @@ Ext.fs.mkdirP = function(p, mode, f) {
         })
     })
 }
+
+Ext.fs.loadJSON = function(filename, enc) {
+	return JSON.parse(fs.readFileSync(filename, enc).toString())
+}
+
+Ext.fs.saveJSON = function(filename, data, enc) {
+	return fs.writeFileSync(filename, JSON.stringify(data), enc)
+}
