@@ -1,7 +1,8 @@
-var	r	= /(\d*)d(\d*)(e?)(([dksSo])(\d*))?/g,
-		Ext	= require('../');
+var	r	= /(\d+)d(\d+)(e?)(([dksSo])(\d*))?/g,
+	safety	= /^\d*(\s*[*\/+-]\s*\d*)*$/,
+	vm	= require('vm');
 
-Ext.ns('Ext.game');
+Ext.ns('Ext.game._stash');
 
 Ext.game.doRoll = function(count, sides, explodes, func, arg) {
 	return doRoll(null, count, sides, explodes, null, func, arg)
@@ -59,4 +60,9 @@ Ext.game.roll = function(count, sides) {
 
 Ext.game.rollString = function(str) {
 	return str.replace(r, doRoll)
+}
+
+Ext.game.calc = function(str) {
+	var	res	= this.rollString(str).trim()
+	return safety.test(res) ? vm.runInNewContext(res, this._stash) : res;
 }
