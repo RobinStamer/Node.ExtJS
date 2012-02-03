@@ -1,5 +1,5 @@
 var	r	= /(\d+)d(\d+)(e?)(([dksSo])(\d*))?/g,
-	safety	= /^\d*(\s*[*\/+-]\s*\d*)*$/,
+	safety	= /^([a-zA-Z]+\s*=\s*)?(\d+|[a-zA-Z]+)(\s*[*\/+-]\s*(\d+|[a-zA-Z]+))*$/,
 	vm	= require('vm');
 
 Ext.ns('Ext.game._stash');
