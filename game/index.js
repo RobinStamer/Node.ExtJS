@@ -1,7 +1,9 @@
-var	r	= /(\d*)d(\d*)(e?)(([dksSo])(\d*))?/g,
-		Ext	= require('../');
+var	r	= /(\d+)d(\d+)(e?)(([dksSo])(\d*))?/g,
+	safetyWithAssignment	= /^([a-zA-Z]+\s*=\s*)?(\d+|[a-zA-Z]+)(\s*[*\/+-]\s*(\d+|[a-zA-Z]+))*$/,
+	safetyWithoutAssignment	= /^(\d+|[a-zA-Z]+)(\s*[*\/+-]\s*(\d+|[a-zA-Z]+))*$/,
+	vm	= require('vm');
 
-Ext.ns('Ext.game');
+Ext.ns('Ext.game._stash');
 
 Ext.game.doRoll = function(count, sides, explodes, func, arg) {
 	return doRoll(null, count, sides, explodes, null, func, arg)
@@ -81,4 +83,10 @@ Ext.game.roll = function(count, sides) {
 
 Ext.game.rollString = function(str) {
 	return str.replace(r, doRoll)
+}
+
+Ext.game.calc = function(str, allowAssignment, context) {
+	var	res	= this.rollString(str).trim(),
+		safety	= allowAssignment ? safetyWithAssignment : safetyWithoutAssignment
+	return safety.test(res) ? vm.runInNewContext(res, this._stash || context) : res
 }
