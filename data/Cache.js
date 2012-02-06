@@ -32,5 +32,15 @@ Ext.data.Cache = Ext.extend(Ext.util.Observable, {
 	},
 	forEach: function(cb) {
 		this._store.forEach(cb)
+	},
+	last: function(cb) {
+		if (Ext.isFunction(cb)) {
+			for (var i = this._store.length; i > 0; )
+				var o = this._store[--i]
+				if (cb(o.obj, o.date))
+					return o
+		} else {
+			return this._store[this._store.length - 1]
+		}
 	}
 })
