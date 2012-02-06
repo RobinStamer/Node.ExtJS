@@ -34,5 +34,11 @@ Ext.net.irc.Connection = Ext.extend(Ext.net.LineSocket, {
 	},
 	write: function(text) {
 		this._socket.write(text + '\r\n')
+	},
+	notice: function(targets, txt) {
+		this.write('NOTICE ' + targets + ' :' + txt)
+	},
+	say: function(targets, txt) {
+		this.write('PRIVMSG ' + targets + ' :' + txt)
 	}
 })
