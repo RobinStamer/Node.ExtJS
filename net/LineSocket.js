@@ -1,4 +1,4 @@
-var net = require('net'); Ext({}, 'Ext.util.Observable').ns('Ext.net')
+var net = require('net'); Ext('Ext.Ext-more', 'Ext.util.Observable').ns('Ext.net')
 
 function onBind(self) {
 	function onData(d) {
@@ -18,6 +18,12 @@ function onBind(self) {
 		client.on('data', onData)
 	})
 
+	if (self.config.client) this.on('close', function() {
+		self.fireEvent('disconnect')
+		delete self._socket
+		self.connect()
+	})
+
 	self.fireEvent('connect')
 }
 
@@ -31,13 +37,7 @@ Ext.net.LineSocket = Ext.extend(Ext.util.Observable, {
 			return onBind.call(this, self)
 		}
 
-		if (config.server) {
-			this._socket = net.createServer()
-			this._socket.listen(config.server.port, config.server.host, this.onBind)
-		} else if (config.client) {
-			this._socket = new net.Socket
-			this._socket.connect(config.client.port, config.client.host, this.onBind)
-		}
+		this.connect()
 
 		this.addEvents(
 			'line',
@@ -46,6 +46,11 @@ Ext.net.LineSocket = Ext.extend(Ext.util.Observable, {
 			'end'
 		)
 
+		if (config.listeners) {
+			this.listeners = config.listeners
+			delete config.listeners
+		}
+
 		Ext.net.LineSocket.superclass.constructor.call(this)
 	},
 	ready: function() {
@@ -53,5 +58,14 @@ Ext.net.LineSocket = Ext.extend(Ext.util.Observable, {
 	},
 	send: function(d) {
 		this._socket.write(d);
+	},
+	connect: function() {
+		if (this.config.server) {
+			this._socket = net.createServer()
+			this._socket.listen(this.config.server.port, this.config.server.host, this.onBind)
+		} else if (this.config.client) {
+			this._socket = new net.Socket
+			this._socket.connect(this.config.client.port, this.config.client.host, this.onBind)
+		}
 	}
 })

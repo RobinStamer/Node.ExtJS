@@ -1,7 +1,9 @@
-var	r	= /(\d*)d(\d*)(e?)(([dksSo])(\d*))?/g,
-		Ext	= require('../');
+var	r	= /(\d+)d(\d+)(e?)(([dksSor])(\d*))?/g,
+	safetyWithAssignment	= /^([a-zA-Z]+\s*=\s*)?(\d+|[a-zA-Z]+)(\s*[*\/+-]\s*(\d+|[a-zA-Z]+))*$/,
+	safetyWithoutAssignment	= /^(\d+|[a-zA-Z]+)(\s*[*\/+-]\s*(\d+|[a-zA-Z]+))*$/,
+	vm	= require('vm');
 
-Ext.ns('Ext.game');
+Ext.ns('Ext.game._stash');
 
 Ext.game.doRoll = function(count, sides, explodes, func, arg) {
 	return doRoll(null, count, sides, explodes, null, func, arg)
@@ -24,8 +26,8 @@ var doRoll = function(un1, count, sides, explodes, un2, func, arg) {
 	} else {
 		for (var i = 0; i < count; ++i) {
 			num = Ext.game.roll(sides)
-			o.min = Math.min(num, o.min) || num
-			o.max = Math.max(num, o.max) || num
+			//o.min = Math.min(num, o.min) || num
+			//o.max = Math.max(num, o.max) || num
 			o.rolls.push(num)
 			switch (func) {
 				case 'S':
@@ -35,6 +37,15 @@ var doRoll = function(un1, count, sides, explodes, un2, func, arg) {
 				case 's':
 					o.num += (num >= arg ? 1 : 0)
 					break
+				case 'r':
+					if (num < arg) {
+						--i;
+						o.rolls.pop();
+						break
+					} else {
+						o.num += num
+					}
+					break
 				default:
 					o.num += num
 			}
@@ -42,7 +53,23 @@ var doRoll = function(un1, count, sides, explodes, un2, func, arg) {
 				--i;
 			}
 		}
-		//o.rolls = o.rolls.sort(function(a, b) { if (a > b) return -1; else if (b > a) return 1; return 0; })
+
+		if (func in {d:1,k:1}) {
+			o.rolls.sort(function(a, b) { if (a > b) return -1; else if (b > a) return 1; return 0; })
+		}
+
+		if (func == 'd') {
+			for (var i = 0; i < arg; ++i) {
+				o.num -= o.rolls.pop()
+			}
+		} else if (func == 'k') {
+			for (var i = 0; o.rolls.length > arg; ++i) {
+				o.num -= o.rolls.shift()
+			}
+		}
+
+		o.min = Math.min.apply(null, o.rolls)
+		o.max = Math.max.apply(null, o.rolls)
 	}
 
 	return o;
@@ -59,4 +86,10 @@ Ext.game.roll = function(count, sides) {
 
 Ext.game.rollString = function(str) {
 	return str.replace(r, doRoll)
+}
+
+Ext.game.calc = function(str, allowAssignment, context) {
+	var	res	= this.rollString(str).trim(),
+		safety	= allowAssignment ? safetyWithAssignment : safetyWithoutAssignment
+	return safety.test(res) ? vm.runInNewContext(res, this._stash || context) : res
 }
