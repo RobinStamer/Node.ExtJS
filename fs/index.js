@@ -1,6 +1,5 @@
-var	Ext	= require('../'),
-		path	= require('path'),
-		fs		= require('fs');
+var	path	= require('path'),
+	fs	= require('fs');
 
 Ext.ns('Ext.fs')
 
