@@ -23,6 +23,9 @@ class MultiFile extends stream.Writable {
 		if (cfg.input) {
 			this.input = Ext.create(cfg.input)
 		} else if (cfg.name) {
+			// actually load the modules needed
+			Ext('Ext.data.LinePipe', 'Ext.data.MultiFile')
+
 			this.input = Ext.create({
 				xtype:	'linePipe'
 				,input:	{
