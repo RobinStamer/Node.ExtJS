@@ -31,25 +31,36 @@ class MultiFile extends stream.Writable {
 	}
 
 	_write(chunk, encoding, done) {
-		this.process(chunk.toString())
-		console.log(chunk.toString())
+		this._process(chunk.toString().substr(0, chunk.length - 1))
 		done()
 	}
 
 	_final(done) {
-		this.process(null)
-		console.log('fina;')
+		this._process(null)
 		done()
 	}
 
-	process(line) {
+	_completeSet() {
+		const	key = this.meta.title || this.newKey()
+			,last	= this.cur.pop()
+
+		if ('' != last) {
+			this.cur.push(last)
+		}
+
+		this.data[key] = {
+			meta:	this.meta
+			,data:	this.cur
+		}
+
+		this.emit('set', key, this.data[key])
+	}
+
+	_process(line) {
 		if (null === line) {
 			// Store the data we collected
-			this.data[this.meta.title || this.newKey()] = {
-				meta:	this.meta
-				,data:	this.cur
-			}
-					
+			this._completeSet()
+
 			return
 		}
 
@@ -81,10 +92,7 @@ class MultiFile extends stream.Writable {
 						,value	= parts.slice(1).join(' ')
 
 					// Store the data we collected
-					this.data[this.meta.title || this.newKey()] = {
-						meta:	this.meta
-						,data:	this.cur
-					}
+					this._completeSet()
 
 					this.state = HEADER
 					
