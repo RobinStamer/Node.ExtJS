@@ -53,7 +53,7 @@ class MultiFile extends stream.Writable {
 			,data:	this.cur
 		}
 
-		this.emit('set', key, this.data[key])
+		this.emit('set', key, this.meta, this.cur)
 	}
 
 	_process(line) {
