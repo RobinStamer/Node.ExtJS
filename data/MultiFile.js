@@ -16,8 +16,23 @@ class MultiFile extends stream.Writable {
 		this.keyN	= 0
 		this.cur	= []
 
+		if ('string' == typeof cfg) {
+			cfg = {name: cfg}
+		}
+
 		if (cfg.input) {
 			this.input = Ext.create(cfg.input)
+		} else if (cfg.name) {
+			this.input = Ext.create({
+				xtype:	'linePipe'
+				,input:	{
+					xtype:	'file'
+					,name:	cfg.name
+				}
+			})
+		}
+		
+		if (this.input) {
 			this.input.pipe(this)
 		}
 	}
