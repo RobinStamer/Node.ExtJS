@@ -5,7 +5,9 @@ Ext.ns('Ext.data')
 
 class File extends fs.ReadStream {
 	constructor(cfg) {
-		super(cfg.name)
+		super(cfg.name, {
+			encoding: cfg.encoding || 'utf8'
+		})
 
 		this.render = true
 	}
