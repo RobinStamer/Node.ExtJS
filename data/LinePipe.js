@@ -8,6 +8,7 @@ class LinePipe extends stream.Transform {
 		super()
 
 		this._bufferStr = ''
+		this.render	= true
 
 		if (cfg.input) {
 			this.input = Ext.create(cfg.input)

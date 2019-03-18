@@ -38,6 +38,8 @@ class MultiFile extends stream.Writable {
 		if (this.input) {
 			this.input.pipe(this)
 		}
+
+		this.render	= true
 	}
 
 	newKey() {
