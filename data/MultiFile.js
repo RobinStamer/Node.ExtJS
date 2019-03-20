@@ -61,7 +61,7 @@ class MultiFile extends stream.Writable {
 	}
 
 	_completeSet() {
-		const	key = this.meta.title || this.newKey()
+		const	key = this.meta.key || this.meta.title || this.newKey()
 			,last	= this.cur.pop()
 
 		if ('' != last) {
