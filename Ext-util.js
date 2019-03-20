@@ -1,6 +1,6 @@
 //[now.getDate(), now.getMonth(), now.getFullYear(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()]
 
-Ext.apply(Ext, function() {
+Ext.apply(Ext, (function() {
 	return {
 		/**
 		 * Pads a string to a certain length
@@ -13,4 +13,4 @@ Ext.apply(Ext, function() {
 			return (c.repeat(l) + s).substr(-l)
 		}
 	}
-}
+})())
