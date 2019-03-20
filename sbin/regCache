@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+const	Ext	= require('Ext')
+	,child	= require('child_process')
+	,fs	= require('fs')
+	,db	= {}
+
+Ext('Ext.data.LinePipe')
+
+Ext.create({
+	xtype:	'linePipe'
+	,input:	(function(o) { o.render = true; return o })(child.spawn('fgrep', ['-R', 'Ext.reg\(\'', '.']).stdout)
+	,_transform: function(line) { line = line.split(/[:']/); line[0] = line[0].replace(/.js$/, '').split('/'); line[0][0] = 'Ext'; return [line[0], line[2]] }
+}).on('data', function(line) {
+	if ({examples: true, 'README.md': true, 'class': true}[line[0][1]]) {
+		return
+	}
+	line[0] = line[0].join('.')
+	db[line[1]] = line[0]
+}).on('finish', function() {
+	fs.writeFileSync('var/registry.json', JSON.stringify(db))
+})
