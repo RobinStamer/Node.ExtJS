@@ -5,7 +5,7 @@ Ext.ns('Ext.data')
 
 class LinePipe extends stream.Transform {
 	constructor(cfg) {
-		super()
+		super({readableObjectMode: !!cfg._transform})
 
 		this._bufferStr = ''
 		this.render	= true
@@ -14,6 +14,14 @@ class LinePipe extends stream.Transform {
 			this.input = Ext.create(cfg.input)
 			this.input.pipe(this)
 		}
+
+		if (cfg._transform) {
+			this._mutate = cfg._transform
+		}
+	}
+
+	_mutate(line) {
+		return line + '\n'
 	}
 
 	_transform(chunk, encoding, done) {
@@ -21,7 +29,7 @@ class LinePipe extends stream.Transform {
 			,lines = buff.split('\n')
 
 		while (lines.length > 1) {
-			this.push(lines.shift() + '\n')
+			this.push(this._mutate(lines.shift()))
 		}
 
 		this._bufferStr = lines[0]
