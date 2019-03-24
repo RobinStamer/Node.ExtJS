@@ -1,1 +1,1 @@
-{"ircbot":"Ext.net.irc.Bot","file":"Ext.data.File","jsonstore":"Ext.data.JsonStore","multiFile":"Ext.data.MultiFile","store":"Ext.data.Store","linePipe":"Ext.data.LinePipe"}
+{"ztpl":"Ext.ZTemplate","multiFile":"Ext.data.MultiFile","file":"Ext.data.File","linePipe":"Ext.data.LinePipe","jsonstore":"Ext.data.JsonStore","store":"Ext.data.Store","ircbot":"Ext.net.irc.Bot"}
