@@ -11,7 +11,7 @@ class LinePipe extends stream.Transform {
 		this.render	= true
 
 		if (cfg.input) {
-			this.input = Ext.create(cfg.input)
+			this.input = Ext.xcreate(cfg.input)
 			this.input.pipe(this)
 		}
 
