@@ -5,7 +5,7 @@ Ext.ns('Ext.data')
 
 class LinePipe extends stream.Transform {
 	constructor(cfg) {
-		super({readableObjectMode: !!cfg._transform})
+		super({readableObjectMode: !cfg.buffers})
 
 		this._bufferStr = ''
 		this.render	= true
