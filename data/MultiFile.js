@@ -40,7 +40,7 @@ class MultiFile extends stream.Writable {
 	}
 
 	newKey() {
-		return 'Key-' + keyN++
+		return 'Key-' + this.keyN++
 	}
 
 	getData() {
