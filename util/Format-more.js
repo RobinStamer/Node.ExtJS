@@ -1,14 +1,16 @@
 Ext('Ext.util.Format')
 
 Ext.apply(Ext.util.Format, {
-	pad: function(string, num) {
+	pad: function(string, num, c) {
 		string = string === 0 ? '0' : string || ''
-		return ' '.repeat(Math.max(num - string.toString().length, 0)) + string
+		c = 0 === c ? '0' : (c || ' ').toString()[0]
+		return c.repeat(Math.max(num - string.toString().length, 0)) + string
 	}
 
-	,rpad: function(string, num) {
+	,rpad: function(string, num, c) {
 		string = string || ''
-		return string + ' '.repeat(Math.max(num - string.toString().length, 0))
+		c = 0 === c ? '0' : (c || ' ').toString()[0]
+		return string + c.repeat(Math.max(num - string.toString().length, 0))
 	}
 
 	,curry: function(string, ...argv) {
