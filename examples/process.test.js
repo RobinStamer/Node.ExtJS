@@ -1,17 +1,8 @@
-const	Ext	= require('Ext')('Ext.data.MultiFile', 'Ext.data.LinePipe', 'Ext.data.File')
+const	Ext	= require('Ext')('Ext.data.File')
 
-var p = Ext.create({
+var p = Ext.xcreate({
 	xtype:	'multiFile'
 	,name:	'process.test.txt'
-	/*
-	,input:	{
-		xtype:	'linePipe'
-		,input:	{
-			xtype:	'file'
-			,name:	'process.test.txt'
-		}
-	}
-	//*/
 })
 
 p.on('set', function(key, meta, data) {
