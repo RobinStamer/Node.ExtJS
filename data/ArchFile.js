@@ -55,13 +55,17 @@ class ArchFile extends stream.Writable {
 			this.cur.push(last)
 		}
 
-		this.emit('set', this.curKey, this.cur)
+		if (null !== this.curKey) {
+			this.emit('set', this.curKey, this.cur)
+		}
 	}
 
 	_process(line) {
 		if (null === line) {
 			// Store the data we collected
 			this._completeSet()
+
+			this.emit('done')
 
 			return
 		}
