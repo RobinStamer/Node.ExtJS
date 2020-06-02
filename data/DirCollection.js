@@ -35,23 +35,28 @@ Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 			self.loading = dir.length
 
 			for (var fn of dir) {
-				fs.readFile(`${dirname}/${fn}`, 'utf-8', function(e, json) {
-					var data
+				self._loadFile(fn)
+			}
+		})
+	}
+	,_loadFile: function(fn) {
+		var self = this
 
-					if (e) {
-						throw e
-					}
+		fs.readFile(`${self.dirname}/${fn}`, 'utf-8', function(e, json) {
+			var data
 
-					data = JSON.parse(json)
+			if (e) {
+				throw e
+			}
 
-					self.json[fn] = json
+			data = JSON.parse(json)
 
-					self.add(data)
+			self.json[fn] = json
 
-					if (0 == --self.loading) {
-						self.fireEvent('load')
-					}
-				})
+			self.add(data)
+
+			if (0 == --self.loading) {
+				self.fireEvent('load')
 			}
 		})
 	}
