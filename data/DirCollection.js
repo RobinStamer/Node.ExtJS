@@ -18,6 +18,20 @@ Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 
 		this.load()
 	}
+	,removeAt: function(index) {
+		var o	= Ext.data.DirCollection.superclass.removeAt.call(this, index)
+			,key
+
+		if (false != o) {
+			key = this.getKey(o)
+
+			delete this.json[key]
+
+			fs.unlinkSync(`${this.dirname}/${key}`)
+		}
+
+		return o
+	}
 	,load: function() {
 		var dirname = this.dirname
 			,self	= this
