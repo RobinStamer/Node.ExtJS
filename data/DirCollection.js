@@ -2,7 +2,7 @@ var	fs	= require('fs')
 
 Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
 
-Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
+var DC = Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 	constructor: function(cfg) {
 		Ext.data.DirCollection.superclass.constructor.call(this)
 
@@ -67,23 +67,41 @@ Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 
 			self.json[fn] = json
 
-			self.add(data)
+			DC.superclass.add.call(self, data)
 
 			if (0 == --self.loading) {
 				self.fireEvent('load')
 			}
 		})
 	}
+	,add: function(...args) {
+		var key, data
+
+		if (1 == args.length) {
+			data = args[0]
+			key = this.getKey(data)
+		} else {
+			key = args[0]
+			data = args[1]
+		}
+
+		DC.superclass.add.call(this, key, data)
+
+		this._saveFile(key)
+	}
+	,_saveFile: function(key) {
+		var item	= this.map[key]
+			,json	= JSON.stringify(item) + '\n'
+
+		if (this.json[key] != json) {
+			this.json[key] = json
+
+			fs.writeFileSync(`${this.dirname}/${key}`, json)
+		}
+	}
 	,save: function() {
 		for (var item of this.items) {
-			var key	= this.getKey(item)
-				,json	= JSON.stringify(item) + '\n'
-
-			if (this.json[key] != json) {
-				this.json[key] = json
-
-				fs.writeFileSync(`${this.dirname}/${key}`, json)
-			}
+			this._saveFile(this.getKey(item))
 		}
 	}
 })
