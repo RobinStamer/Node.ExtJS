@@ -64,10 +64,6 @@ Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 				this.json[key] = json
 
 				fs.writeFileSync(`${this.dirname}/${key}`, json)
-
-				console.log(`WRITE: ${key}`)
-			} else {
-				console.log(`CACHE: ${key}`)
 			}
 		}
 	}
