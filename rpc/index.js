@@ -1,4 +1,5 @@
-var Ext = require('Ext')('Ext.data.Buffer')
+var Ext	= require('Ext')('Ext.data.Buffer')
+	,http	= require('http')
 
 class RPC {
 	constructor(opt) {
