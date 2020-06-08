@@ -35,7 +35,18 @@ class RPC {
 			const req = http.request({hostname: 'rpg.nobl.ca', path: '/var/rpc.php', method: 'POST'}, (r) => {
 				const b = new Ext.data.Buffer(r)
 				r.setEncoding('utf8') // FIXME
-				b.hook = (data) => { pass(JSON.parse(data)) }
+				b.hook = (data) => {
+					try {
+						const d = JSON.parse(data)
+						if (d.result) {
+							pass(d.result)
+						} else {
+							fail(d)
+						}
+					} catch (e) {
+						fail({badparse: data})
+					}
+				}
 			})
 
 			req.on('error', fail)
