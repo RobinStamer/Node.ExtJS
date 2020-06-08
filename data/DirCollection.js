@@ -11,7 +11,7 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
 		this.json = {}
 
 		if ('string' == typeof this.cfg.dir) {
-			this.dirname = this.cfg.dir
+			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
 		}
 		
 		this.addEvents('load')
