@@ -1,19 +1,17 @@
 var	fs	= require('fs')
 
-Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
+Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr')
 
-var DC = Ext.data.DirCollection = Ext.extend(Ext.util.MixedCollection, {
+var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 	constructor: function(cfg) {
-		Ext.data.DirCollection.superclass.constructor.call(this)
-
-		this.cfg = Ext.apply({}, cfg)
+		Ext.data.DirCollection.superclass.constructor.call(this, cfg)
 
 		this.json = {}
 
 		if ('string' == typeof this.cfg.dir) {
 			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
 		}
-		
+
 		this.addEvents('load')
 
 		this.load()
