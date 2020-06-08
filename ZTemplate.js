@@ -346,7 +346,7 @@ Ext.ZTemplate = function(cfg) {
             test: fn,
             body: m[1]||''
         });
-       s = s.replace(m[0], '{xtpl'+ id + '}');
+       s = s.replace(m[0], '${xtpl'+ id + '}');
        ++id;
     }
     for(var i = tpls.length-1; i >= 0; --i){
@@ -375,12 +375,24 @@ Ext.extend(Ext.ZTemplate, Ext.Template, {
         vs = t.target ? t.target.call(me, values, parent) : values;
         len = vs.length;
         parent = t.target ? values : parent;
-        if(t.target && Ext.isArray(vs)){
-            for(var i = 0, len = vs.length; i < len; i++){
-                buf[buf.length] = t.compiled.call(me, vs[i], parent, i+1, len);
-            }
-            return buf.join('');
+
+		//
+		// Handle for
+		//
+        if (t.target) {
+			if (Ext.isArray(vs)) {
+				for (var i = 0, len = vs.length; i < len; i++) {
+					buf[buf.length] = t.compiled.call(me, vs[i], parent, i+1, len)
+				}
+			} else {
+				for (var k in vs) {
+					buf.push(t.compiled.call(me, vs[k], parent, k, null))
+				}
+			}
+			return buf.join('')
         }
+
+
         return t.compiled.call(me, vs, parent, xindex, xcount);
     },
 
@@ -389,37 +401,38 @@ Ext.extend(Ext.ZTemplate, Ext.Template, {
         var fm = Ext.util.Format,
             useF = this.disableFormats !== true,
             sep = Ext.isGecko ? "+" : ",",
-            body;
+			self = this,
+            body
 
         function fn(m, name, format, args, math){
             if(name.substr(0, 4) == 'xtpl'){
                 return "'"+ sep +'this.applySubTemplate('+name.substr(4)+', values, parent, xindex, xcount)'+sep+"'";
             }
             var v;
-            if(name === '.'){
+            if (name === '.') {
                 v = 'values';
-            }else if(name === '#'){
+            } else if (name === '#') {
                 v = 'xindex';
-            }else if(name.indexOf('.') != -1){
+            } else if (name.indexOf('.') != -1) {
                 v = name;
-            }else{
-                v = "values['" + name + "']";
+            } else {
+                v = `values['${name}']`
             }
-            if(math){
+            if (math) {
                 v = '(' + v + math + ')';
             }
             if (format && useF) {
                 args = args ? ',' + args : "";
-                if(format.substr(0, 5) != "this."){
-                    format = "fm." + format + '(';
-                }else{
-                    format = 'this.call("'+ format.substr(5) + '", ';
+                if (format.substr(0, 5) != "this.") {
+                    format = `fm.${format}(`
+                } else {
+                    format = `this.call("${format.substr(5)}", `
                     args = ", values";
                 }
             } else {
-                args= ''; format = "("+v+" === undefined ? '' : ";
+                args= ''; format = `(${v} === undefined ? '' : `;
             }
-            return "'"+ sep + format + v + args + ")"+sep+"'";
+            return `'${sep}${format}${v}${args})${sep}'`;
         }
 
         function codeFn(m, code){
@@ -427,19 +440,21 @@ Ext.extend(Ext.ZTemplate, Ext.Template, {
             return "'" + sep + '(' + code.replace(/\\'/g, "'") + ')' + sep + "'";
         }
 
+		function clean() {
+			return tpl.body.replace(/(\r\n|\n)/g, '\\n').replace(/'/g, "\\'").replace(self.re, fn).replace(self.codeRe, codeFn)
+		}
+
         // branched to use + in gecko and [].join() in others
         if(Ext.isGecko){
-            body = "tpl.compiled = function(values, parent, xindex, xcount){ return '" +
-                   tpl.body.replace(/(\r\n|\n)/g, '\\n').replace(/'/g, "\\'").replace(this.re, fn).replace(this.codeRe, codeFn) +
-                    "';};";
+            body = `tpl.compiled = function(values, parent, xindex, xcount){ return '${clean()}'}`;
         }else{
-            body = ["tpl.compiled = function(values, parent, xindex, xcount){ return ['"];
-            body.push(tpl.body.replace(/(\r\n|\n)/g, '\\n').replace(/'/g, "\\'").replace(this.re, fn).replace(this.codeRe, codeFn));
-            body.push("'].join('');};");
-            body = body.join('');
+            body = ["tpl.compiled = function(values, parent, xindex, xcount){ return ['"]
+            body.push(clean())
+            body.push("'].join('')}")
+            body = body.join('')
         }
-        eval(body);
-        return this;
+        eval(body)
+        return this
     },
 
     /**
