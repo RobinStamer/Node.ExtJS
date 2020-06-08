@@ -11,20 +11,20 @@
 
 function Ext() {
 	var	i	= 1,
-		o	= (!Ext.isString(arguments[0]) && Ext.isObject(arguments[0])) ? arguments[0] : (i = 0, {});
+		o	= (!Ext.isString(arguments[0]) && Ext.isObject(arguments[0])) ? arguments[0] : (i = 0, {})
 	for (; i < arguments.length; ++i) {
 		_load(o || {}, arguments[i])
 	}
 	return Ext
 }
 
-var window = global;
-module.exports = window.Ext = Ext;
+var window = global
+module.exports = window.Ext = Ext
 
-var	isExtRegex	= /^Ext/;
+var	isExtRegex	= /^Ext/
 
 function _load(o, module) {
-	var source, dest;
+	var source, dest
 
 	if (Ext.isString(module)) {
 		source = dest = module
