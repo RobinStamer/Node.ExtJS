@@ -4,7 +4,7 @@ Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
 
 Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
 	constructor: function(cfg) {
-		Ext.data.ManagedCollection.superclass.constructor.call(this)
+		Ext.data.ManagedCollection.superclass.constructor.call(this, !!cfg.allowFunctions, cfg.keyFn || cfg.getKey)
 
 		this.cfg = Ext.apply({}, cfg)
 
