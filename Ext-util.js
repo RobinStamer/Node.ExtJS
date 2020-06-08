@@ -12,5 +12,8 @@ Ext.apply(Ext, (function() {
 		pad: function pad(s, c, l) /* string s input, char c padding, num l length */ {
 			return (c.repeat(l) + s).substr(-l)
 		}
+		,path: function path(s) {
+			return s.replace(/^~\//, process.env.HOME + '/')
+		}
 	}
 })())

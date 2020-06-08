@@ -1,4 +1,5 @@
-var Ext = require('Ext')('Ext.data.Buffer')
+var Ext	= require('Ext')('Ext.data.Buffer')
+	,http	= require('http')
 
 class RPC {
 	constructor(opt) {
@@ -55,12 +56,24 @@ class RPC {
 			req.end()
 		})
 	}
+
+	handle(method) {
+		var self = this
+
+		return function(params) {
+			return self.call(method, params)
+		}
+	}
 }
 
 const rpc = new RPC
 
 Ext.rpc = function() {
 	return rpc.call.apply(rpc, Array.from(arguments))
+}
+
+Ext.rpc.handle = function(method) {
+	return rpc.handle(method)
 }
 
 Ext.rpc.Client = RPC
