@@ -36,6 +36,9 @@ var store = new Ext.data.JsonStore({
  * @param {Object} config
  * @xtype jsonstore
  */
+
+Ext('Ext.data.Store', 'Ext.data.JsonReader', 'Ext.data.JsonWriter')
+
 Ext.data.JsonStore = Ext.extend(Ext.data.Store, {
     /**
      * @cfg {Ext.data.DataReader} reader @hide
