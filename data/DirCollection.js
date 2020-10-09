@@ -59,15 +59,16 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 		var self = this
 
 		fs.readFile(`${self.dirname}/${fn}`, 'utf-8', function(e, json) {
-			var data
+			var data, key
 
 			if (e) {
 				throw e
 			}
 
-			data = JSON.parse(json)
+			data	= JSON.parse(json)
+			key	= self.getKey(data)
 
-			self.json[fn] = json
+			self.json[key] = json
 
 			DC.superclass.add.call(self, data)
 
