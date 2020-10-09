@@ -12,6 +12,10 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
 		}
 
+		if ('function' == typeof this.cfg.getFilename) {
+			this.getFilename = this.cfg.getFilename
+		}
+
 		this.addEvents('load')
 
 		this.load()
@@ -85,21 +89,24 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 		DC.superclass.add.call(this, key, data)
 
-		this._saveFile(key)
+		this._saveFile(data, this.indexOf(data))
 	}
-	,_saveFile: function(key) {
-		var item	= this.map[key]
+	,_saveFile: function(item, index) {
+		var key	= this.getKey(item)
 			,json	= JSON.stringify(item) + '\n'
 
 		if (this.json[key] != json) {
 			this.json[key] = json
 
-			fs.writeFileSync(`${this.dirname}/${key}`, json)
+			fs.writeFileSync(`${this.dirname}/${this.getFilename(item, index)}`, json)
 		}
 	}
+	,getFilename: function(o, index) {
+		return this.getKey(o)
+	}
 	,save: function() {
-		for (var item of this.items) {
-			this._saveFile(this.getKey(item))
+		for (var i = 0; i < this.items.length; ++i) {
+			this._saveFile(this.items[i], i)
 		}
 	}
 })
