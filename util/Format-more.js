@@ -8,7 +8,11 @@ Ext.apply(Ext.util.Format, {
 	}
 
 	,rpad: function(string, num, c) {
-		string = string || ''
+		try {
+			string = string.toString()
+		} catch (e) {
+			string = ''
+		}
 		c = 0 === c ? '0' : (c || ' ').toString()[0]
 		return string + c.repeat(Math.max(num - string.toString().length, 0))
 	}
