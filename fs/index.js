@@ -10,9 +10,9 @@ Ext.fs.mkdirP = function(p, mode, f) {
     p = path.resolve(p);
     
     var ps = path.normalize(p).split('/');
-    path.exists(p, function (exists) {
+    fs.exists(p, function (exists) {
         if (exists) cb(null)
-        else mkdirP(ps.slice(0,-1).join('/'), mode, function (err) {
+        else Ext.fs.mkdirP(ps.slice(0,-1).join('/'), mode, function (err) {
             if (err && err.code !== 'EEXIST') cb(err)
             else fs.mkdir(p, mode, function (err) {
                 if (err && err.code !== 'EEXIST') cb(err)
