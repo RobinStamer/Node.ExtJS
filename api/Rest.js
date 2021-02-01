@@ -4,6 +4,11 @@ var	http	= require('http')
 
 Ext('Ext.class').ns('Ext.api')
 
+var _convert = {
+	json: (cb)=>{ return (d)=>{ try { cb(null, JSON.parse(d)) } catch (e) { cb({e: e, raw: d}) } } }
+	,raw: (cb)=>{ return (d)=>{ return cb(d) } }
+}
+
 class Rest {
 	constructor(obj) {
 		this.cfg = Ext.apply({}, obj)
@@ -28,6 +33,7 @@ class Rest {
 		var o	= this._merge(_o, method)
 			,cb	= _cb || (()=>{})
 			,H	= o.secure ? https : http
+			,self	= this
 
 		delete o.secure
 
@@ -35,7 +41,7 @@ class Rest {
 			Ext.xcreate({
 				xtype: 'fullPipe'
 				,input: res
-			}).on('data', cb)
+			}).on('data', (_convert[self.cfg.type]||_convert.raw)(cb))
 		})
 	}
 
