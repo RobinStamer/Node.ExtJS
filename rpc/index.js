@@ -13,11 +13,10 @@ class RPC {
 		Ext.apply(this.defaults, 'string' == typeof opts ? new URL(opts) : opts)
 	}
 
-	call() {
-		const args = Array.from(arguments)
-			,opts = 'object' == typeof args[0] ? args.shift() : {}
+	call(...args) {
+		const	opts = 'object' == typeof args[0] ? args.shift() : {}
 			,method = args.shift()
-			,params = args.shift()
+			,params = args.shift() || []
 			,self = this
 		var p = {}
 
@@ -68,8 +67,8 @@ class RPC {
 
 const rpc = new RPC
 
-Ext.rpc = function() {
-	return rpc.call.apply(rpc, Array.from(arguments))
+Ext.rpc = function(...args) {
+	return rpc.call.apply(rpc, args)
 }
 
 Ext.rpc.handle = function(method) {
