@@ -1,6 +1,6 @@
 var	fs	= require('fs')
 
-Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr')
+Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr', 'Ext.fs')
 
 var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 	constructor: function(cfg) {
@@ -10,6 +10,8 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 		if ('string' == typeof this.cfg.dir) {
 			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
+
+			Ext.fs.mkdirP(this.dirname)
 		}
 
 		if ('function' == typeof this.cfg.getFilename) {
