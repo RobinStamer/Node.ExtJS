@@ -1,5 +1,3 @@
-var	fs	= require('fs')
-
 Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
 
 Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
@@ -12,6 +10,22 @@ Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
 			this.id = this.cfg.id
 			Ext.CollectionMgr.register(this)
 		}
+	}
+	,add: function(...args) {
+		if (this.cfg.class) {
+			if (1 == args.length) {
+				if (!(args[0] instanceof this.cfg.class)) {
+					args[0] = new (this.cfg.class)(args[0])
+				}
+			}
+			if (2 == args.length) {
+				if (!(args[1] instanceof this.cfg.class)) {
+					args[1] = new (this.cfg.class)(args[1])
+				}
+			}
+		}
+
+		Ext.data.ManagedCollection.superclass.add.apply(this, args)
 	}
 })
 
