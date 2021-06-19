@@ -7,7 +7,7 @@ class Journal {
 			value: o.cfg || {}
 		})
 
-		if (!Array.isArray()) {
+		if (!Array.isArray(this.journal)) {
 			this.journal = []
 		}
 	}
