@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-const	Ext	= require('Ext')
-	,child	= require('child_process')
+#!/usr/bin/env ext
+const	child	= require('child_process')
 	,fs	= require('fs')
 	,db	= {}
 
@@ -17,5 +16,7 @@ Ext.create({
 	line[0] = line[0].join('.')
 	db[line[1]] = line[0]
 }).on('finish', function() {
-	fs.writeFileSync('var/registry.json', JSON.stringify(db))
+	var s = JSON.stringify(db)
+	fs.writeFileSync('var/registry.json', s)
+	console.dir(db)
 })
