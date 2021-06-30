@@ -9,6 +9,7 @@ class LinePipe extends stream.Transform {
 
 		this._bufferStr = ''
 		this.render	= true
+		this.addBreaks	= !!cfg.addBreaks
 
 		if (cfg.input) {
 			this.input = Ext.xcreate(cfg.input)
@@ -21,7 +22,7 @@ class LinePipe extends stream.Transform {
 	}
 
 	_mutate(line) {
-		return line + '\n'
+		return line + (this.addBreaks ? '\n' : '')
 	}
 
 	_transform(chunk, encoding, done) {
@@ -43,6 +44,28 @@ class LinePipe extends stream.Transform {
 		this._bufferStr = ''
 		done()
 	}
+}
+
+LinePipe.quick = function(sock, cb) {
+	if ('function' == typeof sock) {
+		return function(c) {
+			sock(LinePipe.quick(c, cb), c)
+		}
+	}
+
+	var o = new LinePipe({
+		input: sock
+	})
+
+	if ('function' == typeof cb) {
+		o.on('data', cb)
+	}
+
+	return o
+}
+
+LinePipe.quickServer = function(net, ...args) {
+	return net.createServer(LinePipe.quick(...args))
 }
 
 Ext.reg('linePipe', LinePipe)
