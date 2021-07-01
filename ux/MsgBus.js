@@ -15,9 +15,7 @@
  * License details: http://www.gnu.org/licenses/lgpl.html
  */
  
-/*global Ext,window */
 Ext('Ext.ComponentMgr', 'Ext.util.Observable', 'Ext.Ext-more')
-window.busses = {}
 
 /**
  * @class Ext.ux.MsgBus
@@ -57,7 +55,7 @@ Ext.override(Ext.ux.MsgBus, {
 	 * @private
 	 */
 	,getBus:function() {
-		var bus = window;
+		var bus = global
 		var a = this.busName.split('.');
 		var last = a.pop();
 		Ext.each(a, function(n) {
@@ -190,6 +188,6 @@ Ext.override(Ext.ux.MsgBus, {
 }); // eo override
  
 // register ptype
-Ext.preg('msgbus', Ext.ux.MsgBus); 
+Ext.preg('msgbus', Ext.ux.MsgBus)
  
 // eof
