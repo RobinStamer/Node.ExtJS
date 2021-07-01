@@ -1,0 +1,53 @@
+const	Ext	= require('Ext')('Ext.class')
+	,stream	= require('stream')
+	
+Ext.ns('Ext.data')
+
+class SSE extends stream.Transform {
+	constructor(cfg) {
+		super({objectMode: true})
+
+		this.render	= true
+
+		if (cfg.output) {
+			this.output = Ext.xcreate(cfg.output)
+			this.pipe(this.output)
+		}
+	}
+
+	pipe(out, options) {
+		if (out.writeHead) {
+			out.writeHead(200, {
+				'Content-Type': 'text/event-steam; charset=utf-8'
+				,'Transfer-Encoding': 'identity'
+				,'Cache-Control': 'no-cache'
+				,'Connection': 'keep-alive'
+			})
+			out.flushHeaders()
+		}
+
+		// Safari and others bug
+		out.write(':ok\n\n')
+
+		return super.pipe(out, options)
+	}
+
+	_transform(message, encoding, done) {
+		if (message.comment) this.push(`: ${message.comment}\n`)
+		if (message.type) this.push(`event: ${message.type}\n`)
+		if (message.id) this.push(`id: ${message.id}\n`)
+		if (message.retry) this.push(`retry: ${message.retry}\n`)
+		if (message.data) {
+			if ('object' == typeof message.data) {
+				message.data = JSON.stringify(message.data)
+			}
+			this.push(message.data.split(/\n\r|\r\n/).map(line => `data: ${line}\n`).join(''))
+		}
+		this.push('\n')
+		done()
+	}
+}
+
+Ext.reg('SSE', SSE)
+
+Ext.data.SSE = SSE
