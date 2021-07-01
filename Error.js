@@ -14,6 +14,8 @@ Ext.handleError = function(e) {
     throw e;
 };
 
+Ext('Ext.util.JSON')
+
 /**
  * @class Ext.Error
  * @extends Error

@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-Ext('Ext.data.DataWriter');
+Ext('Ext.data.DataWriter', 'Ext.util.JSON')
 
 /**
  * @class Ext.data.JsonWriter
