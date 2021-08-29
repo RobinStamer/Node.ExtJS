@@ -48,7 +48,7 @@ class MultiFile extends stream.Writable {
 	}
 
 	_write(chunk, encoding, done) {
-		this._process(chunk.toString().substr(0, chunk.length - 1))
+		this._process(chunk.toString())
 		done()
 	}
 
@@ -58,7 +58,7 @@ class MultiFile extends stream.Writable {
 	}
 
 	_completeSet() {
-		const	key = this.meta.key || this.meta.title || this.newKey()
+		const	key = this.meta.key || this.meta.title || this.meta.name || this.newKey()
 			,last	= this.cur.pop()
 
 		if ('' != last) {
