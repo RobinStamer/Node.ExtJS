@@ -70,6 +70,10 @@ class MultiFile extends stream.Writable {
 			,data:	this.cur
 		}
 
+		if ('undefined' == typeof this.cur[this.cur.length - 1]) {
+			this.cur.pop()
+		}
+
 		this.emit('set', key, this.meta, this.cur)
 	}
 
