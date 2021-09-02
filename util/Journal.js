@@ -4,8 +4,12 @@ class Journal {
 	constructor(o) {
 		Ext.apply(this, o.base || {})
 		Object.defineProperty(this, 'cfg', {
-			value: o.cfg || {}
+			value: o || {}
 		})
+
+		if (!this.cfg.handlers) {
+			this.cfg.handlers = {}
+		}
 
 		if (!Array.isArray()) {
 			this.journal = []
