@@ -5,7 +5,7 @@
  * http://www.extjs.com/license
  */
 
-Ext('Ext.data.Field', 'Ext.util.MixedCollection')
+Ext('Ext.data.Field', 'Ext.util.MixedCollection', 'Ext.util.JSON')
 
 /**
  * @class Ext.data.Record

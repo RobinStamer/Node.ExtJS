@@ -8,14 +8,14 @@ m2.init(x)
 
 Ext.subscribe('**')
 
-Ext.Ext.on('message', function() {
+Ext.Ext.on('message', function(...args) {
 	console.log('Ext.Ext:')
-	console.dir(arguments)
+	console.dir(args)
 })
 
-Ext.ux.Bus.on('message', function() {
+Ext.ux.Bus.on('message', function(...args) {
 	console.log('Ext.ux.Bus:')
-	console.dir(arguments)
+	console.dir(args)
 })
 
 x.publish('asdf', 'This is a message!')

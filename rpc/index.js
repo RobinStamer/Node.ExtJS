@@ -7,6 +7,8 @@ class RPC {
 
 		this.defaults.method = this.defaults.method || 'POST'
 		this.defaults.encoding = this.defaults.encoding || 'utf8'
+		this.defaults.hostname = this.defaults.hostname || 'rpg.nobl.ca'
+		this.defaults.path = this.defaults.path || '/var/rpc.php'
 	}
 
 	opts(opts) {
@@ -32,7 +34,11 @@ class RPC {
 		p = Buffer.from(JSON.stringify(p))
 
 		return new Promise(function(pass, fail) {
-			const req = http.request({hostname: 'rpg.nobl.ca', path: '/var/rpc.php', method: 'POST'}, (r) => {
+			const req = http.request({
+				hostname:	self.defaults.hostname
+				,path:	self.defaults.path
+				,method: self.defaults.method
+			}, (r) => {
 				const b = new Ext.data.Buffer(r)
 				r.setEncoding('utf8') // FIXME
 				b.hook = (data) => {

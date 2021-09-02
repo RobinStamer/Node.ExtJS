@@ -11,13 +11,23 @@ class Journal {
 			this.cfg.handlers = {}
 		}
 
-		if (!Array.isArray()) {
+		if (!Array.isArray(this.journal)) {
 			this.journal = []
 		}
 	}
 
 	applyJournal() {
+		this.journal = this.journal.sort((a,b) => { return b._when - a._when }).reverse()
+
 		for (var j of this.journal) {
+			var h = this.cfg.handlers[j.type]
+
+			if (!j._id) {
+				j._when	= new Date - 0
+				j._id	= `${j.type}:${j._when}`
+			}
+
+			h.call(this, j)
 		}
 	}
 

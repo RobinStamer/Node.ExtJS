@@ -361,7 +361,9 @@ Company.data.CustomStore = function(config) { ... }
         urlEncode : function(o, pre){
             var empty,
                 buf = [],
-                e = encodeURIComponent;
+                e = encodeURIComponent
+
+		Ext.encode || Ext('Ext.util.JSON')
 
             Ext.iterate(o, function(key, item){
                 empty = Ext.isEmpty(item);
