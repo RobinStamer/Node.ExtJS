@@ -1,10 +1,10 @@
 Ext.ns('Ext.util')
 
 class Journal {
-	constructor(o) {
-		Ext.apply(this, o.base || {})
+	constructor(o, cfg) {
+		Ext.apply(this, o || {})
 		Object.defineProperty(this, 'cfg', {
-			value: o || {}
+			value: cfg || {}
 		})
 
 		if (!this.cfg.handlers) {
