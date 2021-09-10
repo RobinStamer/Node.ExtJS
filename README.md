@@ -6,15 +6,21 @@ There are extensions to the original layout, a rough outline as follows:
 * Ext.game: a collection of modules that add classes and functions to deal with the mechanics of games
 * Ext.ux.mongo: Children of Ext.data classes to handle access to MongoDB, requires the `mongo` module.
 
+##Extensions
+
+###Ext.xcreate() (From Ext('Ext.+'))
+
+An extension of Ext.create() that will automatically load the xtype based on the information in var/registry.json.  This is populated with sbin/regCache.
+
 ##Examples
 
-    var Ext = require('Ext')('Ext.util.MixedCollection');
+    var Ext = require('Ext')('Ext.util.MixedCollection')
    
-    var mc = new Ext.util.MixedCollection;
+    var mc = new Ext.util.MixedCollection
     mc.add({id:'x',foo:'bar'})
     mc.add({id:'y',foo:'baz'})
    
-    mc.get(1) == mc.get('y'); // true
+    mc.get(1) == mc.get('y') // true
 
 ###XTemplate
 
@@ -39,38 +45,3 @@ Output:
     1 Joe
     2 Bob
 
-##Wierd things ExtJS does that I don't want to change because I haven't a clue why it does them
-
-###Ext.create() (Ext.ComponentMgr)
-
-    var Ext = require('Ext')('Ext.XTemplate', 'Ext.ComponentMgr')
-
-    var demo = function(conf) {
-        console.log('DEMO')
-        this.baz = 42
-
-        Ext.apply(this, conf)
-    }
-
-    Ext.reg('demo', demo)
-
-    console.log(Ext.create({
-        xtype: 'demo',
-        foo: 1337
-    }))
-
-    console.log(Ext.create({
-        xtype: 'demo',
-        foo: 1337,
-        render: {
-            foo: 1
-        }
-    }))
-
-That produces the following output:
-
-    DEMO
-    { baz: 42, xtype: 'demo', foo: 1337 }
-    { xtype: 'demo', foo: 1337, render: { foo: 1 } }
-
-On the first one the constructor `demo` gets called, but the second just returns the argument of Ext.create() because it has a member named `render`.  I'm guessing this gets set normally from constructors but I can't confirm this at the moment.
