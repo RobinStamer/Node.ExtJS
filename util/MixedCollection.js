@@ -206,11 +206,11 @@ mc.add(otherEl);
      * Executes the specified function once for every key in the collection, passing each
      * key, and its associated item as the first two parameters.
      * @param {Function} fn The function to execute for each item.
-     * @param {Object} scope (optional) The scope (<code>this</code> reference) in which the function is executed. Defaults to the browser window.
+     * @param {Object} scope (optional) The scope (<code>this</code> reference) in which the function is executed. Defaults to the MixedCollection Object.
      */
     eachKey : function(fn, scope){
-        for(var i = 0, len = this.keys.length; i < len; i++){
-            fn.call(scope || window, this.keys[i], this.items[i], i, len);
+        for(var i = 0, len = this.keys.length; i < len; i++) {
+            fn.call(scope || this, this.keys[i], this.items[i], i, len)
         }
     },
 
@@ -218,16 +218,16 @@ mc.add(otherEl);
      * Returns the first item in the collection which elicits a true return value from the
      * passed selection function.
      * @param {Function} fn The selection function to execute for each item.
-     * @param {Object} scope (optional) The scope (<code>this</code> reference) in which the function is executed. Defaults to the browser window.
+     * @param {Object} scope (optional) The scope (<code>this</code> reference) in which the function is executed. Defaults to the MixedCollection Object
      * @return {Object} The first item in the collection which returned true from the selection function.
      */
     find : function(fn, scope){
         for(var i = 0, len = this.items.length; i < len; i++){
-            if(fn.call(scope || window, this.items[i], this.keys[i])){
-                return this.items[i];
+            if(fn.call(scope || this, this.items[i], this.keys[i])) {
+                return this.items[i]
             }
         }
-        return null;
+        return null
     },
 
     /**
