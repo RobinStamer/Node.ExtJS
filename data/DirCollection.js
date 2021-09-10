@@ -52,6 +52,11 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 			self.loading = dir.length
 
+			if (!self.loading) {
+				self.fireEvent('load')
+				return
+			}
+
 			for (var fn of dir) {
 				self._loadFile(fn)
 			}
