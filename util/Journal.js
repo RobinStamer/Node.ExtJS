@@ -17,7 +17,7 @@ class Journal {
 	}
 
 	applyJournal() {
-		this.journal = this.journal.sort((a,b) => { return b._when - a._when }).reverse()
+		this.journal = this.journal.sort((a,b) => { return (a._when ?? 1e100) - (b._when ?? 1e100) })
 
 		for (var j of this.journal) {
 			var h = this.cfg.handlers[j.type]
