@@ -31,18 +31,19 @@ class Journal {
 		}
 	}
 
-	writeEntry(o) {
+	writeEntry(o, when) {
 		var h = this.cfg.handlers[o.type]
 
 		if ('function' != typeof h) {
 			throw new Error(`No handler ${o.type}`)
 		}
 
-		o._when	= new Date - 0
+		o._when	= when ?? new Date - 0
 		o._id	= `${o.type}:${o._when}`
 
 		h.call(this, o)
-		this.journal.push(o)
+		let position = this.journal.findIndex(j => (j._when ?? 1e100) > o._when)
+		this.journal.splice(position, 0, o)
 	}
 
 	helper(key, ...args) {
