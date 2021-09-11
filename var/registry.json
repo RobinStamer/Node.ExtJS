@@ -1,1 +1,17 @@
-{"ztpl":"Ext.ZTemplate","ircbot":"Ext.net.irc.Bot","Journal":"Ext.util.Journal","numdircol":"Ext.data.NumericDirCollection","file":"Ext.data.File","fullPipe":"Ext.data.FullPipe","linePipe":"Ext.data.LinePipe","mcol":"Ext.data.ManagedCollection","SSE":"Ext.data.SSE","multiFile":"Ext.data.MultiFile","store":"Ext.data.Store","jsonstore":"Ext.data.JsonStore","archFile":"Ext.data.ArchFile","dircol":"Ext.data.DirCollection","rest":"Ext.api.Rest"}
+{
+	"ztpl": "Ext.ZTemplate",
+	"ircbot": "Ext.net.irc.Bot",
+	"Journal": "Ext.util.Journal",
+	"numdircol": "Ext.data.NumericDirCollection",
+	"file": "Ext.data.File",
+	"fullPipe": "Ext.data.FullPipe",
+	"linePipe": "Ext.data.LinePipe",
+	"mcol": "Ext.data.ManagedCollection",
+	"SSE": "Ext.data.SSE",
+	"multiFile": "Ext.data.MultiFile",
+	"store": "Ext.data.Store",
+	"jsonstore": "Ext.data.JsonStore",
+	"archFile": "Ext.data.ArchFile",
+	"dircol": "Ext.data.DirCollection",
+	"rest": "Ext.api.Rest"
+}
