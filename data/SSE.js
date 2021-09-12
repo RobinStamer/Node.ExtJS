@@ -1,6 +1,6 @@
 const	Ext	= require('Ext')('Ext.class')
 	,stream	= require('stream')
-	
+
 Ext.ns('Ext.data')
 
 class SSE extends stream.Transform {
@@ -10,8 +10,15 @@ class SSE extends stream.Transform {
 		this.render	= true
 
 		if (cfg.output) {
-			this.output = Ext.xcreate(cfg.output)
+			if (!this.output.write) {
+				this.output = Ext.xcreate(cfg.output)
+			}
 			this.pipe(this.output)
+		}
+
+		if (cfg.hasOwnProperty('id') && Ext.ComponentMgr) {
+			this.id = cfg.id
+			Ext.ComponentMgr.register(this)
 		}
 	}
 
