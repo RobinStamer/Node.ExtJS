@@ -36,7 +36,7 @@ test('Events in an empty Journal work', () => {
 	expect(jrn.id).toBe("emptyTest")
 	expect(jrn.counter).toBe(0)
 
-	jrn.writeEntry({type: "add", amount: 5})
+	jrn.writeEntry({type: "add", amount: 5}, 2000)
 
 	expect(jrn.journal).toHaveLength(2)
 	expect(jrn.counter).toBe(5)
@@ -53,7 +53,8 @@ test('Can recreate Journal from its inner journal', () => {
 	let jrn = new Ext.util.Journal(null, {handlers, helpers})
 
 	jrn.writeEntry({type: "init", id: "emptyTest"}, 0)
-	jrn.writeEntry({type: "add", amount: 5})
+	jrn.writeEntry({type: "add", amount: 5}, 2400)
+	jrn.writeEntry({type: "add", amount: -2}, 2800)
 
 	let jrn2 = new Ext.util.Journal({journal: jrn.journal}, {handlers, helpers})
 	jrn2.applyJournal()
