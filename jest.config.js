@@ -4,7 +4,7 @@ module.exports = {
 	]
 	,collectCoverage: true
 	,globals: {
-		Ext: require('.')
+		Ext: require('./+')
 	}
 	,testRegex: '.*'
 }
