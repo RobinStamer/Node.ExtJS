@@ -26,6 +26,16 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 		this.addEvents('load')
 		this.addEvents('error')
+
+		this.on('add', this._added)
+	}
+	,_added: function(index, o, key) {
+		if (key === undefined) {
+			// create, but don't throw an Error object to get stack trace information
+			let w = new Error("Added undefined key to DirCollection!")
+			w.name = "Warning"
+			console.warn(w)
+		}
 	}
 	,load: function() {
 		var dirname = this.dirname
