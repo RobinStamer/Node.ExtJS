@@ -1,5 +1,44 @@
 var Ext	= require('Ext')('Ext.data.Buffer')
 	,http	= require('http')
+	,net	= require('net')
+	,util	= require('util')
+	,child_process	= require('child_process')
+
+const transports = {
+	sendHttp(config, data) {
+		return new Promise((resolve, reject) => {
+			const req = http.request({hostname: config.hostname, path: config.path, method: config.method})
+			req.on('error', reject)
+			req.on('result', r => {
+				const b = new Ext.data.Buffer(r)
+				r.setEncoding('utf8') // FIXME
+				r.on('error', reject)
+				b.hook = resolve
+			})
+			req.write(Buffer.from(data))
+			req.end()
+		})
+	},
+
+	sendUnix(config, data) {
+		return new Promise((resolve, reject) => {
+			const conn = net.createConnection(config.path)
+			conn.on('connect', () => { conn.write(data); conn.end() })
+			conn.on('error', reject)
+			const b = new Ext.data.Buffer(conn)
+			b.hook = resolve
+		})
+	},
+
+	async sendSubprocess(config, data) {
+		const promise = util.promisify(child_process.exec)(config.command)
+		promise.child.stdin.write(data)
+		promise.child.stdin.end()
+		const {stdout, stderr} = await promise
+		return stdout
+	},
+}
+
 
 class RPC {
 	constructor(opt) {
@@ -9,6 +48,8 @@ class RPC {
 		this.defaults.encoding = this.defaults.encoding || 'utf8'
 		this.defaults.hostname = this.defaults.hostname || 'rpg.nobl.ca'
 		this.defaults.path = this.defaults.path || '/var/rpc.php'
+		this.defaults.command = this.defaults.command || 'ssh hub0 ext /home/share/start_or_connect.js'
+		this.defaults.transport = this.defaults.transport || transports.sendHttp
 	}
 
 	opts(opts) {
@@ -31,35 +72,16 @@ class RPC {
 		p.method = method
 		p.params = params
 
-		p = Buffer.from(JSON.stringify(p))
+		p = JSON.stringify(p)
 
-		return new Promise(function(pass, fail) {
-			const req = http.request({
-				hostname:	self.defaults.hostname
-				,path:	self.defaults.path
-				,method: self.defaults.method
-			}, (r) => {
-				const b = new Ext.data.Buffer(r)
-				r.setEncoding('utf8') // FIXME
-				b.hook = (data) => {
-					try {
-						const d = JSON.parse(data)
-						if (d.result) {
-							pass(d.result)
-						} else {
-							fail(d)
-						}
-					} catch (e) {
-						fail({badparse: data})
-					}
-				}
-			})
-
-			req.on('error', fail)
-
-			req.write(p)
-			req.end()
-		})
+		return (async function() {
+			const d = JSON.parse(await self.defaults.transport(self.defaults, p))
+			if (d.result) {
+				return d.result
+			} else {
+				throw d
+			}
+		}())
 	}
 
 	handle(method) {
@@ -82,3 +104,5 @@ Ext.rpc.handle = function(method) {
 }
 
 Ext.rpc.Client = RPC
+
+Ext.rpc.transports = transports
