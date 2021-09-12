@@ -43,6 +43,7 @@ class Journal {
 
 		h.call(this, o)
 		let position = this.journal.findIndex(j => (j._when ?? 1e100) > o._when)
+		if (position === -1) position = this.journal.length
 		this.journal.splice(position, 0, o)
 	}
 
