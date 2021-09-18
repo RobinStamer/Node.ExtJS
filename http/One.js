@@ -21,12 +21,12 @@ class One extends require('stream').Transform {
 			x.port =	(o.port - 0)
 		}
 
-		;({
+		;(this._input = ({
 			'https:': require('https')
 			,'http:': require('http')
 		}[o.protocol]).request(x, (res) => {
 			res.pipe(self)
-		}).end()
+		})).end()
 	}
 
 	_transform(data, enc, done) {

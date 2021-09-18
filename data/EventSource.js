@@ -66,6 +66,12 @@ class EventSource extends Ext.util.Observable {
 			this._o[key] = val
 		}
 	}
+
+	close() {
+		if (this._l) {
+			this._l.input._input.destroy()
+		}
+	}
 }
 
 EventSource.r = /^([^:]+):\s+(.+)$/
