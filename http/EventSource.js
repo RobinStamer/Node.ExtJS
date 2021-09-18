@@ -1,6 +1,6 @@
 #!/usr/bin/env ext
 
-Ext('Ext.http.Line', 'Ext.util.Observable').ns('Ext.data')
+Ext('Ext.http.Line', 'Ext.util.Observable')
 
 class EventSource extends Ext.util.Observable {
 	constructor(url) {
@@ -76,4 +76,4 @@ class EventSource extends Ext.util.Observable {
 
 EventSource.r = /^([^:]+):\s+(.+)$/
 
-Ext.data.EventSource = EventSource
+Ext.http.EventSource = EventSource
