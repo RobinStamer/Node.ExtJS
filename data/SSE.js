@@ -18,7 +18,7 @@ class SSE extends stream.Transform {
 	pipe(out, options) {
 		if (out.writeHead) {
 			out.writeHead(200, {
-				'Content-Type': 'text/event-steam; charset=utf-8'
+				'Content-Type': 'text/event-stream; charset=utf-8'
 				,'Transfer-Encoding': 'identity'
 				,'Cache-Control': 'no-cache'
 				,'Connection': 'keep-alive'
