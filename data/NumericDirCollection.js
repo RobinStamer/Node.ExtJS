@@ -3,7 +3,7 @@ Ext('Ext.data.DirCollection')
 class NumericDirCollection extends Ext.data.DirCollection {
 	constructor(cfg) {
 		super(Ext.apply({
-			getFilename: (o,i)=>i
+			getFilename: (k,o,i)=>i
 		}, cfg))
 	}
 }

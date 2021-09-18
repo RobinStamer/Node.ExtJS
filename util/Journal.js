@@ -1,10 +1,10 @@
 Ext.ns('Ext.util')
 
 class Journal {
-	constructor(o) {
-		Ext.apply(this, o.base || {})
+	constructor(o, cfg) {
+		Ext.apply(this, o || {})
 		Object.defineProperty(this, 'cfg', {
-			value: o || {}
+			value: cfg || {}
 		})
 
 		if (!this.cfg.handlers) {
@@ -17,7 +17,7 @@ class Journal {
 	}
 
 	applyJournal() {
-		this.journal = this.journal.sort((a,b) => { return b._when - a._when }).reverse()
+		this.journal = this.journal.sort((a,b) => { return (a._when ?? 1e100) - (b._when ?? 1e100) })
 
 		for (var j of this.journal) {
 			var h = this.cfg.handlers[j.type]
@@ -31,18 +31,20 @@ class Journal {
 		}
 	}
 
-	writeEntry(o) {
+	writeEntry(o, when) {
 		var h = this.cfg.handlers[o.type]
 
 		if ('function' != typeof h) {
 			throw new Error(`No handler ${o.type}`)
 		}
 
-		o._when	= new Date - 0
+		o._when	= when ?? new Date - 0
 		o._id	= `${o.type}:${o._when}`
 
 		h.call(this, o)
-		this.journal.push(o)
+		let position = this.journal.findIndex(j => (j._when ?? 1e100) > o._when)
+		if (position === -1) position = this.journal.length
+		this.journal.splice(position, 0, o)
 	}
 
 	helper(key, ...args) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env ext
 const	child	= require('child_process')
 	,fs	= require('fs')
-	,db	= {}
+	,db	= require('../var/registry.json')
 
 Ext('Ext.data.LinePipe')
 
@@ -16,7 +16,7 @@ Ext.create({
 	line[0] = line[0].join('.')
 	db[line[1]] = line[0]
 }).on('finish', function() {
-	var s = JSON.stringify(db)
-	fs.writeFileSync('var/registry.json', s)
+	var s = JSON.stringify(db, null, '\t')
+	fs.writeFileSync('var/registry.json', `${s}\n`)
 	console.dir(db)
 })

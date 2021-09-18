@@ -11,7 +11,13 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 		if ('string' == typeof this.cfg.dir) {
 			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
 
-			Ext.fs.mkdirP(this.dirname)
+			Ext.fs.mkdirP(this.dirname, 0700, e => {
+				if (e) {
+					this.emitEvent('error', e)
+					throw e
+				}
+				this.load()
+			})
 		}
 
 		if ('function' == typeof this.cfg.getFilename) {
@@ -19,22 +25,17 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 		}
 
 		this.addEvents('load')
+		this.addEvents('error')
 
-		this.load()
+		this.on('add', this._added)
 	}
-	,removeAt: function(index) {
-		var o	= Ext.data.DirCollection.superclass.removeAt.call(this, index)
-			,key
-
-		if (false != o) {
-			key = this.getKey(o)
-
-			delete this.json[key]
-
-			fs.unlinkSync(`${this.dirname}/${key}`)
+	,_added: function(index, o, key) {
+		if (key === undefined) {
+			// create, but don't throw an Error object to get stack trace information
+			let w = new Error("Added undefined key to DirCollection!")
+			w.name = "Warning"
+			console.warn(w)
 		}
-
-		return o
 	}
 	,load: function() {
 		var dirname = this.dirname
@@ -52,64 +53,77 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 			self.loading = dir.length
 
+			if (!self.loading) {
+				self.fireEvent('load')
+				return
+			}
+
 			for (var fn of dir) {
 				self._loadFile(fn)
 			}
 		})
 	}
-	,_loadFile: function(fn) {
+	,_loadFile: function(key) {
 		var self = this
 
-		fs.readFile(`${self.dirname}/${fn}`, 'utf-8', function(e, json) {
-			var data, key
+		fs.readFile(`${self.dirname}/${key}`, 'utf-8', function(e, json) {
+			var data
 
 			if (e) {
+				self.fireEvent('error', e)
 				throw e
 			}
 
-			data	= JSON.parse(json)
-			key	= self.getKey(data)
+			try {
+				data	= JSON.parse(json)
+			} catch (e) {
+				self.fireEvent('error', e)
+				throw e
+			}
 
+			if (key != self.getKey(data)) {
+				console.warn("DirCollection loaded item with key", self.getKey(data), "but", key, "was expected")
+			}
 			self.json[key] = json
 
-			DC.superclass.add.call(self, data)
+			self.add(key, data)
 
 			if (0 == --self.loading) {
 				self.fireEvent('load')
 			}
 		})
 	}
-	,add: function(...args) {
-		var key, data
-
-		if (1 == args.length) {
-			data = args[0]
-			key = this.getKey(data)
-		} else {
-			key = args[0]
-			data = args[1]
-		}
-
-		DC.superclass.add.call(this, key, data)
-
-		this._saveFile(data, this.indexOf(data))
-	}
-	,_saveFile: function(item, index) {
-		var key	= this.getKey(item)
-			,json	= JSON.stringify(item) + '\n'
-
-		if (this.json[key] != json) {
-			this.json[key] = json
-
-			fs.writeFileSync(`${this.dirname}/${this.getFilename(item, index)}`, json)
-		}
-	}
-	,getFilename: function(o, index) {
-		return this.getKey(o)
+	,getFilename: function(key, o, index) {
+		return key
 	}
 	,save: function() {
-		for (var i = 0; i < this.items.length; ++i) {
-			this._saveFile(this.items[i], i)
+		if (this.loading) {
+			let e = new TypeError("Tried to save DirCollection while it was still loading")
+			this.fireEvent('error', e)
+			throw e
+		}
+		try {
+			let newJson = {}
+			for (let i = 0; i < this.items.length; ++i) {
+				let item	= this.items[i]
+					,key	= this.keys[i]
+					,json	= JSON.stringify(item) + '\n'
+					,file	= this.getFilename(key, item, i)
+
+				newJson[file] = json
+				if (this.json[file] != json) {
+					fs.writeFileSync(`${this.dirname}/${file}`, json)
+				}
+			}
+			for (let file in this.json) {
+				if (!(file in newJson)) {
+					fs.unlinkSync(`${this.dirname}/${file}`)
+				}
+			}
+			this.json = newJson
+		} catch (e) {
+			this.fireEvent('error', e)
+			throw e
 		}
 	}
 })
