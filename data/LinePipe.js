@@ -39,7 +39,7 @@ class LinePipe extends stream.Transform {
 
 	_flush(done) {
 		if (this._bufferStr) { // avoid adding newlines to the file
-			this.push(this._bufferStr + '\n')
+			this.push(this._mutate(this._bufferStr + '\n'))
 		}
 		this._bufferStr = ''
 		done()
