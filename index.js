@@ -42,6 +42,8 @@ function _load(o, module) {
 	o[dest] = require(source)
 }
 
+Ext.argv = process.argv.slice(2)
+
 //
 // End new code for node.js
 //
