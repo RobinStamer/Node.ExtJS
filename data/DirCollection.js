@@ -13,7 +13,7 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 
 			Ext.fs.mkdirP(this.dirname, 0700, e => {
 				if (e) {
-					this.emitEvent('error', e)
+					this.fireEvent('error', e)
 					throw e
 				}
 				this.load()
