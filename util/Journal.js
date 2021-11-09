@@ -43,6 +43,7 @@ class Journal {
 	/**
 	 * Applies all events in the journal in chronological order.
 	 * This operation should be indempotent on well-behaving journals.
+	 * @method
 	 */
 	applyJournal() {
 		this.journal = this.journal.sort((a,b) => { return (a._when ?? 1e100) - (b._when ?? 1e100) })
