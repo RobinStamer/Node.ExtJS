@@ -1,6 +1,24 @@
 Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
 
+/**
+ * @class Ext.data.ManagedCollection
+ * @extends Ext.util.MixedCollection
+ * Collection class that optionally wraps elements in a specified class.
+ *
+ * @constructor
+ * Creates a new ManagedCollection.
+ * @param {Object} cfg A config object
+ *
+ * @xtype mcol
+ */
 Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
+	/**
+	 * @cfg {String} id The id to use for the collection
+	 */
+
+	/**
+	 * @cfg {Function} class Constructor to wrap collection elements with
+	 */
 	constructor: function(cfg) {
 		Ext.data.ManagedCollection.superclass.constructor.call(this, !!cfg.allowFunctions, cfg.keyFn || cfg.getKey)
 

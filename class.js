@@ -3,6 +3,16 @@ Ext('Ext.Ext-more', 'Ext.ComponentMgr')
 
 const	registry = require('Ext/var/registry.json')
 
+/**
+ * @class Ext
+ */
+
+// FIXME: Document these methods properly
+
+/**
+ * @param {Object} config
+ * @return {Object}
+ */
 Ext.class = function ExtCls(config) {
 	var	base	= config.parent || Object
 		,funcs	= config.funcs || {}
@@ -21,6 +31,10 @@ Ext.class = function ExtCls(config) {
 	return cls
 }
 
+/**
+ * @param {Object} cfg
+ * @param {Constructor} def Default type
+ */
 Ext.xcreate = function(cfg, def) {
 	if (!def && !cfg.xtype) {
 		// Make code simpler, we probably just got an actual object, so return that

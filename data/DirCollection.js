@@ -2,7 +2,25 @@ var	fs	= require('fs')
 
 Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr', 'Ext.fs')
 
+/**
+ * @class Ext.data.DirCollection
+ * @extends Ext.data.ManagedCollection
+ * Filesystem-backed ManagedCollection.
+ *
+ * @constructor
+ * @param cfg A config object
+ *
+ * @xtype dircol
+ */
+
 var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
+	/**
+	 * @cfg {String} dir Directory to store this collection in
+	 */
+
+	/**
+	 * @cfg {Function?} getFilename Override for the DirCollection.getFilename function, may cause issues with saving/loading
+	 */
 	constructor: function(cfg) {
 		Ext.data.DirCollection.superclass.constructor.call(this, cfg)
 
@@ -24,7 +42,16 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			this.getFilename = this.cfg.getFilename
 		}
 
+		/**
+		 * @event load
+		 * Fires when the directory fully loads.
+		 */
 		this.addEvents('load')
+		/**
+		 * @event error
+		 * Fires when DirCollection encounters an error.
+		 * @param {Error} err The error that caused this event to fire
+		 */
 		this.addEvents('error')
 
 		this.on('add', this._added)
@@ -37,6 +64,10 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			console.warn(w)
 		}
 	}
+	/**
+	 * Reloads the directory asynchronously.
+	 * Fires a load event on completion.
+	 */
 	,load: function() {
 		var dirname = this.dirname
 			,self	= this
@@ -93,9 +124,19 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			}
 		})
 	}
+	/**
+	 * Converts an item's information into a filename the item's stored at.
+	 * @param {String} key
+	 * @param {Object} o
+	 * @param {Number} index
+	 * @return {String}
+	 */
 	,getFilename: function(key, o, index) {
 		return key
 	}
+	/**
+	 * Synchronously saves the collection to disk.
+	 */
 	,save: function() {
 		if (this.loading) {
 			let e = new TypeError("Tried to save DirCollection while it was still loading")

@@ -9,6 +9,10 @@ var _convert = {
 	,raw: (cb)=>{ return (d)=>{ return cb(d) } }
 }
 
+/**
+ * @class Ext.api.Rest
+ */
+
 class Rest {
 	constructor(obj) {
 		this.cfg = Ext.apply({}, obj)
@@ -59,11 +63,17 @@ class Rest {
 		return req.end()
 	}
 
+	/**
+	 * Make a GET request.
+	 */
 	get(_o, _cb) {
 		// Rely on chaining to return req
 		return this._request(_o, 'GET', _cb).end()
 	}
 
+	/**
+	 * Make a POST request with data.
+	 */
 	post(_o, data, _cb) {
 		return this._post(_o, qs.stringify(data || {}), o=>{
 			o.headers['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -72,6 +82,9 @@ class Rest {
 		}, _cb)
 	}
 
+	/**
+	 * Make a POST request with JSON data.
+	 */
 	postJson(_o, data, _cb) {
 		return this._post(_o, JSON.stringify(data || {}), o=>o, _cb)
 	}
