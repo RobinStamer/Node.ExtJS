@@ -3,7 +3,25 @@ const	Ext	= require('Ext')('Ext.class')
 	
 Ext.ns('Ext.data')
 
+/**
+ * @class Ext.data.ArchFile
+ * @extends stream.Writable
+ *
+ * Stream which loads an Arch package data file.
+ *
+ * @constructor
+ * @param {Object|String} cfg Configuration or filename
+ *
+ * @xtype archFile
+ */
 class ArchFile extends stream.Writable {
+	/**
+	 * @cfg {String} name Filename to load
+	 */
+
+	/**
+	 * @cfg {LinePipe} input Input to use
+	 */
 	constructor(cfg) {
 		super()
 
@@ -34,6 +52,10 @@ class ArchFile extends stream.Writable {
 		this.render	= true
 	}
 
+	/**
+	 * Returns the parsed data map.
+	 * @method
+	 */
 	getData() {
 		return this.data
 	}
