@@ -14,6 +14,26 @@ function setupServer(server) {
 	return ret
 }
 
+/**
+ * @class Ext.net.JsonRpc
+ *
+ * Simple JSONRPC server.
+ *
+ * @constructor
+ * @param {Object} config
+ */
+
+/**
+ * @cfg {Object} methods Map of handler methods
+ */
+
+/**
+ * @cfg {Function} default Default method, called if no matching handler is found on a call
+ */
+
+/**
+ * @cfg {Object|Object[]} servers <code>{port, host}</code> pairs to listen for JSON lines on, see {@link Ext.net.LineSocket}
+ */
 Ext.net.JsonRpc = function(config) {
 	var self = this
 
@@ -27,6 +47,7 @@ Ext.net.JsonRpc = function(config) {
 		this.servers = setupServer.call(this, this.servers)
 	}
 
+	// TODO: How to document inner 'classes'?
 	this.Handle = function(json, callback) {
 		this.parent = self
 
@@ -53,6 +74,12 @@ function noSuchMethod(params, handle) {
 }
 
 Ext.net.JsonRpc.prototype = {
+	/**
+	 * Handles a method call.
+	 * @param {String} method
+	 * @param {Object|Array} params
+	 * @param {Handle} handle Handle to indicate success/error with.
+	 */
 	call: function(method, params, handle) {
 		try {
 			var func = this.methods[method] || this.default || noSuchMethod
@@ -63,10 +90,16 @@ Ext.net.JsonRpc.prototype = {
 			handle.error('internal service error')
 		}
 	},
+	/**
+	 * Processes a JSON line and calls the appropriate method.
+	 * @param {String} line
+	 * @param {Function} callback
+	 */
 	line: function(line, callback) {
 		try {
 			var json = JSON.parse(line)
 		} catch (e) {
+			// FIXME: Does not call the callback in this case
 			// DEBUG
 			console.log(e)
 			console.log(e.stack)
