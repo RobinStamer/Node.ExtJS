@@ -11,6 +11,8 @@ Ext.ns('Ext.data')
  *
  * @constructor
  * @param {Object} cfg
+ *
+ * @xtype file
  */
 class File extends fs.ReadStream {
 	/**
