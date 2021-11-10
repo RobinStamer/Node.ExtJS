@@ -3,7 +3,34 @@ const	Ext	= require('Ext')('Ext.class')
 	
 Ext.ns('Ext.data')
 
+/**
+ * @class Ext.data.LinePipe
+ * @extends stream.Transform
+ *
+ * Stream transform that processes data line by line.
+ *
+ * @constructor
+ * @param {Object} cfg
+ *
+ * @xtype linePipe
+ */
+
 class LinePipe extends stream.Transform {
+	/**
+	 * @cfg {Boolean} buffers Whether to accept buffers in stream
+	 */
+
+	/**
+	 * @cfg {Boolean} addBreaks Whether to add newlines to the end of each line
+	 */
+
+	/**
+	 * @cfg {Stream} input Input to attach this stream transform to
+	 */
+
+	/**
+	 * @cfg {Function} _transform Transforms the stream's data, conflicts with addBreaks
+	 */
 	constructor(cfg) {
 		super({readableObjectMode: !cfg.buffers})
 
