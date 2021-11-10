@@ -606,8 +606,7 @@ function(el){
 
         /**
          * Removes a DOM node from the document.
-         */
-        /**
+         *
          * <p>Removes this element from the document, removes all DOM event listeners, and deletes the cache reference.
          * All DOM event listeners are removed from this element. If {@link Ext#enableNestedListenerRemoval} is
          * <code>true</code>, then DOM event listeners are also removed from all child nodes. The body node
