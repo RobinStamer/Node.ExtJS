@@ -2,6 +2,16 @@ var url = require('url')
 
 Ext.ns('Ext.http')
 
+/**
+ * @class Ext.http.One
+ * @extends stream.Transform
+ *
+ * Stream class for requesting a single http(s) file.
+ *
+ * @constructor
+ * @param {String} s Requested URL
+ */
+
 class One extends require('stream').Transform {
 	constructor(s) {
 		super()

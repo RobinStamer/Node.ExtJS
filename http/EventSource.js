@@ -2,10 +2,26 @@
 
 Ext('Ext.http.Line', 'Ext.util.Observable')
 
+/**
+ * @class Ext.http.EventSource
+ * @extends Ext.util.Observable
+ *
+ * Processes an EventSource URL.
+ *
+ * @constructor
+ * @param {String} url Requested URL
+ */
+
 class EventSource extends Ext.util.Observable {
 	constructor(url) {
 		super({})
 
+		/**
+		 * @event message
+		 * Fires for each server-sent event
+		 * @param {Object}
+		 *   Event object, discriminated by the <code>type</code> property.
+		 */
 		this.addEvents('message')
 
 		this._o	= {}
@@ -67,6 +83,10 @@ class EventSource extends Ext.util.Observable {
 		}
 	}
 
+	/**
+	 * Closes the connection.
+	 * @method
+	 */
 	close() {
 		if (this._l) {
 			this._l.input._input.destroy()
