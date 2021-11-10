@@ -6,7 +6,26 @@ Ext.ns('Ext.data')
 const HEADER	= 0
 	,DATA	= 1
 
+// FIXME: Figure out what this does and provide more than rudimentary documentation
+
+/**
+ * @class Ext.data.MultiFile
+ * @extends stream.Writable
+ *
+ * @constructor
+ * @param {Object|String} cfg Configuration or filename
+ *
+ * @xtype multiFile
+ */
+
 class MultiFile extends stream.Writable {
+	/**
+	 * @cfg {String} name Filename to load
+	 */
+
+	/**
+	 * @cfg {LinePipe} input Input to use
+	 */
 	constructor(cfg) {
 		super()
 
