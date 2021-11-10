@@ -8,7 +8,7 @@ Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr', 'Ext.fs')
  * Filesystem-backed ManagedCollection.
  *
  * @constructor
- * @param cfg A config object
+ * @param {Object} cfg A config object
  *
  * @xtype dircol
  */
