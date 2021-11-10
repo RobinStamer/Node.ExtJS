@@ -3,7 +3,26 @@ const	Ext	= require('Ext')('Ext.class')
 
 Ext.ns('Ext.data')
 
+/**
+ * @class Ext.data.SSE
+ * @extends stream.Transform
+ *
+ * Implementation of server-sent events as a Stream.
+ *
+ * @constructor
+ * @param {Object} cfg
+ *
+ * @xtype SSE
+ */
+
 class SSE extends stream.Transform {
+	/**
+	 * @cfg {WritableStream} output Output to write events to
+	 */
+
+	/**
+	 * @cfg {String} id Component ID to use
+	 */
 	constructor(cfg) {
 		super({objectMode: true})
 
