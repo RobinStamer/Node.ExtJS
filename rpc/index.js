@@ -161,12 +161,25 @@ class RPC {
 	}
 }
 
+/**
+ * @class Ext.rpc
+ * @extends Ext.rpc.Client
+ * Singleton instance of {@link Ext.rpc.Client}.
+ *
+ * @singleton
+ *
+ * @constructor
+ * Performs an RPC call, see {@link Ext.rpc.Client#call}.
+ */
 const rpc = new RPC
 
 Ext.rpc = function(...args) {
 	return rpc.call.apply(rpc, args)
 }
 
+/**
+ * Returns a pre-sugared function that calls the given method. See {@link Ext.rpc.Client#handle}.
+ */
 Ext.rpc.handle = function(method) {
 	return rpc.handle(method)
 }
