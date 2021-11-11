@@ -4,7 +4,19 @@ var Ext	= require('Ext')('Ext.data.Buffer')
 	,util	= require('util')
 	,child_process	= require('child_process')
 
+/**
+ * @class Ext.rpc.transports
+ * @singleton
+ */
 const transports = {
+	/**
+	 * RPC transport over HTTP.
+	 * Requires a hostname, path, and method.
+	 * @method
+	 * @param {Object} config
+	 * @param {String} data
+	 * @return {Promise[String]}
+	 */
 	sendHttp(config, data) {
 		return new Promise((resolve, reject) => {
 			const req = http.request({hostname: config.hostname, path: config.path, method: config.method})
@@ -20,6 +32,14 @@ const transports = {
 		})
 	},
 
+	/**
+	 * RPC transport over unix sockets.
+	 * Requires a socket filepath.
+	 * @method
+	 * @param {Object} config
+	 * @param {String} data
+	 * @return {Promise[String]}
+	 */
 	sendUnix(config, data) {
 		return new Promise((resolve, reject) => {
 			const conn = net.createConnection(config.path)
@@ -30,6 +50,14 @@ const transports = {
 		})
 	},
 
+	/**
+	 * RPC transport over pipe.
+	 * Requires a command to execute.
+	 * @method sendSubprocess
+	 * @param {Object} config
+	 * @param {String} data
+	 * @return {Promise[String]}
+	 */
 	async sendSubprocess(config, data) {
 		const promise = util.promisify(child_process.exec)(config.command)
 		promise.child.stdin.write(data)
@@ -39,8 +67,32 @@ const transports = {
 	},
 }
 
-
+/**
+ * @class Ext.rpc.Client
+ * Simple RPC client implementation with pluggable transports
+ *
+ * @constructor
+ * @param {Object} opts Connection options
+ */
 class RPC {
+	/**
+	 * @cfg {String} method HTTP method to use, if relevant (default: POST)
+	 */
+	/**
+	 * @cfg {String} encoding Text encoding to use (default: utf8)
+	 */
+	/**
+	 * @cfg {String} hostname Host to connect to (default: rpg.nobl.ca)
+	 */
+	/**
+	 * @cfg {String} path Path to connect to (default: /var/rpc.php)
+	 */
+	/**
+	 * @cfg {String} command Command to execute, if relevant (default: ssh hub0 ext /home/share/start_or_connect.js)
+	 */
+	/**
+	 * @cfg {Function} transport RPC transport to use (default: {@link Ext.rpc.transports#sendHttp})
+	 */
 	constructor(opt) {
 		this.defaults = 'object' == typeof opt ? opt : {}
 
@@ -52,10 +104,21 @@ class RPC {
 		this.defaults.transport = this.defaults.transport || transports.sendHttp
 	}
 
+	/**
+	 * Sets connection options for this client.
+	 * @param {String|Object} opts Config object or URL string
+	 */
 	opts(opts) {
 		Ext.apply(this.defaults, 'string' == typeof opts ? new URL(opts) : opts)
 	}
 
+	/**
+	 * Performs an RPC call.
+	 * @param {Object?} opts Configuration options to use, optional
+	 * @param {String} method RPC method to call
+	 * @param {Object|Array?} params RPC method parameters
+	 * @return {Promise[Object]} Asynchronous return value or error
+	 */
 	call(...args) {
 		const	opts = 'object' == typeof args[0] ? args.shift() : {}
 			,method = args.shift()
@@ -84,6 +147,11 @@ class RPC {
 		}())
 	}
 
+	/**
+	 * Returns a pre-sugared {@link #call} function that calls the given method.
+	 * @param {String} method
+	 * @return {Function}
+	 */
 	handle(method) {
 		var self = this
 
