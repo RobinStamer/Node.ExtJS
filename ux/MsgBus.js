@@ -1,5 +1,5 @@
 // vim: sw=4:ts=4:nu:nospell:fdc=4
-/**
+/*!
  * Message Bus Plugin
  *
  * @author    Ing. Jozef Sakáloš

@@ -4,6 +4,10 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
+
+/**
+ * @class Ext
+ */
 /**
  * Framework-wide error-handler.  Developers can override this method to provide
  * custom exception-handling.  Framework errors will often extend from the base
