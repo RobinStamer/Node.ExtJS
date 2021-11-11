@@ -40,11 +40,11 @@ Ext.apply(Ext.util.Format, {
 	 * The first item of each array is a Format function name
 	 * <p>Example usage:</p>
 	 * <pre><code>
-	 * Ext.util.Format.curry("  123.45678 ",
-	 *   ["trim"],
-	 *   ["round", 2]
-	 *   ["pad", 10, ' '])
-	 * // returns "0000123.46"
+Ext.util.Format.curry("  123.45678 ",
+	["trim"],
+	["round", 2]
+	["pad", 10, ' '])
+// returns "0000123.46"
 	 * </code></pre>
 	 * @param {Mixed} string
 	 * @param {Any[]*} ...argv
