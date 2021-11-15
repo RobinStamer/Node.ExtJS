@@ -19,9 +19,9 @@ const transports = {
 	 */
 	sendHttp(config, data) {
 		return new Promise((resolve, reject) => {
-			const req = http.request({hostname: config.hostname, path: config.path, method: config.method})
+			const req = http.request({hostname: config.hostname, path: config.path, method: config.method, port: config.port || 80})
 			req.on('error', reject)
-			req.on('result', r => {
+			req.on('response', r => {
 				const b = new Ext.data.Buffer(r)
 				r.setEncoding('utf8') // FIXME
 				r.on('error', reject)
@@ -137,14 +137,9 @@ class RPC {
 
 		p = JSON.stringify(p)
 
-		return (async function() {
-			const d = JSON.parse(await self.defaults.transport(self.defaults, p))
-			if (d.result) {
-				return d.result
-			} else {
-				throw d
-			}
-		}())
+		return self.defaults.transport(self.defaults, p).then(o=>{
+			return JSON.parse(o)
+		})
 	}
 
 	/**
