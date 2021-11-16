@@ -138,7 +138,13 @@ class RPC {
 		p = JSON.stringify(p)
 
 		return self.defaults.transport(self.defaults, p).then(o=>{
-			return JSON.parse(o)
+			o = JSON.parse(o)
+
+			if (o.error) {
+				throw o.error
+			}
+
+			return o.result
 		})
 	}
 
