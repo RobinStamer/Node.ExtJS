@@ -43,7 +43,7 @@ Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
 			}
 		}
 
-		Ext.data.ManagedCollection.superclass.add.apply(this, args)
+		return Ext.data.ManagedCollection.superclass.add.apply(this, args)
 	}
 })
 
