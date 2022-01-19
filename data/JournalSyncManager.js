@@ -17,16 +17,15 @@ class JournalSyncManager {
 	genSummary() {
 		let sum = []
 
-		this.db.eachKey((k, j) => sum.push({id: k, lastEventId: j.journal.at(-1)._id}))
+		this.db.eachKey((k, j) => sum.push({
+			id:	k
+			,lastEventId:	`${j.journal.length}.${j.journal.at(-1)._id}`
+		}))
 
 		return sum
 	}
 
-	stage2(summary) {
-		let ourSummary = this.genSummary()
-		let needWhole = []
-		let needUpdating = []
-
+	takeSummary(summary, needWhole, needUpdating) {
 		for (let jsum of summary) {
 			let own = this.db.key(jsum.id)
 			if (!own) {
@@ -38,6 +37,14 @@ class JournalSyncManager {
 				})
 			}
 		}
+	}
+
+	stage2(summary) {
+		let ourSummary = this.genSummary()
+		let needWhole = []
+		let needUpdating = []
+
+		this.takeSummary(summary, needWhole, needUpdating)
 
 		return {summary: ourSummary, needWhole, needUpdating}
 	}
@@ -46,14 +53,7 @@ class JournalSyncManager {
 		let needWhole = []
 		let needUpdating = []
 
-		for (let jsum of remote.summary) {
-			let own = this.db.key(jsum.id)
-			if (!own) {
-				needWhole.push(jsum.id)
-			} else if (!own.journal.map(ev => ev._id).includes(jsum.lastEventId)) {
-				needUpdating.push({id: jsum.id, events:own.journal.map(e => e._id)})
-			}
-		}
+		this.takeSummary(remote.summary, needWhole, needUpdating)
 
 		let journals = remote.needWhole.map(key => db.key(key).journal)
 		let updates = []
