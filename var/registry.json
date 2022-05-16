@@ -13,5 +13,6 @@
 	"jsonstore": "Ext.data.JsonStore",
 	"archFile": "Ext.data.ArchFile",
 	"dircol": "Ext.data.DirCollection",
-	"rest": "Ext.api.Rest"
+	"rest": "Ext.api.Rest",
+	"plumbPipe": "Ext.data.PlumbPipe"
 }
