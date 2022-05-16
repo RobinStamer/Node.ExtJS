@@ -1,6 +1,6 @@
 const	Ext	= require('Ext')('Ext.class')
 	,stream	= require('stream')
-	,r	= /^(.+)\n(.+)\n(\/.+)\n(.+)\n(.*)\n([0-9]+)\n(.*)/
+	,r	= /^(.+)\n(.+)\n(\/.+)\n(.+)\n(.*)\n([0-9]+)\n((.|\n)*)/
 	
 Ext.ns('Ext.data')
 
@@ -44,35 +44,47 @@ class PlumbPipe extends stream.Transform {
 		}
 	}
 
+	__pump(m, buff) {
+		// We don't have a full message, buffer input and wait for more
+		if (!m) {
+			return buff
+		}
+
+		var	o = {
+			src:	m[1]
+			,dst:	m[2]
+			,pwd:	m[3]
+			,type:	m[4]
+			,attrstr:	m[5]
+			,len:	m[6] - 0
+			,data:	m[7]
+		}
+		// TODO: Parse attrstr
+
+		// We have exactly one message
+		if (o.len === o.data.length) {
+			buff = ''
+			this.push(o)
+		}
+
+		// We have one message and more
+		if (o.len < o.data.length) {
+			buff	= o.data.slice(o.len)
+			o.data	= o.data.slice(0, o.len)
+
+			this.push(o)
+			return this.__pump(r.exec(buff), buff)
+		}
+
+		return buff
+	}
+
 	_transform(chunk, encoding, done) {
 		var	buff	= this._bufferStr + chunk.toString()
 			,m	= r.exec(buff)
 
-		// We don't have a full message, buffer input and wait for more
-		if (!m) {
-			this._bufferStr = buff
-			done()
-			return
-		}
+		this._bufferStr = this.__pump(m, buff)
 
-		// We have exactly one message
-		if (m[7].length === (m[6] - 0)) {
-			buff = ''
-
-			// TODO: parse attrstr
-			this.push({
-				src:	m[1]
-				,dst:	m[2]
-				,pwd:	m[3]
-				,type:	m[4]
-				,attrstr:	m[5]
-				,len:	m[6] - 0
-				,data:	m[7]
-			})
-		}
-		// TODO: having more than one message
-
-		this._bufferStr = buff
 		done()
 	}
 
