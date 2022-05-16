@@ -9,45 +9,45 @@ TODO: FIX copyright
 var Ext = require('Ext')('Ext.util.MixedCollection')
 
 /**
- * @class Ext.ComponentMgr
- * <p>Provides a registry of all Components (instances of {@link Ext.Component} or any subclass
- * thereof) on a page so that they can be easily accessed by {@link Ext.Component component}
- * {@link Ext.Component#id id} (see {@link #get}, or the convenience method {@link Ext#getCmp Ext.getCmp}).</p>
- * <p>This object also provides a registry of available Component <i>classes</i>
- * indexed by a mnemonic code known as the Component's {@link Ext.Component#xtype xtype}.
- * The <code>{@link Ext.Component#xtype xtype}</code> provides a way to avoid instantiating child Components
+ * @class Ext.data.CollectionMgr
+ * <p>Provides a registry of all Collections (instances of {@link Ext.data.MixedCollection} or any subclass
+ * thereof) on a page so that they can be easily accessed by {@link Ext.data.MixedCollection collection}
+ * {@link Ext.data.MixedCollection#id id} (see {@link #get}, or the convenience method {@link Ext#getCmp Ext.getCmp}).</p>
+ * <p>This object also provides a registry of available Collection <i>classes</i>
+ * indexed by a mnemonic code known as the Collection's {@link Ext.data.MixedCollection#xtype xtype}.
+ * The <code>{@link Ext.data.MixedCollection#xtype xtype}</code> provides a way to avoid instantiating child Collections
  * when creating a full, nested config object for a complete Ext page.</p>
- * <p>A child Component may be specified simply as a <i>config object</i>
- * as long as the correct <code>{@link Ext.Component#xtype xtype}</code> is specified so that if and when the Component
+ * <p>A child Collection may be specified simply as a <i>config object</i>
+ * as long as the correct <code>{@link Ext.data.MixedCollection#xtype xtype}</code> is specified so that if and when the Collection
  * needs rendering, the correct type can be looked up for lazy instantiation.</p>
- * <p>For a list of all available <code>{@link Ext.Component#xtype xtypes}</code>, see {@link Ext.Component}.</p>
+ * <p>For a list of all available <code>{@link Ext.data.MixedCollection#xtype xtypes}</code>, see {@link Ext.Collection}.</p>
  * @singleton
  */
-Ext.CollectionMgr = function() {
+Ext.data.CollectionMgr = function() {
     var all = new Ext.util.MixedCollection(false, o => o.id)
 
     return {
         /**
          * Registers a collection
-         * @param {Ext.Collection} c The collection
+         * @param {Ext.data.MixedCollection} c The collection
          */
         register: function(c){
             all.add(c)
         },
 
         /**
-         * Unregisters a component.
-         * @param {Ext.Component} c The component
+         * Unregisters a collection.
+         * @param {Ext.data.MixedCollection} c The collection
          */
         unregister: function(c){
             all.remove(c)
         },
 
         /**
-         * Returns a component by {@link Ext.Component#id id}.
+         * Returns a collection by {@link Ext.data.MixedCollection#id id}.
          * For additional details see {@link Ext.util.MixedCollection#get}.
-         * @param {String} id The component {@link Ext.Component#id id}
-         * @return Ext.Component The Component, <code>undefined</code> if not found, or <code>null</code> if a
+         * @param {String} id The collection {@link Ext.data.MixedCollection#id id}
+         * @return Ext.data.MixedCollection The Collection, <code>undefined</code> if not found, or <code>null</code> if a
          * Class was found.
          */
         get: function(id) {
@@ -55,10 +55,10 @@ Ext.CollectionMgr = function() {
         },
 
         /**
-         * Registers a function that will be called when a Component with the specified id is added to ComponentMgr. This will happen on instantiation.
-         * @param {String} id The component {@link Ext.Component#id id}
+         * Registers a function that will be called when a Collection with the specified id is added to CollectionMgr. This will happen on instantiation.
+         * @param {String} id The collection {@link Ext.data.MixedCollection#id id}
          * @param {Function} fn The callback function
-         * @param {Object} scope The scope (<code>this</code> reference) in which the callback is executed. Defaults to the Component.
+         * @param {Object} scope The scope (<code>this</code> reference) in which the callback is executed. Defaults to the Collection.
          */
         onAvailable : function(id, fn, scope){
             all.on("add", function(index, o){
@@ -70,15 +70,15 @@ Ext.CollectionMgr = function() {
         },
 
         /**
-         * The MixedCollection used internally for the component cache. An example usage may be subscribing to
+         * The MixedCollection used internally for the collection cache. An example usage may be subscribing to
          * events on the MixedCollection to monitor addition or removal.  Read-only.
          * @type {MixedCollection}
          */
         all : all,
         
         /**
-         * Checks if a Component type is registered.
-         * @param {Ext.Component} xtype The mnemonic string by which the Component class may be looked up
+         * Checks if a Collection type is registered.
+         * @param {Ext.data.MixedCollection} xtype The mnemonic string by which the Collection class may be looked up
          * @return {Boolean} Whether the type is registered.
          */
         isRegistered : function(xtype){
@@ -88,13 +88,13 @@ Ext.CollectionMgr = function() {
 }()
 
 /**
- * Shorthand for {@link Ext.ComponentMgr#registerType}
- * @param {String} xtype The {@link Ext.component#xtype mnemonic string} by which the Component class
+ * Shorthand for {@link Ext.data.CollectionMgr#registerType}
+ * @param {String} xtype The {@link Ext.collection#xtype mnemonic string} by which the Collection class
  * may be looked up.
- * @param {Constructor} cls The new Component class.
+ * @param {Constructor} cls The new Collection class.
  * @member Ext
- * @method reg
+ * @method creg
  */
-Ext.creg = Ext.CollectionMgr.register
+Ext.creg = Ext.data.CollectionMgr.register
 
-Ext.cget = Ext.CollectionMgr.get
+Ext.cget = Ext.data.CollectionMgr.get
