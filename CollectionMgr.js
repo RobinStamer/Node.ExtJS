@@ -9,7 +9,7 @@ TODO: FIX copyright
 var Ext = require('Ext')('Ext.util.MixedCollection')
 
 /**
- * @class Ext.data.CollectionMgr
+ * @class Ext.CollectionMgr
  * <p>Provides a registry of all Collections (instances of {@link Ext.data.MixedCollection} or any subclass
  * thereof) on a page so that they can be easily accessed by {@link Ext.data.MixedCollection collection}
  * {@link Ext.data.MixedCollection#id id} (see {@link #get}, or the convenience method {@link Ext#getCmp Ext.getCmp}).</p>
@@ -23,7 +23,7 @@ var Ext = require('Ext')('Ext.util.MixedCollection')
  * <p>For a list of all available <code>{@link Ext.data.MixedCollection#xtype xtypes}</code>, see {@link Ext.Collection}.</p>
  * @singleton
  */
-Ext.data.CollectionMgr = function() {
+Ext.CollectionMgr = function() {
     var all = new Ext.util.MixedCollection(false, o => o.id)
 
     return {
@@ -88,13 +88,13 @@ Ext.data.CollectionMgr = function() {
 }()
 
 /**
- * Shorthand for {@link Ext.data.CollectionMgr#registerType}
+ * Shorthand for {@link Ext.CollectionMgr#registerType}
  * @param {String} xtype The {@link Ext.collection#xtype mnemonic string} by which the Collection class
  * may be looked up.
  * @param {Constructor} cls The new Collection class.
  * @member Ext
  * @method creg
  */
-Ext.creg = Ext.data.CollectionMgr.register
+Ext.creg = Ext.CollectionMgr.register
 
-Ext.cget = Ext.data.CollectionMgr.get
+Ext.cget = Ext.CollectionMgr.get
