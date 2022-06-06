@@ -6,7 +6,9 @@ TODO: FIX copyright
  * http://www.extjs.com/license
  */
 
-var Ext = require('Ext')('Ext.util.MixedCollection')
+if (!Ext) {
+	require('Ext')('Ext.util.MixedCollection')
+}
 
 /**
  * @class Ext.CollectionMgr
