@@ -24,5 +24,18 @@ Ext.apply(Ext, (function() {
 		,path: function path(s) {
 			return s.replace(/^~\//, process.env.HOME + '/')
 		}
+		/**
+		 * Return a new UUID
+		 * @return {String} The UUID
+		 */
+		,getUUID() {
+			try {
+				return Ext.ux.UUID()
+			} catch (e) {
+				// Yep, totally the correct way to handle this
+				Ext('Ext.ux.UUID')
+				return Ext.ux.UUID()
+			}
+		}
 	}
 })())
