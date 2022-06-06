@@ -55,7 +55,7 @@ class JournalSyncManager {
 
 		this.takeSummary(remote.summary, needWhole, needUpdating)
 
-		let journals = remote.needWhole.map(key => db.key(key).journal)
+		let journals = remote.needWhole.map(key => this.db.key(key).journal)
 		let updates = []
 
 		for (let upd of remote.needUpdating) {
@@ -68,10 +68,7 @@ class JournalSyncManager {
 
 	stage4(next) {
 		for (let j of next.journals) {
-			let own = new this.class({journal: j})
-			//own.applyJournal() -- constructor already applies for DirCollection to work
-			// TODO: maybe error out if we already have this journal
-			this.db.add(own)
+			this.db.add({id: j[0].id, journal: j})
 		}
 		for (let upd of next.updates) {
 			let own = this.db.key(upd.id)
@@ -101,10 +98,7 @@ class JournalSyncManager {
 
 	stage5(data) {
 		for (let j of data.journals) {
-			//console.log("adding journal", j[0].id)
-			let own = new this.class({journal: j})
-			// own.applyJournal(); -- constructor already applies
-			this.db.add(own)
+			this.db.add({id: j[0].id, journal: j})
 		}
 		for (let upd of data.updates) {
 			//console.log("updating journal", upd.id)
