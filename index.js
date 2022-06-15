@@ -34,7 +34,7 @@ function _load(o, module) {
 	}
 
 	if (isExtRegex.test(source)) {
-		source = source.replace(/\./g, '/')
+		source = source.replace(/\./g, '/').replace(/^Ext:/, 'Ext.')
 		require(source)
 		return
 	}
