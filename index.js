@@ -22,6 +22,10 @@ var window = global
 module.exports = window.Ext = Ext
 
 var	isExtRegex	= /^Ext/
+	,altMap	= {
+		'Ext.util.TaskRunner': 'Ext.util.TaskMgr'
+		,'Ext.TaskMgr': 'Ext.util.TaskMgr'
+	}
 
 function _load(o, module) {
 	var source, dest
@@ -34,7 +38,7 @@ function _load(o, module) {
 	}
 
 	if (isExtRegex.test(source)) {
-		source = source.replace(/\./g, '/').replace(/^Ext:/, 'Ext.')
+		source	= (altMap[source] || source).replace(/\./g, '/').replace(/^Ext:/, 'Ext.')
 		require(source)
 		return
 	}
