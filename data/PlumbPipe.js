@@ -85,6 +85,6 @@ class PlumbPipe extends stream.Transform {
 	}
 }
 
-Ext.reg('plumbPipe', PlumbPipe)
-
 Ext.data.PlumbPipe = PlumbPipe
+
+Ext.reg('plumbPipe', Ext.data.PlumbPipe)

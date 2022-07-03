@@ -148,6 +148,6 @@ class MultiFile extends stream.Writable {
 	}
 }
 
-Ext.reg('multiFile', MultiFile)
-
 Ext.data.MultiFile = MultiFile
+
+Ext.reg('multiFile', Ext.data.MultiFile)
