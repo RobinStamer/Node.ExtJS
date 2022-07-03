@@ -17,5 +17,7 @@
 	"plumbPipe": "Ext.data.PlumbPipe",
 	"Tag": "Ext.data.Tag",
 	"spawn:stdout": "Ext.util.Spawn",
-	"spawn:stderr": "Ext.util.Spawn"
+	"spawn:stderr": "Ext.util.Spawn",
+	"spawn:stdin": "Ext.util.Spawn",
+	"spawn:pipe": "Ext.data.SpawnPipe"
 }
