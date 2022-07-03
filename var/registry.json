@@ -15,5 +15,7 @@
 	"dircol": "Ext.data.DirCollection",
 	"rest": "Ext.api.Rest",
 	"plumbPipe": "Ext.data.PlumbPipe",
-	"Tag": "Ext.data.Tag"
+	"Tag": "Ext.data.Tag",
+	"spawn:stdout": "Ext.util.Spawn",
+	"spawn:stderr": "Ext.util.Spawn"
 }
