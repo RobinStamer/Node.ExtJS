@@ -11,7 +11,7 @@ test('Ext.util.TagManager can accept records ?', () => {
 	
 	const taggableA  = { tags: new Set };
 	const collection = new Ext.util.MixedCollection;
-	const tagManager = new Ext.util.TagManager({collection});
+	const tagManager = new Ext.util.TagManager({collection, returns:'objects'});
 
 	taggableA.tags.add('test-tag-a');
 
@@ -26,7 +26,7 @@ test('Ext.util.TagManager can tell if it has a record ?', () => {
 	const taggableA  = { tags: new Set };
 	const taggableB  = { tags: new Set };
 	const collection = new Ext.util.MixedCollection;
-	const tagManager = new Ext.util.TagManager({collection});
+	const tagManager = new Ext.util.TagManager({collection, returns:'objects'});
 
 	taggableA.tags.add('test-tag-a');
 	taggableA.tags.add('test-tag-b');
@@ -52,7 +52,7 @@ test('Ext.util.TagManager can search for a record ?', () => {
 	const taggableB  = { name: 'B', tags: new Set };
 	
 	const collection = new Ext.util.MixedCollection;
-	const tagManager = new Ext.util.TagManager({collection});
+	const tagManager = new Ext.util.TagManager({collection, returns:'objects'});
 
 	taggableA.tags.add('test-tag-a');
 	taggableA.tags.add('test-tag-b');

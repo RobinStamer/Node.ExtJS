@@ -1,20 +1,21 @@
 /**
  * @class Ext.util.TagManager
- * 
+ *
  * Handles indexing and searching records by tags.
  * Records should have a Set object of tag names.
  * The Set of tag names can be placed under .tags
  * This can be changed with watchProp
- * 
+ *
  * @constructor
  * @param {Object} config Configuration KV
  * - collection: {MixedCollection} the collection to watch for records
  * - watchProp: {String|Symbol} the name of the property to watch for tags
- * - staySynced: {Boolean} Slower, but will not lose sync if tags are modified. Defaults to false.
+ * - keys: {String|Symbol} whether to return keys or objects
  */
 class TagManager
 {
 	collection;
+	returns   = 'keys';
 	watchProp = 'tags';
 	caches    = new Map;
 	records   = new Set;
@@ -36,7 +37,7 @@ class TagManager
 		}
 
 		Object.defineProperty(this, 'collection', { value: config.collection });
-		Object.defineProperty(this, 'staySynced', { value: config.staySynced ?? false});
+		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns });
 
 		this.collection.on('remove', (index, record, key) => this.handleRecordRemoved(index, record, key));
 		this.collection.on('add',    (index, record, key) => this.handleRecordAdded(index, record, key));
@@ -164,11 +165,6 @@ class TagManager
 
 		for(const record of results)
 		{
-			if(this.staySynced)
-			{
-				this.cacheTags(record);
-			}
-
 			for(const name of positives)
 			{
 				if(!record[this.watchProp].has(name))
@@ -186,7 +182,12 @@ class TagManager
 			}
 		}
 
-		return results;
+		if(this.returns === 'objects')
+		{
+			return results;
+		}
+
+		return new Set([...results].map(r => this.collection.getKey(r)));
 	}
 }
 
