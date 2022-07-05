@@ -14,6 +14,10 @@ class JournalSyncManager {
 		this.db.save && this.db.save()
 	}
 
+	emit(...args) {
+		this.db.fireEvent(...args)
+	}
+
 	genSummary() {
 		let sum = []
 
@@ -21,6 +25,8 @@ class JournalSyncManager {
 			id:	k
 			,lastEventId:	`${j.journal.length}.${j.journal.at(-1)._id}`
 		}))
+
+		this.emit('stage1', sum)
 
 		return sum
 	}
@@ -46,6 +52,8 @@ class JournalSyncManager {
 
 		this.takeSummary(summary, needWhole, needUpdating)
 
+		this.emit('stage2', ourSummary, needWhole, needUpdating)
+
 		return {summary: ourSummary, needWhole, needUpdating}
 	}
 
@@ -62,6 +70,8 @@ class JournalSyncManager {
 			let events = this.db.key(upd.id).journal.filter(ev => !upd.events.includes(ev._id))
 			updates.push({id: upd.id, events})
 		}
+
+		this.emit('stage3', journals, updates, needWhole, needUpdating)
 
 		return {journals, updates, needWhole, needUpdating}
 	}
@@ -93,10 +103,14 @@ class JournalSyncManager {
 			updates.push({id: upd.id, events})
 		}
 
+		this.emit('stage4', journals, updates)
+
 		return {journals, updates}
 	}
 
 	stage5(data) {
+		this.emit('stage5', data)
+
 		for (let j of data.journals) {
 			this.db.add({id: j[0].id, journal: j})
 		}
