@@ -25,9 +25,9 @@ Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 
 		if(arguments.length === 1)
 		{
-            record = arguments[0];
-            key    = this.getKey(record);
-        }
+			record = arguments[0];
+			key    = this.getKey(record);
+		}
 
 		if(typeof record !== 'object')
 		{
