@@ -123,6 +123,8 @@ class JournalSyncManager {
 			own.applyJournal()
 		}
 		this.save()
+
+		this.emit('stage6')
 	}
 }
 
