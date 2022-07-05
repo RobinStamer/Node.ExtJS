@@ -93,3 +93,13 @@ test('Ext.util.DueDateCollection can accept DueDate?', () => {
 	expect(two).toEqual(collection.get(key2));
 	expect(two).toEqual(collection.itemAt(1));
 });
+
+test('Ext.util.DueDateCollection can provide defaults to new DueDates?', () => {
+
+	const interval   = 1000;
+	const collection = new Ext.util.DueDateCollection({defaults: {interval}});
+
+	collection.add({});
+
+	expect(interval).toEqual(collection.itemAt(0).interval);
+});

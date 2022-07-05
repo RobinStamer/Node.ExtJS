@@ -20,6 +20,8 @@ class DueDate
 {
 	constructor(config = {})
 	{
+		Object.freeze(config);
+
 		// Make sure we've been supplied with an interval or an expiry.
 		if(!config.expiry && !config.interval)
 		{

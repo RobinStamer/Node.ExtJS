@@ -7,12 +7,16 @@ Ext('Ext.util.MixedCollection', 'Ext.util.DueDate');
 Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 	
 	constructor: function(config = {}) {
-		config.defaults = config.defaults ?? {};
+		Object.freeze(config);
+		
+		const defaults = config.defaults ?? {};
 
-		if(config.defaults.id)
+		if(defaults.id)
 		{
 			throw 'DueDateCollection may not specify a default id.';
 		}
+
+		Object.defineProperty(this, 'defaults', {value: config.defaults});
 
 		return Ext.util.MixedCollection.prototype.constructor.call(this);
 	},
@@ -32,7 +36,7 @@ Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 
 		if(!(record instanceof Ext.util.DueDate))
 		{
-			record = new DueDate(Object.apply(record, defaults));
+			record = new Ext.util.DueDate(Object.assign({}, record, this.defaults));
 		}
 
 		return Ext.util.MixedCollection.prototype.add.call(this, key, record);
