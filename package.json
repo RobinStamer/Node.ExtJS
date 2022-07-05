@@ -1,0 +1,24 @@
+{
+  "name": "node.extjs",
+  "description": "This port will handle the porting of Ext.data and Ext.util classes, as well as any functionality that doesn't depend on a DOM being present.  It does not handle the porting of the Grid, or any of the classes that require a DOM.  Porting is done with a least-effort basis, so the files are mostly the same, just with an added \"var Ext = ...\" line to make them work.  Do *not* require a sub-module (eg: Ext.util.MixedCollection) directly as none of them actually return anything.",
+  "version": "0.0.0",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobinStamer/Node.ExtJS.git"
+  },
+  "author": "Robin Stamer",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RobinStamer/Node.ExtJS/issues"
+  },
+  "homepage": "https://github.com/RobinStamer/Node.ExtJS#readme"
+}
