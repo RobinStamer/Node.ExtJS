@@ -149,7 +149,7 @@ class TagManager
 	/**
 	 * Search for records given a list of tags.
 	 * @param names {Array} the list of names to check.
-	 * @return {Array}
+	 * @return {Set}
 	 * @method
 	 */
 	search(...names)
