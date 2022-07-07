@@ -1,3 +1,5 @@
+var Ext = require('..')
+
 Ext('Ext.util.Journal')
 
 let handlers = {

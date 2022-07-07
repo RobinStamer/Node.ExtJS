@@ -3,8 +3,5 @@ module.exports = {
 		'tests'
 	]
 	,collectCoverage: true
-	,globals: {
-		Ext: require('./+')
-	}
 	,testRegex: '.*'
 }
