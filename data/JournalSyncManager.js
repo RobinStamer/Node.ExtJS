@@ -126,6 +126,35 @@ class JournalSyncManager {
 
 		this.emit('stage6')
 	}
+
+	RPC(def) {
+		def.raw = true
+		def.func = (function(func, col) {
+			return function() {
+				func.call(this, col.get(col.getKey(this.rawParams)))
+			}
+		})(def.func, this.db)
+
+		return def
+	}
+
+	stageRPC() {
+		var	self = this
+
+		return [{
+			name:	'jobs.stage2'
+			,raw:	true
+			,func:	function() {
+				this.response(self.stage2(this.rawParams))
+			}
+		},{
+			name:	'jobs.stage4'
+			,raw:	true
+			,func:	function() {
+				this.response(self.stage4(this.rawParams))
+			}
+		}]
+	}
 }
 
 Ext.data.JournalSyncManager = JournalSyncManager
