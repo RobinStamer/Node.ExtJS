@@ -82,10 +82,9 @@ class JournalSyncManager {
 		}
 		for (let upd of next.updates) {
 			let own = this.db.key(upd.id)
-			for (let ev of upd.events) {
-				own.journal.push(ev)
-			}
+			own.journal.push(...upd.events)
 			own.applyJournal()
+			this.db.fireEvent('update', upd.id, own)
 		}
 		this.save()
 
@@ -99,6 +98,7 @@ class JournalSyncManager {
 
 		var updates = []
 		for (let upd of next.needUpdating) {
+			// TODO: FIXME?  This looks like it might be doing a ton of nested loops
 			let events = this.db.key(upd.id).journal.filter(ev => !upd.events.includes(ev._id))
 			updates.push({id: upd.id, events})
 		}
@@ -115,12 +115,10 @@ class JournalSyncManager {
 			this.db.add({id: j[0].id, journal: j})
 		}
 		for (let upd of data.updates) {
-			//console.log("updating journal", upd.id)
 			let own = this.db.key(upd.id)
-			for (let ev of upd.events) {
-				own.journal.push(ev)
-			}
+			own.journal.push(...upd.events)
 			own.applyJournal()
+			this.db.fireEvent('update', upd.id, own)
 		}
 		this.save()
 
