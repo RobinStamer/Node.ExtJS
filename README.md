@@ -4,15 +4,14 @@ There are extensions to the original layout, a rough outline as follows:
 
 * Ext: is now a function that will load more modules, returns Ext
 * Ext.game: a collection of modules that add classes and functions to deal with the mechanics of games
-* Ext.ux.mongo: Children of Ext.data classes to handle access to MongoDB, requires the `mongo` module.
 
-##Extensions
+## Extensions
 
-###Ext.xcreate() (From Ext('Ext.+'))
+### Ext.xcreate() (From Ext('Ext.+'))
 
-An extension of Ext.create() that will automatically load the xtype based on the information in var/registry.json.  This is populated with sbin/regCache.
+An extension of Ext.create() that will automatically load the xtype based on the information in `var/registry.json`.  This is populated with `sbin/regCache`.
 
-##Examples
+## Examples
 
     var Ext = require('Ext')('Ext.util.MixedCollection')
    
@@ -22,7 +21,7 @@ An extension of Ext.create() that will automatically load the xtype based on the
    
     mc.get(1) == mc.get('y') // true
 
-###XTemplate
+### XTemplate
 
 
     var Ext = require('Ext')('Ext.XTemplate')
