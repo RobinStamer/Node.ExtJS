@@ -8,6 +8,8 @@ class JournalSyncManager {
 		if (!this.class) {
 			throw new Error('JournalSyncManager does not have a class!')
 		}
+
+		this.db.addEvents('update', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6')
 	}
 
 	save() {
@@ -84,7 +86,7 @@ class JournalSyncManager {
 			let own = this.db.key(upd.id)
 			own.journal.push(...upd.events)
 			own.applyJournal()
-			this.db.fireEvent('update', upd.id, own)
+			this.emit('update', upd.id, own)
 		}
 		this.save()
 
@@ -118,7 +120,7 @@ class JournalSyncManager {
 			let own = this.db.key(upd.id)
 			own.journal.push(...upd.events)
 			own.applyJournal()
-			this.db.fireEvent('update', upd.id, own)
+			this.emit('update', upd.id, own)
 		}
 		this.save()
 
