@@ -23,7 +23,35 @@ class PlumbMessage {
 		console.dir(this)
 	}
 
-	read() {
+	read(b) {
+		for (var i = 0, c = 0, x = 0; i < b.length; ++i) {
+			if (10 == b[i]) {
+				++c
+
+				if (5 == c) {
+					x = i + 1
+				}
+			}
+
+			if (6 == c) {
+				x = b.slice(x, i).toString() - 0
+				++i
+
+				if (b.length < x + i) {
+					return 0
+				}
+
+				this.data = b.slice(i, i + x)
+				c = b.slice(0, i).toString().split('\n')
+				this.src	= c.shift()
+				this.dst	= c.shift()
+				this.wdir	= c.shift()
+				this.type	= c.shift()
+				this.attr	= c.shift()
+				this.ndata	= x
+				return i + x
+			}
+		}
 		return 0
 	}
 }

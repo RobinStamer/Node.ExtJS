@@ -2,7 +2,7 @@ const	Ext	= require('Ext')('Ext.class')
 	,stream	= require('stream')
 	,r	= /^(.+)\n(.+)\n(\/.+)\n(.+)\n(.*)\n([0-9]+)\n((.|\n)*)/
 	
-Ext.ns('Ext.data')
+Ext('Ext.p9p.PlumbMessage')
 
 /**
  * @class Ext.data.PlumbPipe
@@ -23,8 +23,9 @@ class PlumbPipe extends stream.Transform {
 	constructor(cfg) {
 		super({readableObjectMode: true})
 
-		this._bufferStr = ''
+		this._buffer	= Buffer.from('')
 		this.render	= true
+		this.next	= new Ext.p9p.PlumbMessage
 
 		if (cfg.input) {
 			this.input = Ext.xcreate(cfg.input)
@@ -32,55 +33,23 @@ class PlumbPipe extends stream.Transform {
 		}
 	}
 
-	__pump(m, buff) {
-		// We don't have a full message, buffer input and wait for more
-		if (!m) {
-			return buff
-		}
-
-		var	o = {
-			src:	m[1]
-			,dst:	m[2]
-			,pwd:	m[3]
-			,type:	m[4]
-			,attrstr:	m[5]
-			,len:	m[6] - 0
-			,data:	m[7]
-		}
-		// TODO: Parse attrstr
-
-		// We have exactly one message
-		if (o.len === o.data.length) {
-			buff = ''
-			this.push(o)
-		}
-
-		// We have one message and more
-		if (o.len < o.data.length) {
-			buff	= o.data.slice(o.len)
-			o.data	= o.data.slice(0, o.len)
-
-			this.push(o)
-			return this.__pump(r.exec(buff), buff)
-		}
-
-		return buff
-	}
-
 	_transform(chunk, encoding, done) {
-		var	buff	= this._bufferStr + chunk.toString()
-			,m	= r.exec(buff)
+		var	buff	= Buffer.concat([this._buffer, chunk])
+			,n
 
-		this._bufferStr = this.__pump(m, buff)
+		while (n = this.next.read(buff)) {
+			buff = buff.slice(n)
+			this.push(this.next)
+
+			this.next = new Ext.p9p.PlumbMessage
+		}
+
+		this._buffer = buff
 
 		done()
 	}
 
 	_flush(done) {
-		if (this._bufferStr) { // avoid adding newlines to the file
-			//this.push(this._mutate(this._bufferStr))
-		}
-		this._bufferStr = ''
 		done()
 	}
 }
