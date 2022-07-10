@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+var	fs	= require('fs')
+	,path	= require('path')
+	,Ext	= require('../+')
+	,dir	= path.resolve(`${__dirname}/../examples/db`)
+	,db
+
+fs.readdir(dir, function(err, files) {
+	for (var file of files) {
+		db = require(`${dir}/${file}`)
+
+		db.on('load', function() {
+			this.save()
+		}, db)
+	}
+})
