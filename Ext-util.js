@@ -37,5 +37,20 @@ Ext.apply(Ext, (function() {
 				return Ext.ux.UUID()
 			}
 		}
+		/**
+		 * Joins a set of keys with a set of values
+		 * @param {Array|Set} keys The keys
+		 * @param {Array|Set} values The values
+		 * @return {Object} The bound object
+		 */
+		,bind(keys, values) {
+			var len = Math.min(keys.length, values.length), r = {}
+
+			for (var i = 0; i < len; ++i) {
+				r[keys[i]] = values[i]
+			}
+
+			return r
+		}
 	}
 })())
