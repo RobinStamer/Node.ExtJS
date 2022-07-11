@@ -39,9 +39,14 @@ class TagManager
 		Object.defineProperty(this, 'collection', { value: config.collection });
 		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns });
 
-		this.collection.on('replace', (index, record, key) => this.handleRecordUpdated(index, record, key));
+		if(this.collection.events.update)
+		{
+			this.collection.on('update',  (index, record) => this.handleRecordUpdate(index, record));
+		}
+
+		this.collection.on('replace', (index, record, key) => this.handleRecordReplace(index, record, key));
 		this.collection.on('remove', (index, record, key) => this.handleRecordRemoved(index, record, key));
-		this.collection.on('add',    (index, record, key) => this.handleRecordAdded(index, record, key));
+		this.collection.on('add', (index, record, key) => this.handleRecordAdded(index, record, key));
 	}
 
 	/**
@@ -88,6 +93,15 @@ class TagManager
 	}
 
 	/**
+	 * Handle a record replaced within the collection.
+	 * @method
+	 */
+	handleRecordUpdate(index, record)
+	{
+		this.cacheTags(record);
+	}
+
+	/**
 	 * Rebuild the cache from scratch.
 	 * Its a good idea to do this before searching if records have mutated their tag lists.
 	 * @method
@@ -112,6 +126,11 @@ class TagManager
 	 */
 	cacheTags(record)
 	{
+		if(!(this.watchProp in record))
+		{
+			return;
+		}
+
 		for(const name of record[this.watchProp])
 		{
 			if(!this.caches.has(name))

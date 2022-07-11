@@ -120,3 +120,47 @@ test('Ext.util.TagManager can handle array based tag lists ?', () => {
 	expect(neither.has(taggableB)).toBe(false);
 
 });
+
+
+test('Ext.util.TagManager can observe the update event ?', () => {
+	const taggableA  = { name: 'A',  tags: [] };
+	const taggableB  = { name: 'B', tags: [] };
+	
+	const collection = new Ext.util.MixedCollection;
+	collection.events.update = true;
+	
+	const tagManager = new Ext.util.TagManager({collection, returns:'objects'});
+
+	collection.add(taggableA);
+	collection.add(taggableB);
+
+	const keyA = collection.getKey(taggableA);
+	const keyB = collection.getKey(taggableB);
+	
+	taggableA.tags.push('test-tag-a', 'test-tag-b');
+	collection.fireEvent('update', keyA, taggableA);
+
+	taggableB.tags.push('test-tag-b');
+	collection.fireEvent('update', keyB, taggableB);
+
+	const onlyA   = tagManager.search('test-tag-a');
+	const onlyB   = tagManager.search('test-tag-b', '-test-tag-a');
+	const both    = tagManager.search('test-tag-b');
+	const neither = tagManager.search('-test-tag-b', 'test-tag-a');
+
+	expect(onlyA.has(taggableA)).toBe(true);
+	expect(onlyA.has(taggableB)).toBe(false);
+	
+	expect(onlyB.has(taggableB)).toBe(true);
+	expect(onlyB.has(taggableA)).toBe(false);
+
+	expect(both.has(taggableA)).toBe(true);
+	expect(both.has(taggableA)).toBe(true);
+	expect(both.has(taggableB)).toBe(true);
+	expect(both.has(taggableB)).toBe(true);
+
+	expect(neither.has(taggableA)).toBe(false);
+	expect(neither.has(taggableA)).toBe(false);
+	expect(neither.has(taggableB)).toBe(false);
+	expect(neither.has(taggableB)).toBe(false);
+});
