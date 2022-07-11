@@ -39,7 +39,7 @@ class TagManager
 		Object.defineProperty(this, 'collection', { value: config.collection });
 		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns });
 
-		this.collection.on('update', (index, record, key) => this.handleRecordUpdated(index, record, key));
+		this.collection.on('replace', (index, record, key) => this.handleRecordUpdated(index, record, key));
 		this.collection.on('remove', (index, record, key) => this.handleRecordRemoved(index, record, key));
 		this.collection.on('add',    (index, record, key) => this.handleRecordAdded(index, record, key));
 	}
@@ -70,17 +70,21 @@ class TagManager
 	}
 
 	/**
-	 * Handle a record updated within the collection.
+	 * Handle a record replaced within the collection.
 	 * @method
 	 */
-	handleRecordUpdated(index, record, key)
+	handleRecordReplace(index, oldRecord, newRecord)
 	{
 		for(const [name, cache] of this.caches)
 		{
-			cache.delete(record);
+			cache.delete(oldRecord);
 		}
 
-		this.cacheTags(record);
+		this.records.delete(oldRecord);
+
+		this.cacheTags(newRecord);
+
+		this.records.add(newRecord);
 	}
 
 	/**
