@@ -39,6 +39,7 @@ class TagManager
 		Object.defineProperty(this, 'collection', { value: config.collection });
 		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns });
 
+		this.collection.on('update', (index, record, key) => this.handleRecordUpdated(index, record, key));
 		this.collection.on('remove', (index, record, key) => this.handleRecordRemoved(index, record, key));
 		this.collection.on('add',    (index, record, key) => this.handleRecordAdded(index, record, key));
 	}
@@ -66,6 +67,20 @@ class TagManager
 		}
 
 		this.records.delete(record);
+	}
+
+	/**
+	 * Handle a record updated within the collection.
+	 * @method
+	 */
+	handleRecordUpdated(index, record, key)
+	{
+		for(const [name, cache] of this.caches)
+		{
+			cache.delete(record);
+		}
+
+		this.cacheTags(record);
 	}
 
 	/**
@@ -165,9 +180,16 @@ class TagManager
 
 		for(const record of results)
 		{
+			let watched = record[this.watchProp];
+			
+			if(!(watched instanceof Set))
+			{
+				watched = new Set(watched);
+			}
+
 			for(const name of positives)
 			{
-				if(!record[this.watchProp].has(name))
+				if(!watched.has(name))
 				{
 					results.delete(record);
 				}
@@ -175,7 +197,7 @@ class TagManager
 
 			for(const name of negatives)
 			{
-				if(record[this.watchProp].has(name))
+				if(watched.has(name))
 				{
 					results.delete(record);
 				}
