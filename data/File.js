@@ -31,6 +31,6 @@ class File extends fs.ReadStream {
 	}
 }
 
-Ext.reg('file', File)
-
 Ext.data.File = File
+
+Ext.reg('file', Ext.data.File)

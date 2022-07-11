@@ -95,6 +95,6 @@ LinePipe.quickServer = function(net, ...args) {
 	return net.createServer(LinePipe.quick(...args))
 }
 
-Ext.reg('linePipe', LinePipe)
-
 Ext.data.LinePipe = LinePipe
+
+Ext.reg('linePipe', Ext.data.LinePipe)

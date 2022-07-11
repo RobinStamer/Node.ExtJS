@@ -8,10 +8,16 @@ class JournalSyncManager {
 		if (!this.class) {
 			throw new Error('JournalSyncManager does not have a class!')
 		}
+
+		this.db.addEvents('update', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6')
 	}
 
 	save() {
 		this.db.save && this.db.save()
+	}
+
+	emit(...args) {
+		this.db.fireEvent(...args)
 	}
 
 	genSummary() {
@@ -21,6 +27,8 @@ class JournalSyncManager {
 			id:	k
 			,lastEventId:	`${j.journal.length}.${j.journal.at(-1)._id}`
 		}))
+
+		this.emit('stage1', sum)
 
 		return sum
 	}
@@ -46,6 +54,8 @@ class JournalSyncManager {
 
 		this.takeSummary(summary, needWhole, needUpdating)
 
+		this.emit('stage2', ourSummary, needWhole, needUpdating)
+
 		return {summary: ourSummary, needWhole, needUpdating}
 	}
 
@@ -55,7 +65,7 @@ class JournalSyncManager {
 
 		this.takeSummary(remote.summary, needWhole, needUpdating)
 
-		let journals = remote.needWhole.map(key => db.key(key).journal)
+		let journals = remote.needWhole.map(key => this.db.key(key).journal)
 		let updates = []
 
 		for (let upd of remote.needUpdating) {
@@ -63,22 +73,20 @@ class JournalSyncManager {
 			updates.push({id: upd.id, events})
 		}
 
+		this.emit('stage3', journals, updates, needWhole, needUpdating)
+
 		return {journals, updates, needWhole, needUpdating}
 	}
 
 	stage4(next) {
 		for (let j of next.journals) {
-			let own = new this.class({journal: j})
-			//own.applyJournal() -- constructor already applies for DirCollection to work
-			// TODO: maybe error out if we already have this journal
-			this.db.add(own)
+			this.db.add({id: j[0].id, journal: j})
 		}
 		for (let upd of next.updates) {
 			let own = this.db.key(upd.id)
-			for (let ev of upd.events) {
-				own.journal.push(ev)
-			}
+			own.journal.push(...upd.events)
 			own.applyJournal()
+			this.emit('update', upd.id, own)
 		}
 		this.save()
 
@@ -92,29 +100,60 @@ class JournalSyncManager {
 
 		var updates = []
 		for (let upd of next.needUpdating) {
+			// TODO: FIXME?  This looks like it might be doing a ton of nested loops
 			let events = this.db.key(upd.id).journal.filter(ev => !upd.events.includes(ev._id))
 			updates.push({id: upd.id, events})
 		}
+
+		this.emit('stage4', journals, updates)
 
 		return {journals, updates}
 	}
 
 	stage5(data) {
+		this.emit('stage5', data)
+
 		for (let j of data.journals) {
-			//console.log("adding journal", j[0].id)
-			let own = new this.class({journal: j})
-			// own.applyJournal(); -- constructor already applies
-			this.db.add(own)
+			this.db.add({id: j[0].id, journal: j})
 		}
 		for (let upd of data.updates) {
-			//console.log("updating journal", upd.id)
 			let own = this.db.key(upd.id)
-			for (let ev of upd.events) {
-				own.journal.push(ev)
-			}
+			own.journal.push(...upd.events)
 			own.applyJournal()
+			this.emit('update', upd.id, own)
 		}
 		this.save()
+
+		this.emit('stage6')
+	}
+
+	RPC(def) {
+		def.raw = true
+		def.func = (function(func, col) {
+			return function() {
+				func.call(this, col.get(col.getKey(this.rawParams)))
+			}
+		})(def.func, this.db)
+
+		return def
+	}
+
+	stageRPC() {
+		var	self = this
+
+		return [{
+			name:	'jobs.stage2'
+			,raw:	true
+			,func:	function() {
+				this.response(self.stage2(this.rawParams))
+			}
+		},{
+			name:	'jobs.stage4'
+			,raw:	true
+			,func:	function() {
+				this.response(self.stage4(this.rawParams))
+			}
+		}]
 	}
 }
 

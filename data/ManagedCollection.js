@@ -1,4 +1,4 @@
-Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
+Ext.call && Ext('Ext.util.MixedCollection', 'Ext.ComponentMgr')
 
 /**
  * @class Ext.data.ManagedCollection

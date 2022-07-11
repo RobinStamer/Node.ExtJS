@@ -18,19 +18,7 @@ Ext.ns('Ext.data')
 
 class PlumbPipe extends stream.Transform {
 	/**
-	 * @cfg {Boolean} buffers Whether to accept buffers in stream
-	 */
-
-	/**
-	 * @cfg {Boolean} addBreaks Whether to add newlines to the end of each line
-	 */
-
-	/**
 	 * @cfg {Stream} input Input to attach this stream transform to
-	 */
-
-	/**
-	 * @cfg {Function} _transform Transforms the stream's data, conflicts with addBreaks
 	 */
 	constructor(cfg) {
 		super({readableObjectMode: true})
@@ -97,6 +85,6 @@ class PlumbPipe extends stream.Transform {
 	}
 }
 
-Ext.reg('plumbPipe', PlumbPipe)
-
 Ext.data.PlumbPipe = PlumbPipe
+
+Ext.reg('plumbPipe', Ext.data.PlumbPipe)

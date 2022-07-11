@@ -1,4 +1,4 @@
-require('Ext')('Ext.util.DueDate', 'Ext.util.DueDateCollection');
+require('..')('Ext.util.DueDate', 'Ext.util.DueDateCollection')
 
 test('Ext is a function?', () => expect(typeof Ext).toBe('function'));
 

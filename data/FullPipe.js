@@ -55,6 +55,6 @@ class FullPipe extends stream.Transform {
 	}
 }
 
-Ext.reg('fullPipe', FullPipe)
-
 Ext.data.FullPipe = FullPipe
+
+Ext.reg('fullPipe', Ext.data.FullPipe)

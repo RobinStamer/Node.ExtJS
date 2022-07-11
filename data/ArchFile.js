@@ -114,6 +114,6 @@ class ArchFile extends stream.Writable {
 	}
 }
 
-Ext.reg('archFile', ArchFile)
-
 Ext.data.ArchFile = ArchFile
+
+Ext.reg('archFile', Ext.data.ArchFile)

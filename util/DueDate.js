@@ -7,17 +7,33 @@ const crypto = require('node:crypto');
  * 
  * @constructor
  * @param {Object} config Configuration KV (all times are in milliseconds)
- * - name: the name of the DueDate 
- * - id: the unique id of the DueDate
- * - start: Start date, defaults to return value of Date.now().
- * - expiry: Expiration date, optional if interval is supplied. 
- * - interval: Duration of the period, optional if expiry is supplied. 
- * - warn: Time BEFORE EXPIRY to begin reporting a warning state
- * - flex: if true, .reset() will use a sliding window, rather than a rolling one.
- * - once: if true, .reset() will throw an error.
  */
 class DueDate
 {
+	/**
+	 * @cfg {String} name The name of the DueDate 
+	 */
+	/**
+	 * @cfg {Number|String} id The unique id of the DueDate
+	 */
+	/**
+	 * @cfg {Date} start Start date, defaults to return value of Date.now().
+	 */
+	/**
+	 * @cfg {Date} expiry Expiration date, optional if interval is supplied. 
+	 */
+	/**
+	 * @cfg {Number} interval Duration of the period, optional if expiry is supplied. 
+	 */
+	/**
+	 * @cfg {Number} warn Time BEFORE EXPIRY to begin reporting a warning state
+	 */
+	/**
+	 * @cfg {Boolean} flex If true, .reset() will use a sliding window, rather than a rolling one.
+	 */
+	/**
+	 * @cfg {Boolean} once If true, .reset() will throw an error.
+	 */
 	constructor(config = {})
 	{
 		Object.freeze(config);

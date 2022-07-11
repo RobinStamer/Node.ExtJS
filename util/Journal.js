@@ -1,4 +1,4 @@
-Ext.ns('Ext.util')
+Ext('Ext.ComponentMgr').ns('Ext.util')
 
 /**
  * @class Ext.util.Journal

@@ -14,5 +14,10 @@
 	"archFile": "Ext.data.ArchFile",
 	"dircol": "Ext.data.DirCollection",
 	"rest": "Ext.api.Rest",
-	"plumbPipe": "Ext.data.PlumbPipe"
+	"plumbPipe": "Ext.data.PlumbPipe",
+	"Tag": "Ext.data.Tag",
+	"spawn:stdout": "Ext.util.Spawn",
+	"spawn:stderr": "Ext.util.Spawn",
+	"spawn:stdin": "Ext.util.Spawn",
+	"spawn:pipe": "Ext.data.SpawnPipe"
 }

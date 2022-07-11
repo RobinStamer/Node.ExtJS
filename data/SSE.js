@@ -74,6 +74,6 @@ class SSE extends stream.Transform {
 	}
 }
 
-Ext.reg('SSE', SSE)
-
 Ext.data.SSE = SSE
+
+Ext.reg('SSE', Ext.data.SSE)
