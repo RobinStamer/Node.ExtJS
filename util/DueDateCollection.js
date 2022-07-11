@@ -6,6 +6,11 @@ Ext('Ext.util.MixedCollection', 'Ext.util.DueDate');
  */
 Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 	
+	/**
+	 * Grab the defaults from the config, if provided
+	 * and hold onto them for later.
+	 * @method
+	 */
 	constructor: function(config = {}) {
 		Object.freeze(config);
 		
@@ -21,6 +26,10 @@ Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 		return Ext.util.MixedCollection.prototype.constructor.call(this);
 	},
 	
+	/**
+	 * Add a DueDate to the collection. Generate a new one if config is provided.
+	 * @method
+	 */
 	add: function(key, record) {
 
 		if(arguments.length === 1)
@@ -42,6 +51,10 @@ Ext.util.DueDateCollection = Ext.extend(Ext.util.MixedCollection, {
 		return Ext.util.MixedCollection.prototype.add.call(this, key, record);
 	},
 
+	/**
+	 * Generate unique IDs that can be sorted chronologically.
+	 * @method
+	 */
 	getKey(record)
 	{
 		return record.start + '::' + record.id;

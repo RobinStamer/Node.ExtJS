@@ -7,9 +7,12 @@
     "example": "examples",
     "test": "tests"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^28.1.2"
+  },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "symlink": "ln -s ../ node_modules/Ext"
   },
   "repository": {
     "type": "git",
