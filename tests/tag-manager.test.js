@@ -183,7 +183,7 @@ test('Ext.util.TagManager can rebuild its cache ?', () => {
 	taggableA.tags.push('test-tag-a', 'test-tag-b');
 	taggableB.tags.push('test-tag-b');
 
-	collection.rebuildCache();
+	tagManager.rebuildCache();
 
 	const onlyA   = tagManager.search('test-tag-a');
 	const onlyB   = tagManager.search('test-tag-b', '-test-tag-a');
