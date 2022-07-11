@@ -47,7 +47,9 @@ Ext.apply(Ext, (function() {
 			var len = Math.min(keys.length, values.length), r = {}
 
 			for (var i = 0; i < len; ++i) {
-				r[keys[i]] = values[i]
+				if (keys[i]) {
+					r[keys[i]] = values[i]
+				}
 			}
 
 			return r
