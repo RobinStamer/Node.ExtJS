@@ -41,12 +41,12 @@ class TagManager
 
 		if(this.collection.events.update)
 		{
-			this.collection.on('update',  (index, record) => this.handleRecordUpdate(index, record));
+			this.collection.on('update',  this.handleRecordUpdate, this);
 		}
 
-		this.collection.on('replace', (index, record, key) => this.handleRecordReplace(index, record, key));
-		this.collection.on('remove', (index, record, key) => this.handleRecordRemoved(index, record, key));
-		this.collection.on('add', (index, record, key) => this.handleRecordAdded(index, record, key));
+		this.collection.on('replace', this.handleRecordReplace, this);
+		this.collection.on('remove', this.handleRecordRemoved, this);
+		this.collection.on('add', this.handleRecordAdded, this);
 	}
 
 	/**
