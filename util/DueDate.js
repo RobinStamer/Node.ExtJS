@@ -56,7 +56,7 @@ class DueDate
 		Object.defineProperty(this, 'warn',   { value: config.warn ?? null });
 		Object.defineProperty(this, 'name',   { value: config.name ?? null });
 		Object.defineProperty(this, 'flex',   { value: config.flex ?? null });
-		Object.defineProperty(this, 'once',   { value: config.flex ?? null });
+		Object.defineProperty(this, 'once',   { value: config.once ?? null });
 
 		if(config.start)
 		{
@@ -67,13 +67,17 @@ class DueDate
 			Object.defineProperty(this, 'start', { value: Date.now() });
 		}
 		
+		
 		if(config.interval)
 		{
 			Object.defineProperty(this, 'interval', { value: config.interval });
-			this.expiry   = this.start + config.interval;
+			
+			this.expiry = this.start + this.interval;
 		}
 		else
 		{
+			this.expiry = config.expiry;
+			
 			Object.defineProperty(this, 'interval', { value: this.expiry - this.start });
 		}
 	}
