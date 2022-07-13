@@ -133,8 +133,6 @@ test('Ext.util.DueDate throws error when given no interval or expiry ?', () => {
 		caught = error;
 	}
 
-	console.log(caught);
-
 	expect(caught).toEqual('Expiry or interval must be defined.');
 });
 
@@ -152,8 +150,6 @@ test('Ext.util.DueDate throws error when given both interval and expiry ?', () =
 	{
 		caught = error;
 	}
-
-	console.log(caught);
 
 	expect(caught).toEqual('Either expiry or interval must be defined (not both).');
 });
@@ -175,8 +171,6 @@ test('Ext.util.DueDate throws error when marked as once and reset ?', () => {
 	{
 		caught = error;
 	}
-
-	console.log(caught);
 
 	expect(caught).toEqual('Cannot reset DueDate marked as "once".');
 });
