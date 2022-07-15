@@ -1,4 +1,4 @@
-Ext('Ext.ComponentMgr').ns('Ext.util')
+Ext.isNode && Ext('Ext.ComponentMgr')
 
 /**
  * @class Ext.util.Journal

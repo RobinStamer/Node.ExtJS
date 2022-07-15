@@ -6,9 +6,7 @@ TODO: FIX copyright
  * http://www.extjs.com/license
  */
 
-if (!Ext) {
-	require('Ext')('Ext.util.MixedCollection')
-}
+Ext.isNode && Ext('Ext.util.MixedCollection')
 
 /**
  * @class Ext.CollectionMgr

@@ -837,6 +837,11 @@ function(el){
          * @type Boolean
          */
         isAir : isAir
+		/**
+		 * True if running on node.js.  Used to provide ways to handle modules that are meant to work with both node.js and a web-browser.
+		 * @type Boolean
+		 */
+		,isNode : true
     });
 
     /**
