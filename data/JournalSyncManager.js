@@ -138,17 +138,19 @@ class JournalSyncManager {
 		return def
 	}
 
-	stageRPC() {
+	stageRPC(prefix) {
 		var	self = this
 
+		prefix = prefix ? prefix + '.' : ''
+
 		return [{
-			name:	'jobs.stage2'
+			name:	`${prefix}stage2`
 			,raw:	true
 			,func:	function() {
 				this.response(self.stage2(this.rawParams))
 			}
 		},{
-			name:	'jobs.stage4'
+			name:	`${prefix}stage4`
 			,raw:	true
 			,func:	function() {
 				this.response(self.stage4(this.rawParams))
