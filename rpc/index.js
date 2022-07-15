@@ -2,6 +2,7 @@ var Ext	= require('Ext')('Ext.data.Buffer')
 	,http	= require('http')
 	,net	= require('net')
 	,util	= require('util')
+	,url	= require('url')
 	,child_process	= require('child_process')
 
 /**
@@ -172,10 +173,10 @@ class RPC {
  * @constructor
  * Performs an RPC call, see {@link Ext.rpc.Client#call}.
  */
-const rpc = new RPC
+var rpc = new RPC
 
 Ext.rpc = function(...args) {
-	return rpc.call.apply(rpc, args)
+	return rpc.call(...args)
 }
 
 /**
@@ -183,6 +184,24 @@ Ext.rpc = function(...args) {
  */
 Ext.rpc.handle = function(method) {
 	return rpc.handle(method)
+}
+
+/**
+ * Replace the existing primary RPC handler
+ */
+Ext.rpc.replace = function(_rpc) {
+	if (_rpc instanceof RPC) {
+		rpc = _rpc
+	} else if ('string' == typeof _rpc && /https?:\/\/./.test(_rpc)) {
+		var x = url.parse(_rpc)
+
+		rpc = new RPC({
+			hostname:	x.host
+			,path:	x.path
+		})
+	} else {
+		throw new Error('Not an RPC class')
+	}
 }
 
 Ext.rpc.Client = RPC
