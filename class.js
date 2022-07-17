@@ -48,6 +48,11 @@ Ext.xcreate = function(cfg, def) {
 	return Ext.create(cfg, def)
 }
 
+// Private function to enable co-operative modules to add stuff to xcreate()
+Ext.xcreate.reg = function(key, module) {
+	registry[key] = module
+}
+
 /*
 var A, C
 
