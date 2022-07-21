@@ -97,10 +97,10 @@ class Journal {
 		var h = this.cfg.helpers[key]
 
 		if ('function' != typeof h) {
-			throw new Error('No helper ${key}')
+			throw new Error(`No helper ${key}`)
 		}
 
-		h.call(this, ...args)
+		return h.call(this, ...args)
 	}
 }
 
