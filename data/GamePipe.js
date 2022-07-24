@@ -18,6 +18,8 @@ class GamePipe extends Ext.data.Pipe {
 		if (cfg.input) {
 			Ext.data.Pipe.pipe(this)
 		}
+
+		this.buttons = 0
 	}
 
 	_transform(chunk, enc, done) {
@@ -40,7 +42,13 @@ class GamePipe extends Ext.data.Pipe {
 			ev.isAxis	= !!(ev.type & 0x02)
 			ev.isInit	= !!(ev.type & 0x80)
 
-			ev.b = b.slice(0, 8)
+			if (ev.isButton && 53 > ev.number) {
+				if (ev.value) {
+					this.buttons |= 1 << ev.number
+				} else {
+					this.buttons &= ~(1 << ev.number)
+				}
+			}
 
 			this.push(ev)
 
