@@ -25,12 +25,30 @@ class EventSource extends Ext.util.Observable {
 		this.addEvents('message')
 
 		this._o	= {}
-		this._l	= new Ext.http.Line(url)
+		this.connect(url)
+	}
 
+	/**
+	 * Connect to an EventSource http(s) URL
+	 * @param {String} url URL to connect to
+	 */
+	connect(url) {
 		var self = this
+
+		if (url) {
+			this._url	= url
+		}
+
+		this._l	= new Ext.http.Line(url)
 
 		this._l.on('data', function(line) {
 			self._processLine(line)
+		})
+
+		this._l.on('close', function() {
+			self.close()
+
+			self.connect()
 		})
 	}
 
