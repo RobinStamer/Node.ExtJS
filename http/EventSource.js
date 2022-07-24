@@ -39,7 +39,7 @@ class EventSource extends Ext.util.Observable {
 			this._url	= url
 		}
 
-		this._l	= new Ext.http.Line(url)
+		this._l	= new Ext.http.Line(this._url)
 
 		this._l.on('data', function(line) {
 			self._processLine(line)
@@ -47,6 +47,8 @@ class EventSource extends Ext.util.Observable {
 
 		this._l.on('close', function() {
 			self.close()
+
+			self.fireEvent(':reconnect')
 
 			self.connect()
 		})

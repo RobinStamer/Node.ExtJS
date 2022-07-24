@@ -79,12 +79,28 @@ class SSE extends stream.Transform {
 		this.pipe(rs)
 
 		rq.on('close', function() {
-			var	 o	= self.map.get(this)
-			self.map.delete(o.rq)
-			self.map.delete(o.rs)
+			self.remove(this)
 		})
 
 		return o
+	}
+
+	get(x) {
+		return 'string' == typeof x ? this.mc.get(x) : (this.map.get(x) || null)
+	}
+
+	remove(x) {
+		var o = this.get(x)
+
+		if (o) {
+			this.map.delete(o.rq)
+			this.map.delete(o.rs)
+			this.mc.remove(o.id)
+
+			return true
+		}
+
+		return false
 	}
 
 	pipe(out, options) {
@@ -102,8 +118,6 @@ class SSE extends stream.Transform {
 
 		// Safari and others bug
 		out.write(`:ok\n\nevent: :id\ndata: ${o.id}\n\n`)
-
-		return super.pipe(out, options)
 	}
 
 	_transform(message, encoding, done) {
