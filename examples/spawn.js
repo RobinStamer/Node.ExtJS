@@ -8,7 +8,8 @@ Ext.xcreate({
 	}
 }).on('data', function(line) {
 	console.dir({
-		time: new Date - 0
+		index:	Ext.id()
+		,time: new Date - 0
 		,line: line
 	})
 })
