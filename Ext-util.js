@@ -4,6 +4,9 @@
  * @class Ext
  */
 
+const	HOME	= process.env.HOME
+	,path	= require('path')
+
 Ext.apply(Ext, (function() {
 	return {
 		/**
@@ -22,7 +25,20 @@ Ext.apply(Ext, (function() {
 		 * @return {String} Converted path
 		 */
 		,path: function path(s) {
-			return s.replace(/^~\//, process.env.HOME + '/')
+			return s.replace(/^~\//, HOME + '/')
+		}
+		/**
+		 * Reverses Ext.path(), turns an absolute directory into one prefixed with ~ if it's in the user's home
+		 * @param {String} path
+		 * @param {Boolean} absolute If true, add current working directory to the path before checking
+		 * @return {String} Converted path
+		 */
+		,unpath: function unpath(s, a) {
+			if (a && !path.isAbsolute(s)) {
+				s = path.join(process.cwd(), s)
+			}
+
+			return s.slice(0, HOME.length) == HOME ? `~${s.slice(HOME.length)}` : s
 		}
 		/**
 		 * Return a new UUID
