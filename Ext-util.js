@@ -25,7 +25,7 @@ Ext.apply(Ext, (function() {
 		 * @return {String} Converted path
 		 */
 		,path: function path(s) {
-			return s.replace(/^~\//, HOME + '/')
+			return '~' == s ? HOME : s.replace(/^~\//, HOME + '/')
 		}
 		/**
 		 * Reverses Ext.path(), turns an absolute directory into one prefixed with ~ if it's in the user's home
