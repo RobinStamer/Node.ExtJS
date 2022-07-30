@@ -1,31 +1,52 @@
 Ext('Ext.p9p')
 
 class Qid {
-	type
-	version
-	high
-	low
-
 	constructor(b) {
-		if (13 != b.length) {
+		if ('string' == typeof b) {
+			b = Buffer.from(b, 'hex')
+		} else if (!(b instanceof Buffer) || 13 != b.length) {
 			throw new Error('Expected a 13-byte buffer!')
 		}
 
 		this.b	= b
+	}
 
-		this.type	= b.readUInt8(0)
-		this.version	= b.readUInt32LE(1)
-		this.low	= b.readUInt32LE(5)
-		this.high	= b.readUInt32LE(9)
+	get type() {
+		return this.b.readUInt8()
+	}
+
+	get version() {
+		return this.b.readUInt32LE(1)
+	}
+
+	get low() {
+		return this.b.readUInt32LE(5)
+	}
+
+	get high() {
+		return this.b.readUInt32LE(9)
+	}
+
+	toString() {
+		return this.b.toString('hex')
+	}
+
+	writeTo(b, i) {
+		b.writeUInt8(this.type, i || 0)
+		b.writeUInt32LE(this.version, (i || 0) + 1)
+		b.writeUInt32LE(this.low, (i || 0) + 5)
+		b.writeUInt32LE(this.high, (i || 0) + 9)
+
+		return b
 	}
 
 	static build(type, version, low, high) {
 		var b = Buffer.allocUnsafe(13)
 
 		b.writeUInt8(type)
-		b.writeUInt32(version, 1)
-		b.writeUInt32(low, 5)
-		b.writeUInt32(high, 9)
+		b.writeUInt32LE(version, 1)
+		b.writeUInt32LE(low, 5)
+		b.writeUInt32LE(high, 9)
 
 		return new Qid(b)
 	}
