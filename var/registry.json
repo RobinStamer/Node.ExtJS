@@ -19,5 +19,9 @@
 	"spawn:stdout": "Ext.util.Spawn",
 	"spawn:stderr": "Ext.util.Spawn",
 	"spawn:stdin": "Ext.util.Spawn",
-	"spawn:pipe": "Ext.data.SpawnPipe"
+	"spawn:pipe": "Ext.data.SpawnPipe",
+	"container": "Ext.Container",
+	"component": "Ext.Component",
+	"netproxy": "Ext.net.Proxy",
+	"gamepipe": "Ext.data.GamePipe"
 }

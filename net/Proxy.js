@@ -107,6 +107,9 @@ class Proxy extends Ext.util.Observable {
 
 Ext.net.Proxy = Proxy
 
+if (Ext.reg)
+Ext.reg('netproxy', Ext.net.Proxy)
+
 Proxy.portMap = new Map([
 	['9p', 564]
 	,['9ps', 1564]
