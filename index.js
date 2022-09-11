@@ -25,6 +25,7 @@ var	isExtRegex	= /^Ext/
 	,altMap	= {
 		'Ext.util.TaskRunner': 'Ext.util.TaskMgr'
 		,'Ext.TaskMgr': 'Ext.util.TaskMgr'
+		,'Ext.rq':	'Ext.z'
 	}
 
 function _load(o, module) {
