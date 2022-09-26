@@ -23,5 +23,7 @@
 	"container": "Ext.Container",
 	"component": "Ext.Component",
 	"netproxy": "Ext.net.Proxy",
-	"gamepipe": "Ext.data.GamePipe"
+	"gamepipe": "Ext.data.GamePipe",
+	"IC": "Ext.data.IC",
+	"account": "Ext.fin.Account"
 }
