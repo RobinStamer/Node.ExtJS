@@ -61,7 +61,8 @@ class ArchFile extends stream.Writable {
 	}
 
 	_write(chunk, encoding, done) {
-		this._process(chunk.toString().substr(0, chunk.length - 1))
+		//this._process(chunk.toString().substr(0, chunk.length - 1))
+		this._process(chunk.toString())
 		done()
 	}
 
