@@ -12,6 +12,7 @@ Ext('Ext.http.Line', 'Ext.util.Observable')
  * @param {String} url Requested URL
  */
 
+// TODO: switch from http.Line to a generic reconnecting linePipe HTTP thing
 class EventSource extends Ext.util.Observable {
 	constructor(url) {
 		super({})
@@ -46,12 +47,18 @@ class EventSource extends Ext.util.Observable {
 		})
 
 		this._l.on('close', function() {
-			self.close()
-
-			self.fireEvent(':reconnect')
-
-			self.connect()
+			self._reconnect()
 		})
+
+		this._l.on('end', function() {
+			self._reconnect()
+		})
+	}
+
+	_reconnect() {
+		this.close()
+		this.fireEvent(':reconnect')
+		this.connect()
 	}
 
 	_processLine(line) {
@@ -110,6 +117,7 @@ class EventSource extends Ext.util.Observable {
 	close() {
 		if (this._l) {
 			this._l.input._input.destroy()
+			delete this._l
 		}
 	}
 }
