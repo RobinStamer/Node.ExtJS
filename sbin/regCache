@@ -8,8 +8,12 @@ Ext('Ext.data.LinePipe', 'Ext.util.Spawn')
 Ext.create({
 	xtype:	'linePipe'
 	,input:	{
-		xtype: 'spawn:stdout'
-		,cmd: ['grep', '-RF', 'Ext.reg(\'']
+		xtype: 'spawn:stdin'
+		,cmd:	['sort']
+		,input: {
+			xtype: 'spawn:stdout'
+			,cmd: ['grep', '-RF', 'Ext.reg(\'']
+		}
 	}
 	,_transform: function(line) {
 		var m = /Ext.reg\('([^']+)', (Ext\.[a-zA-Z0-9.]+)\)/.exec(line)
