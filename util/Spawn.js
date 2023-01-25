@@ -4,21 +4,47 @@ Ext('Ext.data.Pipe')
 
 class Spawn {
 	constructor(opts) {
-		this.cfg = opts
-		this.xtype = this.cfg.xtype
+		this.cfg	= opts
+		this.xtype	= this.cfg.xtype
+		
+		this.s	= cp.spawn(this.cmd = this.cfg.cmd.shift(), this.cfg.cmd)
 
-		this.s = cp.spawn(this.cmd = this.cfg.cmd.shift(), this.cfg.cmd)
+		this.main	= this.s[{
+			'spawn:stdin':	'stdin'
+			,'spawn:stdout':	'stdout'
+			,'spawn:stderr':	'stderr'
+		}[this.xtype] || 'stdout']
+
+		this.out	= 'spawn:stdin' == this.xtype ? this.s.stdout : this.main
+
 
 		if ('spawn:stdin' == this.xtype && opts.input) {
 			Ext.data.Pipe.pipe(this)
 		}
 	}
 
-	pipe(...args) {
+	pipe(...args) { /*
 		return this.s[{
 			'spawn:stdout':	'stdout'
 			,'spawn:stderr':	'stderr'
-		}[this.xtype] || 'stdout'].pipe(...args)
+		}[this.xtype] || 'stdout'] //*/
+		return this.out.pipe(...args)
+	}
+
+	on(...args) {
+		return this.out.on(...args)
+	}
+
+	once(...args) {
+		return this.out.once(...args)
+	}
+
+	emit(...args) {
+		return this.out.emit(...args)
+	}
+
+	removeListener(...args) {
+		return this.out.removeListener(...args)
 	}
 
 	write(...args) {
