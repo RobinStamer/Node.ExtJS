@@ -113,6 +113,7 @@ Ext.reg('netproxy', Ext.net.Proxy)
 Proxy.portMap = new Map([
 	['9p', 564]
 	,['9ps', 1564]
+	,['redis', 6379]
 	,['irc', 6667]
 	,['ircs', 6690]
 ])
@@ -124,9 +125,8 @@ function handleDialString(str, fn, sock, cb) {
 		args.unshift(parts.pop())
 	} else if ('tcp' == parts[0] && 3 == parts.length) {
 		args.unshift(parts[1])
-		args.unshift(parts[2])
 
-		args[0] = {'9p': 564, '9ps': 1564, irc: 6667}[args[0].toLowerCase()] || (args[0] - 0)
+		args.unshift(Proxy.portMap.get(parts[2].toLowerCase()) || (parts[0] - 0))
 	}
 
 	return args
@@ -141,7 +141,6 @@ Ext.net.dial = function(str, sock) {
 
 	args = handleDialString(str, 'connect', sock, Ext.emptyFn)
 
-	console.dir(['dial', ...args])
 	sock.connect(...args)
 
 	return sock
@@ -156,6 +155,5 @@ Ext.net.listen = function(str, srv) {
 
 	args = handleDialString(str, 'listen', srv, Ext.emptyFn)
 
-	console.dir(['listen', ...args])
 	srv.listen(...args)
 }
