@@ -79,8 +79,8 @@ Ext.apply(Ext, (function() {
 		 */
 		,promisifyStream(stream, successEvent='end', errorEvent='error') {
 			return new Promise((res, rej) => {
-				stream.on(successEvent, () => res())
-				stream.on(errorEvent, err => rej(err))
+				stream.once(successEvent, () => res())
+				stream.once(errorEvent, err => rej(err))
 			})
 		}
 	}
