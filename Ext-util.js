@@ -70,5 +70,18 @@ Ext.apply(Ext, (function() {
 
 			return r
 		}
+		/**
+		 * Returns a promise that resolves when the stream finishes, or rejects if an error occurs.
+		 * Note: For writable streams you might want to use 'finish' as the success event.
+		 * @param {Stream} stream The stream
+		 * @param {String?} successEvent Name of the successful event, 'end' by default
+		 * @param {String?} errorEvent Name of the error event, 'error' by default
+		 */
+		,promisifyStream(stream, successEvent='end', errorEvent='error') {
+			return new Promise((res, rej) => {
+				stream.on(successEvent, () => res())
+				stream.on(errorEvent, err => rej(err))
+			})
+		}
 	}
 })())
