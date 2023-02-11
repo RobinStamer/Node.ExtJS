@@ -193,10 +193,18 @@ Ext.rpc.replace = function(_rpc) {
 	if (_rpc instanceof RPC) {
 		rpc = _rpc
 	} else if ('string' == typeof _rpc && /https?:\/\/./.test(_rpc)) {
-		var x = url.parse(_rpc)
+		var	x	= url.parse(_rpc)
+			,port	= 80
+
+		x.hosta = x.host.split(':')
+		if (2 == x.hosta.length) {
+			port	= x.hosta[1] - 0
+			x.host	= x.hosta[0]
+		}
 
 		rpc = new RPC({
 			hostname:	x.host
+			,port:	port
 			,path:	x.path
 		})
 	} else {
