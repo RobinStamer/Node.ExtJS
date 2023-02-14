@@ -1,7 +1,7 @@
-Ext('Ext.data.Tag')
+Ext('Ext.util.TagManager')
 
 var mc	= new Ext.util.MixedCollection
-	,tag	= new Ext.data.Tag({col: mc})
+	,tag	= new Ext.util.TagManager({collection: mc})
 	,data
 
 data = [
