@@ -92,5 +92,21 @@ Ext.apply(Ext, (function() {
 				stream.once(errorEvent, err => rej(err))
 			})
 		}
+		/**
+		 * Print a message to stderr and die
+		 * @param {Array|String} msg Message(s) to print
+		 * @param {Number?} code Error code to exit with.  Defaults to 1
+		 */
+		,die(msg, code=1) {
+			if (Array.isArray(msg)) {
+				for (var i = 0; i < msg.length; ++i) {
+					console.error(msg[i])
+				}
+			} else {
+				console.error(msg)
+			}
+
+			process.exit(code)
+		}
 	}
 })())
