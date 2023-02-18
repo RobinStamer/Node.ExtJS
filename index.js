@@ -49,6 +49,14 @@ function _load(o, module) {
 
 Ext.argv = process.argv.slice(2)
 
+Ext.global = function(key, obj) {
+	if (window[key]) {
+		throw new Error(`Cannot make ${key} global, refusing to overwrite an existing value`)
+	}
+
+	window[key] = obj
+}
+
 //
 // End new code for node.js
 //
