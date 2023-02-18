@@ -71,6 +71,15 @@ Ext.apply(Ext, (function() {
 			return r
 		}
 		/**
+		 * Returns a promise that resolves with value (if provided) after a given number of milliseconds.
+		 * Note: You can pass a rejected Promise as value to delay a promise rejection.
+		 * @param {Number} ms Number of milliseconds to wait
+		 * @param {Any?} value The delayed value
+		 */
+		,delayed(ms, value) {
+			return new Promise(res => setTimeout(() => res(value), ms))
+		}
+		/**
 		 * Returns a promise that resolves when the stream finishes, or rejects if an error occurs.
 		 * Note: For writable streams you might want to use 'finish' as the success event.
 		 * @param {Stream} stream The stream
