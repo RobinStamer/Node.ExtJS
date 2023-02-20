@@ -1,31 +1,37 @@
 #!/usr/bin/env ext
 const	child	= require('child_process')
 	,fs	= require('fs')
-	,db	= require('../var/registry.json')
 
 Ext('Ext.data.LinePipe', 'Ext.util.Spawn')
 
-Ext.create({
-	xtype:	'linePipe'
-	,input:	{
-		xtype: 'spawn:stdin'
-		,cmd:	['sort']
-		,input: {
-			xtype: 'spawn:stdout'
-			,cmd: ['grep', '-RF', 'Ext.reg(\'']
-		}
-	}
-	,_transform: function(line) {
-		var m = /Ext.reg\('([^']+)', (Ext\.[a-zA-Z0-9.]+)\)/.exec(line)
+function doit(seekString, filename) {
+	var	db	= {}
 
-		return m ? [m[1], m[2]] : []
-	}
-}).on('data', function(line) {
-	if (line.length) {
-		db[line[0]] = line[1]
-	}
-}).on('finish', function() {
-	var s = JSON.stringify(db, null, '\t')
-	fs.writeFileSync('var/registry.json', `${s}\n`)
-	console.dir(db)
-})
+	return Ext.create({
+		xtype:	'linePipe'
+		,input:	{
+			xtype: 'spawn:stdin'
+			,cmd:	['sort', '-k', '2', '-t', '\'']
+			,input: {
+				xtype: 'spawn:stdout'
+				,cmd: ['grep', '-RF', seekString]
+			}
+		}
+		,_transform: function(line) {
+			var m = /Ext.[a-zA-Z0-9.]+\('([^']+)', (Ext\.[a-zA-Z0-9.]+)\)/.exec(line)
+
+			return m ? [m[1], m[2]] : []
+		}
+	}).on('data', function(line) {
+		if (line.length) {
+			db[line[0]] = line[1]
+		}
+	}).on('finish', function() {
+		var s = JSON.stringify(db, null, '\t')
+		fs.writeFileSync(filename, `${s}\n`)
+		console.dir(db)
+	})
+}
+
+doit('Ext.reg(\'', 'var/registry.json')
+doit('Ext.preg(\'', 'var/plugin.registry.json')

@@ -1,0 +1,4 @@
+{
+	"msgbus": "Ext.ux.MsgBus",
+	"templatemgr": "Ext.plugin.TemplateMgr"
+}

@@ -32,6 +32,7 @@ Ext.class = function ExtCls(config) {
 }
 
 /**
+ * Initialize configuration given an xtype, using a built-in registry to dynamically load the required source files before initializing the class
  * @param {Object} cfg
  * @param {Constructor} def Default type
  */
@@ -46,6 +47,16 @@ Ext.xcreate = function(cfg, def) {
 	}
 
 	return Ext.create(cfg, def)
+}
+
+/**
+ * Initialize all plugins on a component
+ * @param {Object} cmp Component with plugins to initialize
+ */
+Ext.psetup = function(cmp) {
+	Ext('Ext.plugin')
+
+	return Ext.psetup(cmp)
 }
 
 // Private function to enable co-operative modules to add stuff to xcreate()
