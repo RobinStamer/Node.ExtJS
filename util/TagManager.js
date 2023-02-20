@@ -1,3 +1,5 @@
+Ext('Ext.ComponentMgr')
+
 /**
  * @class Ext.util.TagManager
  *

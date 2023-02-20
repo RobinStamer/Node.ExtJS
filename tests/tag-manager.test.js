@@ -1,4 +1,10 @@
-require('Ext')('Ext.util.TagManager', 'Ext.util.MixedCollection');
+require('Ext')('Ext.util.TagManager', 'Ext.util.MixedCollection')
+
+// TODO: fix tests to work with a return of Array instead of Set
+Ext.util.TagManager.prototype._search = Ext.util.TagManager.prototype.search
+Ext.util.TagManager.prototype.search = function(...args) {
+	return new Set(this._search(...args))
+}
 
 test('Ext is a function?', () => expect(typeof Ext).toBe('function'));
 
