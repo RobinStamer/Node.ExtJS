@@ -40,7 +40,7 @@ Ext.apply(Ext.plugin, {
 			cmp.plugins = cmp.plugins.map(p => { return Ext.plugin.apply(cmp, p) })
 		}
 	}
-}
+})
 
 Ext.psetup = function(cmp) {
 	return Ext.plugin.setup(cmp)

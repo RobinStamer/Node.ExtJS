@@ -191,52 +191,44 @@ class TagManager {
 	/**
 	 * Search for records given a list of tags.
 	 * @param names {Array} the list of names to check.
-	 * @return {Set}
+	 * @return {Array}
 	 * @method
 	 */
-	search(...names)
-	{
-		const positives = names.filter(n => n[0] !== '-');
-		const negatives = names.filter(n => n[0] === '-').map(n => n.substr(1));
+	search(...names) {
+		const positives = names.filter(n => n[0] !== '-')
+		const negatives = names.filter(n => n[0] === '-').map(n => n.substr(1))
 
 		const caches = positives.length
 			? this.sortCaches(positives.map(n => this.caches.get(n)).filter(x => x))
-			: [this.records];
+			: [this.records]
 
-		const results = new Set(caches.shift());
+		const results = new Set(caches.shift())
 
-		for(const record of results)
-		{
-			let watched = record[this.watchProp];
+		for (const record of results) {
+			let watched = record[this.watchProp]
 			
-			if(!(watched instanceof Set))
-			{
-				watched = new Set(watched);
+			if (!(watched instanceof Set)) {
+				watched = new Set(watched)
 			}
 
-			for(const name of positives)
-			{
-				if(!watched.has(name))
-				{
-					results.delete(record);
+			for (const name of positives) {
+				if (!watched.has(name)) {
+					results.delete(record)
 				}
 			}
 
-			for(const name of negatives)
-			{
-				if(watched.has(name))
-				{
-					results.delete(record);
+			for (const name of negatives) {
+				if (watched.has(name)) {
+					results.delete(record)
 				}
 			}
 		}
 
-		if(this.returns === 'objects')
-		{
-			return results;
+		if (this.returns === 'objects') {
+			return [...results]
 		}
 
-		return new Set([...results].map(r => this.collection.getKey(r)));
+		return [...results].map(r => this.collection.getKey(r))
 	}
 }
 
