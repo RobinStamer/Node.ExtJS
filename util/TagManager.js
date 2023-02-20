@@ -12,41 +12,45 @@
  * - watchProp: {String|Symbol} the name of the property to watch for tags
  * - keys: {String|Symbol} whether to return keys or objects
  */
-class TagManager
-{
-	collection;
-	returns   = 'keys';
-	watchProp = 'tags';
-	caches    = new Map;
-	records   = new Set;
+class TagManager {
+	collection
+	returns   = 'keys'
+	watchProp = 'tags'
+	caches    = new Map
+	records   = new Set
 
-	constructor(config)
-	{
-		Object.freeze(config);
+	constructor(config) {
+		Object.freeze(config)
 
-		Object.defineProperty(this, 'config', { value: config });
+		Object.defineProperty(this, 'config', { value: config })
+		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns })
 
-		if(config.watchProp)
-		{
-			Object.defineProperty(this, 'watchProp', { value: config.watchProp });
+		if (config.watchProp) {
+			Object.defineProperty(this, 'watchProp', { value: config.watchProp })
 		}
 
-		if(!config.collection)
-		{
-			throw 'Collection is required for TagManager.';
+		if (config.collection) {
+			this.init(config.collection)
+		}
+	}
+
+	/**
+	 * Initialize collection
+	 * @param {MixedCollection} col Collection to track tags on
+	 */
+	init(col) {
+		Object.defineProperty(this, 'collection', { value: col })
+
+		this.collection.on('update',  this.handleRecordUpdate, this)
+		this.collection.on('replace', this.handleRecordReplace, this)
+		this.collection.on('remove', this.handleRecordRemoved, this)
+		this.collection.on('add', this.handleRecordAdded, this)
+
+		this.collection.search = function(...arg) {
+			return this._tagmgr.search(...arg)
 		}
 
-		Object.defineProperty(this, 'collection', { value: config.collection });
-		Object.defineProperty(this, 'returns',    { value: config.returns ?? this.returns });
-
-		if(this.collection.events.update)
-		{
-			this.collection.on('update',  this.handleRecordUpdate, this);
-		}
-
-		this.collection.on('replace', this.handleRecordReplace, this);
-		this.collection.on('remove', this.handleRecordRemoved, this);
-		this.collection.on('add', this.handleRecordAdded, this);
+		this.collection._tagmgr = this
 	}
 
 	/**
@@ -236,4 +240,6 @@ class TagManager
 	}
 }
 
-Ext.util.TagManager = TagManager;
+Ext.util.TagManager = TagManager
+
+Ext.preg('tagmgr', Ext.util.TagManager)

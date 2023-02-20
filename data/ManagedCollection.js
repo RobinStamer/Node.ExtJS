@@ -28,6 +28,12 @@ Ext.data.ManagedCollection = Ext.extend(Ext.util.MixedCollection, {
 			this.id = this.cfg.id
 			Ext.CollectionMgr.register(this)
 		}
+
+		if (cfg.plugins) {
+			this.plugins = cfg.plugins
+			Ext.psetup(this)
+			delete cfg.plugins
+		}
 	}
 	,add: function(...args) {
 		if (this.cfg.class) {
