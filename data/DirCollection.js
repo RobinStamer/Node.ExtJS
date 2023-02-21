@@ -1,6 +1,6 @@
 var	fs	= require('fs')
 
-Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr', 'Ext.fs')
+Ext('Ext.data.ManagedCollection', 'Ext.ComponentMgr', 'Ext.fs', 'Ext.util.Serializer')
 
 /**
  * @class Ext.data.DirCollection
@@ -55,6 +55,14 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 		this.addEvents('error')
 
 		this.on('add', this._added)
+
+		this.serializer = cfg.serializer instanceof Ext.util.Serializer ? cfg.serializer : (Ext('Ext.util.JSONSerializer'), new Ext.util.JSONSerializer)
+	}
+	,encode: function(...args) {
+		return this.serializer.encode(...args)
+	}
+	,decode: function(...args) {
+		return this.serializer.decode(...args)
 	}
 	,_added: function(index, o, key) {
 		if (key === undefined) {
@@ -106,7 +114,7 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			}
 
 			try {
-				data	= JSON.parse(json)
+				data	= self.decode(json)
 			} catch (e) {
 				self.fireEvent('error', e)
 				throw e
@@ -148,7 +156,7 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 			for (let i = 0; i < this.items.length; ++i) {
 				let item	= this.items[i]
 					,key	= this.keys[i]
-					,json	= JSON.stringify(item) + '\n'
+					,json	= this.encode(item) + '\n'
 					,file	= this.getFilename(key, item, i)
 
 				newJson[file] = json
