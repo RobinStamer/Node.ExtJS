@@ -1,13 +1,25 @@
 require('Ext')
 Ext('Ext.Ext-more', 'Ext.ComponentMgr')
 
-const	registry = require('Ext/var/registry.json')
+const	registry	= require(`${__dirname}/var/registry.json`)
+	,pregistry	= require(`${__dirname}/var/plugin.registry.json`)
 
 /**
  * @class Ext
  */
 
 // FIXME: Document these methods properly
+
+// private
+function applyPluginRegistry() {
+	Ext.intercept(Ext.ComponentMgr, 'createPlugin', function(a, b) {
+		let pt = a.ptype || b
+		if (!this.ptypes[pt]) {
+			Ext(pregistry[pt])
+		}
+	}, Ext.ComponentMgr)
+}
+Ext.plugin && applyPluginRegistry()
 
 /**
  * @param {Object} config
@@ -55,6 +67,8 @@ Ext.xcreate = function(cfg, def) {
  */
 Ext.psetup = function(cmp) {
 	Ext('Ext.plugin')
+
+	applyPluginRegistry()
 
 	return Ext.psetup(cmp)
 }

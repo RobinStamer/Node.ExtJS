@@ -26,6 +26,10 @@ var	isExtRegex	= /^Ext/
 		'Ext.util.TaskRunner': 'Ext.util.TaskMgr'
 		,'Ext.TaskMgr': 'Ext.util.TaskMgr'
 		,'Ext.rq':	'Ext.z'
+		,'Ext.more':	'Ext.Ext-more'
+		,'Ext-more':	'Ext.Ext-more'
+		,'Ext.util':	'Ext.Ext-util'
+		,'Ext-util':	'Ext.Ext-util'
 	}
 
 function _load(o, module) {

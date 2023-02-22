@@ -1,15 +1,54 @@
-Ext.ns('Ext.data')
+Ext('Ext-more', 'Ext.util.MixedCollection').ns('Ext.data')
 
 class JournalSyncManager {
 	constructor(o) {
-		this.db = o
+		o instanceof Ext.util.MixedCollection && this.init(o)
+	}
+
+	init(cmp) {
+		this.db = cmp
 		this.class = this.db.cfg.class
+		this.db.syncmgr = this
 
 		if (!this.class) {
 			throw new Error('JournalSyncManager does not have a class!')
 		}
 
 		this.db.addEvents('update', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6')
+
+		this.db.on('add', function(i, item) {
+			Ext.sequence(item, 'writeEntry', function() {
+				cmp.fireEvent('update', cmp.getKey(item), item)
+			}, item)
+
+			Ext.sequence(item, 'applyJournal', function() {
+				cmp.fireEvent('update', cmp.getKey(item), item)
+			}, item)
+		}, this)
+
+		this.db.writeEntry = (id, entry) => {
+			var o = cmp.key(id)
+
+			if (!o) {
+				return null
+			}
+
+			o.writeEntry(entry)
+
+			return o
+		}
+
+		this.db.applyJournal = (id) => {
+			var o = cmp.key(id)
+
+			if (!o) {
+				return null
+			}
+
+			o.applyJournal()
+
+			return o
+		}
 	}
 
 	save() {
@@ -160,3 +199,5 @@ class JournalSyncManager {
 }
 
 Ext.data.JournalSyncManager = JournalSyncManager
+
+Ext.preg('journalsync', Ext.data.JournalSyncManager)

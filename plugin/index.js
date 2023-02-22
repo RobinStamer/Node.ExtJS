@@ -17,11 +17,12 @@ Ext.apply(Ext.plugin, {
 		}
 
 		if (!Ext.isArray(cmp.plugins)) {
-			cmp.plugins = []
+			cmp.plugins = [p]
 		}
-		cmp.plugins.push(p)
 
 		p.init(cmp)
+
+		return p
 	}
 	,setup: function(cmp) {
 		if (!cmp.plugins) {
@@ -29,9 +30,9 @@ Ext.apply(Ext.plugin, {
 				cmp.plugins = cmp.cfg.plugins
 
 				delete cmp.cfg.plugins
+			} else {
+				return
 			}
-
-			return
 		}
 
 		if (Ext.isObject(cmp.plugins)) {
