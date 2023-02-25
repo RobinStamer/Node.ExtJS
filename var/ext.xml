@@ -49,15 +49,14 @@
 
         -->
 
-    <sources>
-        <source src="../Ext" match="*.js"/>
-    </sources>
-    <tags>
-        <tag name="author" title="Author"/>
-        <tag name="version" title="Version"/>
-        <tag name="note" format="&lt;i&gt;NOTE: {0}&lt;/i&gt;"/>
-        <tag name="xtype" title="xtype"/> 
-        <tag name="brick" title="brick-icon"/>
-                
-    </tags>
+	<sources>
+		<source src="../../Ext" match="*.js"/>
+	</sources>
+	<tags>
+		<tag name="author" title="Author"/>
+		<tag name="version" title="Version"/>
+		<tag name="note" format="&lt;i&gt;NOTE: {0}&lt;/i&gt;"/>
+		<tag name="xtype" title="xtype"/> 
+		<tag name="brick" title="brick-icon"/>
+	</tags>
 </doc>
