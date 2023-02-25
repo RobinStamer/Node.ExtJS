@@ -1,6 +1,18 @@
 Ext('Ext.ComponentMgr').ns('Ext.plugin')
 
+/*
+ * @class Ext.plugin
+ *
+ *
+ *
+ */
 Ext.apply(Ext.plugin, {
+	/**
+	 * Initialize a single component onto a component, append the plugin to the component's plugin list
+	 * @param {Component} cmp Component to have all the plugins initialized
+	 * @param {Object|String} plugin Plugin to initialize
+	 * @param {Configuration?} opts Configuration for plugin if plugin is unitialized
+	 */
 	apply: function(cmp, plugin, opts) {
 		var p
 
@@ -22,8 +34,16 @@ Ext.apply(Ext.plugin, {
 
 		p.init(cmp)
 
+		if (!cmp.plugins.includes(p)) {
+			cmp.plugins.push(p)
+		}
+
 		return p
 	}
+	/**
+	 * Initialize all plugins in a component
+	 * @param {Component} cmp Component to have all the plugins initialized
+	 */
 	,setup: function(cmp) {
 		if (!cmp.plugins) {
 			if (cmp.cfg.plugins) {
@@ -43,6 +63,11 @@ Ext.apply(Ext.plugin, {
 	}
 })
 
+/**
+ * Initialize all plugins in a component
+ * Alias for @{link Ext.plugin.setup}
+ * @param {Component} cmp Component to have all the plugins initialized
+ */
 Ext.psetup = function(cmp) {
 	return Ext.plugin.setup(cmp)
 }
