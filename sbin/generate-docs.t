@@ -3,4 +3,4 @@
 dir = ./docs
 
 rm -rf $dir
-ext-doc -p ext.xml -o $dir
+ext-doc -p var/ext.xml -o $dir
