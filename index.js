@@ -53,12 +53,21 @@ function _load(o, module) {
 
 Ext.argv = process.argv.slice(2)
 
+/**
+ * Set a global variable, mostly useful while in the REPL.  Can be (ab)used along with @{link Ext.ns} to set and get global variables (such as the non-REPL versions of Set, Function, etc).
+ * @param {String} key Global variable to set
+ * @param {Any} obj Value to set
+ * @return {Object} returns obj
+ * @member Ext global
+ */
 Ext.global = function(key, obj) {
 	if (window[key]) {
 		throw new Error(`Cannot make ${key} global, refusing to overwrite an existing value`)
 	}
 
 	window[key] = obj
+
+	return obj
 }
 
 //
