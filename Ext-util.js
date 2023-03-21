@@ -88,8 +88,18 @@ Ext.apply(Ext, (function() {
 		 */
 		,promisifyStream(stream, successEvent='end', errorEvent='error') {
 			return new Promise((res, rej) => {
-				stream.once(successEvent, () => res())
-				stream.once(errorEvent, err => rej(err))
+				function onError(...arg) {
+					rej(...arg)
+					stream.removeListener(successEvent, onEvent)
+				}
+
+				function onEvent(...arg) {
+					res(...arg)
+					stream.removeListener(errorEvent, onError)
+				}
+
+				stream.once(successEvent, onEvent)
+				stream.once(errorEvent, onError)
 			})
 		}
 		/**
@@ -107,6 +117,9 @@ Ext.apply(Ext, (function() {
 			}
 
 			process.exit(code)
+		}
+		,cfg(obj, defaults = {}) {
+			return Ext.apply(Object.create(null), obj, defaults)
 		}
 	}
 })())
