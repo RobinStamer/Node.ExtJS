@@ -31,5 +31,3 @@ Ext.apply(Hyper, {
 		return Hyper.load
 	}
 })
-
-Ext.reg('hyper', Ext.opt.hyper)
