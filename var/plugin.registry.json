@@ -2,5 +2,6 @@
 	"journalsync": "Ext.data.JournalSyncManager",
 	"msgbus": "Ext.ux.MsgBus",
 	"tagmgr": "Ext.util.TagManager",
-	"templatemgr": "Ext.plugin.TemplateMgr"
+	"templatemgr": "Ext.plugin.TemplateMgr",
+	"ready": "Ext.ready"
 }
