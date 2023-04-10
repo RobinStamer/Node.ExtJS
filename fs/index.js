@@ -22,12 +22,14 @@ Ext.fs.mkdirP = function(p, mode, f) {
     var cb = f || function () {};
     p = path.resolve(p);
 
+	// 448 == 0700
+
     var ps = path.normalize(p).split('/');
     fs.exists(p, function (exists) {
         if (exists) cb(null)
-        else Ext.fs.mkdirP(ps.slice(0,-1).join('/'), mode || 0700, function (err) {
+        else Ext.fs.mkdirP(ps.slice(0,-1).join('/'), mode || 448, function (err) {
             if (err && err.code !== 'EEXIST') cb(err)
-            else fs.mkdir(p, mode || 0700, function (err) {
+            else fs.mkdir(p, mode || 448, function (err) {
                 if (err && err.code !== 'EEXIST') cb(err)
                 else cb()
             })

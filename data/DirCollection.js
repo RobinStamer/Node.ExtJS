@@ -29,7 +29,8 @@ var DC = Ext.data.DirCollection = Ext.extend(Ext.data.ManagedCollection, {
 		if ('string' == typeof this.cfg.dir) {
 			this.dirname = Ext.path ? Ext.path(this.cfg.dir) : this.cfg.dir
 
-			Ext.fs.mkdirP(this.dirname, 0700, e => {
+			// 448 == 0700
+			Ext.fs.mkdirP(this.dirname, 448, e => {
 				if (e) {
 					this.fireEvent('error', e)
 					throw e
