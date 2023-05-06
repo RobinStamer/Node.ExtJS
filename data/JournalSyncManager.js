@@ -17,6 +17,10 @@ class JournalSyncManager {
 		this.db.addEvents('update', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6')
 
 		this.db.on('add', function(i, item) {
+			if (!Ext.util.Journal || !(item instanceof Ext.util.Journal)) {
+				return
+			}
+
 			Ext.sequence(item, 'writeEntry', function() {
 				cmp.fireEvent('update', cmp.getKey(item), item)
 			}, item)
