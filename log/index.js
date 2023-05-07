@@ -1,22 +1,45 @@
-
 /**
  * @class Ext.log.Log
  * Logging class
  */
 class Log {
+	/**
+	 * @type Number
+	 */
 	FATAL	= 0x00200000
+	/**
+	 * @type Number
+	 */
 	ERROR	= 0x00100000
+	/**
+	 * @type Number
+	 */
 	WARN	= 0x00080000
+	/**
+	 * @type Number
+	 */
 	INFO	= 0x00000010
+	/**
+	 * @type Number
+	 */
 	DEBUG	= 0x00000001
+	/**
+	 * @type Number
+	 */
 	PRODUCTION	= ~0 ^ this.DEBUG
+	/**
+	 * @type Number
+	 */
 	DEVELOPMENT	= ~0
 
+	/**
+	 * @type Number
+	 */
 	_level	= this.PRODUCTION
 
 	/**
 	 * Change the default log level
-	 * @param {Number|String} l The log level to set.  Eg: `'PRODUCTION'`, `'DEVELOPMENT'`, `Ext.log.FATAL | Ext.log.ERROR`
+	 * @param {Number|String} l The log level to set.  Eg: <code>'PRODUCTION'</code>, <code>'DEVELOPMENT'</code>, <code>Ext.log.FATAL | Ext.log.ERROR</code>
 	 * @returns {Number} The value set
 	 */
 	level(l) {
@@ -29,7 +52,6 @@ class Log {
 	 * @param {String} src Message source, eg: 'lighttp'
 	 * @param {String} txt Message to log
 	 * @returns {Any} Value from this.dolog or `null` if dolog() was not called
-	 * @method Ext log log
 	 */
 	log(type, src, txt) {
 		if (type & this._level) {
@@ -44,7 +66,6 @@ class Log {
 	 * @param {Number} type
 	 * @param {String} src
 	 * @param {String} txt
-	 * @method Ext log dolog
 	 * @stub
 	 */
 	dolog(type, src, txt) {}
@@ -54,7 +75,6 @@ class Log {
 	 * @param {String} src Message source
 	 * @param {String} txt Message body
 	 * @returns {Any} Return value from {@link Ext.log.log}
-	 * @method Ext log fatal
 	 */
 	fatal(src, txt) {
 		return this.log(this.FATAL, src, txt)
@@ -65,7 +85,6 @@ class Log {
 	 * @param {String} src Message source
 	 * @param {String} txt Message body
 	 * @returns {Any} Return value from {@link Ext.log.log}
-	 * @method Ext log error
 	 */
 	error(src, txt) {
 		return this.log(this.ERROR, src, txt)
@@ -76,7 +95,6 @@ class Log {
 	 * @param {String} src Message source
 	 * @param {String} txt Message body
 	 * @returns {Any} Return value from {@link Ext.log.log}
-	 * @method Ext log warn
 	 */
 	warn(src, txt) {
 		return this.log(this.WARN, src, txt)
@@ -87,7 +105,6 @@ class Log {
 	 * @param {String} src Message source
 	 * @param {String} txt Message body
 	 * @returns {Any} Return value from {@link Ext.log.log}
-	 * @method Ext log info
 	 */
 	info(src, txt) {
 		return this.log(this.INFO, src, txt)
@@ -98,7 +115,6 @@ class Log {
 	 * @param {String} src Message source
 	 * @param {String} txt Message body
 	 * @returns {Any} Return value from {@link Ext.log.log}
-	 * @method Ext log debug
 	 */
 	debug(src, txt) {
 		return this.log(this.DEBUG, src, txt)

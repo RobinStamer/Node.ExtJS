@@ -1,6 +1,6 @@
 Ext('Ext.ComponentMgr').ns('Ext.plugin')
 
-/*
+/**
  * @class Ext.plugin
  *
  *
@@ -67,7 +67,7 @@ Ext.apply(Ext.plugin, {
  * Initialize all plugins in a component
  * Alias for {@link Ext.plugin.setup}
  * @param {Component} cmp Component to have all the plugins initialized
- * @method Ext psetup
+ * @method Ext.psetup
  */
 Ext.psetup = function(cmp) {
 	return Ext.plugin.setup(cmp)

@@ -1,4 +1,8 @@
 {
+	"HDHT": "Ext.opt.hyper.DHT",
+	"HDHTBoot": "Ext.opt.hyper.DHTBootstrap",
+	"HyperDHT": "Ext.opt.hyper.DHT",
+	"HyperDHTBoot": "Ext.opt.hyper.DHTBootstrap",
 	"IC": "Ext.data.IC",
 	"Journal": "Ext.util.Journal",
 	"SSE": "Ext.data.SSE",
@@ -17,13 +21,16 @@
 	"multiFile": "Ext.data.MultiFile",
 	"netproxy": "Ext.net.Proxy",
 	"numdircol": "Ext.data.NumericDirCollection",
+	"oset": "Ext.util.ObservableSet",
 	"paramdesc": "Ext.util.ParamDescriptor",
 	"plumbPipe": "Ext.data.PlumbPipe",
 	"rest": "Ext.api.Rest",
+	"rqrs": "Ext.http.Rqrs",
 	"spawn:pipe": "Ext.data.SpawnPipe",
 	"spawn:stderr": "Ext.util.Spawn",
 	"spawn:stdin": "Ext.util.Spawn",
 	"spawn:stdout": "Ext.util.Spawn",
 	"store": "Ext.data.Store",
+	"url": "Ext.http.Url",
 	"ztpl": "Ext.ZTemplate"
 }

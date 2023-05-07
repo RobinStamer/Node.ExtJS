@@ -27,6 +27,11 @@ function doit(seekString, filename) {
 			db[line[0]] = line[1]
 		}
 	}).on('finish', function() {
+		// Add hacks for plugins
+		if ('var/plugin.registry.json' == filename) {
+			db.ready = 'Ext.ready'
+		}
+
 		var s = JSON.stringify(db, null, '\t')
 		fs.writeFileSync(filename, `${s}\n`)
 		console.dir(db)
