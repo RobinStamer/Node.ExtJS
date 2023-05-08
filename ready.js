@@ -73,6 +73,18 @@ Ext.create = function createReady(...args) {
 	return r
 }
 
+Ext.readyP = function() {
+	let P = Ext.Promise || Promise
+
+	if (Ext.isReady) {
+		return P.resolve()
+	}
+
+	return new P((p, f) => {
+		Ext.onReady(p)
+	})
+}
+
 class ReadyOnLoad {
 	constructor(cfg) {
 		this.ev = (cfg && cfg.ev) || 'load'
