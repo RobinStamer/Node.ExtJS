@@ -89,6 +89,7 @@ Ext.apply = function(o, c, defaults){
     }
     if(o && c && typeof c == 'object'){
         for(var p in c){
+            if ('__proto__' == p) continue
             o[p] = c[p];
         }
     }
@@ -217,6 +218,7 @@ Ext.apply(Ext, {
             if(o){
                 for(var p in c){
                     if(!Ext.isDefined(o[p])){
+                        if ('__proto__' == p) continue
                         o[p] = c[p];
                     }
                 }
