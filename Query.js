@@ -2,6 +2,16 @@ Ext('Ext.CollectionMgr', 'Ext.ready')
 
 let	rAs	= /^(.+)\s+[Aa][Ss]\s+(.+)$/
 
+// TODO: GROUP BY
+// TODO: INNER JOIN
+// TODO: OUTER JOIN
+// TODO: NATURAL JOIN
+// TODO: implicit join
+// TODO: OFFSET
+// TODO: LIMIT
+// TODO: output Observable
+// TODO: output MixedCollection
+
 function _multiEach(cb, ...cols) {
 	if (1 == cols.length) {
 		cols[0].each(o => { cb([o, cols[0]]) })
@@ -22,7 +32,7 @@ function multiEach(cb, ...cols) {
 class Query {
 	_select
 	_from
-	_where
+	_where	= x => true
 	_limit	= 0
 	_offset	= 0
 	_stamp	= Symbol('QueryStamp')
@@ -86,7 +96,9 @@ class Query {
 				}
 			}
 
-			l.push(r)
+			if (this._where(r)) {
+				l.push(r)
+			}
 		}, ...cs)
 
 		return l
@@ -171,6 +183,14 @@ class Query {
 			}
 
 			this._from.push([itbl, otbl || itbl])
+		}
+
+		return this
+	}
+
+	where(fn) {
+		if ('function' == typeof fn) {
+			this._where = fn
 		}
 
 		return this
