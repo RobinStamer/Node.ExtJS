@@ -30,6 +30,7 @@ var	isExtRegex	= /^Ext/
 		,'Ext-more':	'Ext.Ext-more'
 		,'Ext.util':	'Ext.Ext-util'
 		,'Ext-util':	'Ext.Ext-util'
+		,'Ext.Future':	'Ext.Promise'
 	}
 
 function _load(o, module) {
