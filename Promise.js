@@ -1,32 +1,38 @@
 class EPromise extends Promise {
-	then(f, scope) {
-		if (!scope) {
-			return super.then(f)
+	then(f, c, scope) {
+		// .then(f, scope)
+		if ('function' != typeof c && c) {
+			return this.then(f, undefined, c)
 		}
 
-		return super.then((...args) => {
-			return f.apply(scope, args)
-		})
+		if (scope) {
+			return super.then(
+				f && ((...args) => { f.apply(scope, args) })
+				,c && ((...args) => { c.apply(scope, args) })
+			)
+		}
+
+		return super.then(f, c)
 	}
 
 	catch(f, scope) {
-		if (!scope) {
-			return super.catch(f)
-		}
+		return this.then(undefined, f, scope)
+	}
 
-		return super.catch((...args) => {
-			return f.apply(scope, args)
+	static delay(num, ...args) {
+		return new this(p => {
+			setTimeout(() => { p(...args) }, num)
 		})
 	}
 
 	static resolve(...args) {
-		return new EPromise((p,f) => {
+		return new this((p,f) => {
 			p(...args)
 		})
 	}
 
 	static reject(...args) {
-		return new EPromise((p,f) => {
+		return new this((p,f) => {
 			f(...args)
 		})
 	}

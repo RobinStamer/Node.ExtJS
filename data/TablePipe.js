@@ -42,8 +42,6 @@ class TablePipe extends Ext.data.Pipe {
 		this.deadlines	= cfg.deadlines ?? 0
 
 		Ext.data.Pipe.pipe(this, Ext.data.LinePipe)
-
-		this.input.encoding	= 'utf8'
 	}
 
 	_transform(chunk, encoding, done) {
@@ -53,7 +51,6 @@ class TablePipe extends Ext.data.Pipe {
 			return
 		}
 
-		console.log(chunk)
 		let set = chunk.toString().split(this.delim)
 
 		if (this.noHeaders) {
