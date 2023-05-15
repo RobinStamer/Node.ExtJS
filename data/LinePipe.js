@@ -1,11 +1,8 @@
-const	Ext	= require('Ext')('Ext.class')
-	,stream	= require('stream')
+const	Ext	= require('Ext')('Ext.class', 'Ext.data.Pipe')
 	
-Ext.ns('Ext.data')
-
 /**
  * @class Ext.data.LinePipe
- * @extends stream.Transform
+ * @extends Ext.data.Pipe
  *
  * Stream transform that processes data line by line.
  *
@@ -15,7 +12,7 @@ Ext.ns('Ext.data')
  * @xtype linePipe
  */
 
-class LinePipe extends stream.Transform {
+class LinePipe extends Ext.data.Pipe {
 	/**
 	 * @cfg {Boolean} buffers Whether to accept buffers in stream
 	 */
@@ -32,20 +29,12 @@ class LinePipe extends stream.Transform {
 	 * @cfg {Function} _transform Transforms the stream's data, conflicts with addBreaks
 	 */
 	constructor(cfg) {
-		super({readableObjectMode: !cfg.buffers})
+		super(cfg)
 
 		this._bufferStr = ''
-		this.render	= true
 		this.addBreaks	= !!cfg.addBreaks
 
-		if (cfg.input) {
-			if (cfg.input.xtype && !cfg.input.pipe) {
-				this.input = Ext.xcreate(cfg.input)
-			} else {
-				this.input = cfg.input
-			}
-			this.input.pipe(this)
-		}
+		Ext.data.Pipe.pipe(this)
 
 		if (cfg._transform) {
 			this._mutate = cfg._transform

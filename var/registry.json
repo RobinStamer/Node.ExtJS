@@ -8,6 +8,7 @@
 	"SSE": "Ext.data.SSE",
 	"Tag": "Ext.data.Tag",
 	"archFile": "Ext.data.ArchFile",
+	"colquery": "Ext.Query",
 	"component": "Ext.Component",
 	"container": "Ext.Container",
 	"dircol": "Ext.data.DirCollection",
@@ -21,7 +22,6 @@
 	"multiFile": "Ext.data.MultiFile",
 	"netproxy": "Ext.net.Proxy",
 	"numdircol": "Ext.data.NumericDirCollection",
-	"oset": "Ext.util.ObservableSet",
 	"paramdesc": "Ext.util.ParamDescriptor",
 	"plumbPipe": "Ext.data.PlumbPipe",
 	"rest": "Ext.api.Rest",
@@ -31,6 +31,7 @@
 	"spawn:stdin": "Ext.util.Spawn",
 	"spawn:stdout": "Ext.util.Spawn",
 	"store": "Ext.data.Store",
+	"tablePipe": "Ext.data.TablePipe",
 	"url": "Ext.http.Url",
 	"ztpl": "Ext.ZTemplate"
 }

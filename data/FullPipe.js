@@ -1,11 +1,8 @@
-const	Ext	= require('Ext')('Ext.class')
-	,stream	= require('stream')
-	
-Ext.ns('Ext.data')
+const	Ext	= require('Ext')('Ext.class', 'Ext.data.Pipe')
 
 /**
  * @class Ext.data.FullPipe
- * @extends stream.Transform
+ * @extends Ext.data.Pipe
  *
  * Stream transform that collects a stream's data into one full chunk.
  *
@@ -15,7 +12,7 @@ Ext.ns('Ext.data')
  * @xtype fullPipe
  */
 
-class FullPipe extends stream.Transform {
+class FullPipe extends Ext.data.Pipe {
 	/**
 	 * @cfg {Boolean} buffers Whether to accept buffers in stream
 	 */
@@ -28,19 +25,11 @@ class FullPipe extends stream.Transform {
 	 * @cfg {Function} _transform Transforms the stream's data
 	 */
 	constructor(cfg) {
-		super({readableObjectMode: !cfg.buffers})
+		super(cfg)
 
 		this._bufferStr = ''
-		this.render	= true
 
-		if (cfg.input) {
-			if (cfg.input.xtype && !cfg.input.pipe) {
-				this.input = Ext.xcreate(cfg.input)
-			} else {
-				this.input = cfg.input
-			}
-			this.input.pipe(this)
-		}
+		Ext.data.Pipe.pipe(this)
 
 		if (cfg._transform) {
 			this._mutate = cfg._transform

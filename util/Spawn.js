@@ -8,6 +8,9 @@ class Spawn {
 		this.xtype	= this.cfg.xtype
 		
 		this.s	= cp.spawn(this.cmd = this.cfg.cmd.shift(), this.cfg.cmd)
+		this.stdin	= this.s.stdin
+		this.stdout	= this.s.stdout
+		this.stderr	= this.s.stderr
 
 		this.main	= this.s[{
 			'spawn:stdin':	'stdin'
@@ -48,11 +51,11 @@ class Spawn {
 	}
 
 	write(...args) {
-		this.s.stdin.write(...args)
+		this.stdin.write(...args)
 	}
 
 	end(...args) {
-		this.s.stdin.end(...args)
+		this.stdin.end(...args)
 	}
 }
 
