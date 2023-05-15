@@ -39,7 +39,11 @@ class LinePipe extends stream.Transform {
 		this.addBreaks	= !!cfg.addBreaks
 
 		if (cfg.input) {
-			this.input = Ext.xcreate(cfg.input)
+			if (cfg.input.xtype && !cfg.input.pipe) {
+				this.input = Ext.xcreate(cfg.input)
+			} else {
+				this.input = cfg.input
+			}
 			this.input.pipe(this)
 		}
 

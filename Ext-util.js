@@ -118,8 +118,35 @@ Ext.apply(Ext, (function() {
 
 			process.exit(code)
 		}
+		/**
+		 * Create a new null object
+		 * @param {Object} obj Object to apply values from
+		 * @param {Object?} defaults Defaults to apply if `obj` does not have them.
+		 * @retrun {Object} null object
+		 */
 		,cfg(obj, defaults = {}) {
 			return Ext.apply(Object.create(null), obj, defaults)
+		}
+		/**
+		 * Group keys to values
+		 *
+		 * <code>
+		 * &gt; Ext.group(['a', 'b', 'c'], [1,2,3])
+		 * {a: 1, b: 2, c: 3}
+		 * &gt; Ext.group(['a', 'b', 'c'], [1,2,3], true)
+		 * [Object: null prototype] { a: 1, b: 2, c: 3 }
+		 * </code>
+		 * @param {Array} keys List of keys
+		 * @param {Array} vals List of values
+		 * @param {Boolean?} useNull Use a null object as the base?
+		 * @return {Object}
+		 */
+		,group(keys, vals, useNull) {
+			let res = useNull ? Object.create(null) : {}
+
+			Ext.zip(keys, vals, (a, b) => { res[a] = b })
+
+			return res
 		}
 	}
 })())

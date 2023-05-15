@@ -34,7 +34,11 @@ class FullPipe extends stream.Transform {
 		this.render	= true
 
 		if (cfg.input) {
-			this.input = Ext.xcreate(cfg.input)
+			if (cfg.input.xtype && !cfg.input.pipe) {
+				this.input = Ext.xcreate(cfg.input)
+			} else {
+				this.input = cfg.input
+			}
 			this.input.pipe(this)
 		}
 
