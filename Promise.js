@@ -1,3 +1,5 @@
+Ext('Ext.more') // for Ext.group()
+
 class EPromise extends Promise {
 	then(f, c, scope) {
 		// .then(f, scope)
@@ -34,6 +36,12 @@ class EPromise extends Promise {
 	static reject(...args) {
 		return new this((p,f) => {
 			f(...args)
+		})
+	}
+
+	static map(keys, ...args) {
+		return this.allSettled(args).then(x => {
+			return Ext.group(keys, x)
 		})
 	}
 }
