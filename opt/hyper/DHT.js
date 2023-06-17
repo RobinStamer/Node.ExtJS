@@ -2,7 +2,7 @@
 
 Ext('Ext.opt.hyper')
 
-Hyper.lib.DHT	= require('@hyperswarm/dht')
+Hyper.lib.DHT	= require('hyperdht')
 Hyper.lib.peer	= require('dht-rpc/lib/peer')
 
 class HDHT extends Hyper.lib.DHT {
