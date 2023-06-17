@@ -139,6 +139,7 @@ class MultiFile extends stream.Writable {
 					// Reset meta and start a new one
 					this.meta = {}
 					this.meta[key] = value
+					this.cur = []
 					return
 				}
 
