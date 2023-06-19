@@ -148,5 +148,21 @@ Ext.apply(Ext, (function() {
 
 			return res
 		}
+		// Credit to https://github.com/Neo-Oli/beats/blob/master/beats.js
+		/**
+		 * Return the current Swatch Internet Time beats
+		 * @param {Date} d Date to use instead of the current date
+		 * @return {String}
+		 */
+		,beats(d = new Date) {
+			d.setTime(d.getTime() + 3600000)
+			return '@' + Math.floor(
+				(
+					(d.getUTCSeconds()) +
+					(d.getUTCMinutes() * 60) +
+					(d.getUTCHours() * 3600)
+				) / 86.4
+			)
+		}
 	}
 })())
