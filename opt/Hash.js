@@ -49,12 +49,26 @@ class Hash {
 		})
 	}
 
+	/**
+	 * Return a hash
+	 *
+	 * @param {String} hash The hash algo to use.  Values of 'size' and 'length' will return a psuedo-hash.
+	 * @return {Hash} Hasher object with update(data), and digest(strType) functions
+	 */
 	static hash(hash) {
-		return Ext.z.crypto.createHash(hashmap[hash] || hash)
-	}
+		if ({length: 1, size: 1}[hash]) {
+			return {
+				x: 0
+				,update(d) {
+					this.x += d.length
+				}
+				,digest() {
+					return this.x.toString()
+				}
+			}
+		}
 
-	static test() {
-		return this == Ext.opt.Hash
+		return Ext.z.crypto.createHash(hashmap[hash] || hash)
 	}
 }
 
