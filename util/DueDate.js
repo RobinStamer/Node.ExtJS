@@ -1,5 +1,3 @@
-const crypto = require('node:crypto');
-
 /**
  * @class Ext.util.DueDate
  * 
@@ -8,8 +6,7 @@ const crypto = require('node:crypto');
  * @constructor
  * @param {Object} config Configuration KV (all times are in milliseconds)
  */
-class DueDate
-{
+class DueDate {
 	/**
 	 * @cfg {String} name The name of the DueDate 
 	 */
@@ -51,12 +48,12 @@ class DueDate
 		}
 
 		// Create the immutable properties
-		Object.defineProperty(this, 'config', { value: config });
-		Object.defineProperty(this, 'id',     { value: config.id   ?? crypto.randomUUID() });
-		Object.defineProperty(this, 'warn',   { value: config.warn ?? null });
-		Object.defineProperty(this, 'name',   { value: config.name ?? null });
-		Object.defineProperty(this, 'flex',   { value: config.flex ?? null });
-		Object.defineProperty(this, 'once',   { value: config.once ?? null });
+		Object.defineProperty(this, 'config', { value: config })
+		Object.defineProperty(this, 'id',     { value: config.id   ?? Ext.getUUID() })
+		Object.defineProperty(this, 'warn',   { value: config.warn ?? null })
+		Object.defineProperty(this, 'name',   { value: config.name ?? null })
+		Object.defineProperty(this, 'flex',   { value: config.flex ?? null })
+		Object.defineProperty(this, 'once',   { value: config.once ?? null })
 
 		if(config.start)
 		{
