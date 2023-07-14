@@ -1,3 +1,5 @@
+Ext('Ext.util')
+
 /**
  * @class Ext.util.DueDate
  * 
